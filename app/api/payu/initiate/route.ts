@@ -28,8 +28,7 @@ import { isPinCode, isPlausibleEmail, normalisePhone } from "@/lib/checkout-cont
 import { getCommerceMap } from "@/lib/shopify/commerce";
 import { auditCartGifts } from "@/lib/cart-gift-guard";
 import { issueRestoreToken } from "@/lib/abandoned/restore-token";
-import { DRAFT_HINT_COOKIE, readDraftHint } from "@/lib/abandoned/hint";
-import { draftsConfigured, saveCheckoutDraft } from "@/lib/shopify/drafts";
+import { abandonedStoreConfigured, saveCheckout } from "@/lib/abandoned/store";
 
 /** Payment must never be served from a cache. */
 export const dynamic = "force-dynamic";
@@ -138,17 +137,13 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Keep the abandoned-checkout draft in step: this bag has now gone to
+    // Keep the abandoned-checkout record in step: this bag has now gone to
     // PayU. Run once the customer is already on their way, and never allowed
-    // to fail the payment — see lib/shopify/drafts.ts.
-    if (draftsConfigured) {
-      const hint = readDraftHint(
-        (await cookies()).get(DRAFT_HINT_COOKIE)?.value,
-        cart.id
-      );
+    // to fail the payment — see lib/abandoned/store.ts.
+    if (abandonedStoreConfigured) {
       after(async () => {
         try {
-          await saveCheckoutDraft(
+          await saveCheckout(
             {
               cartId: cart.id,
               cart,
@@ -166,8 +161,7 @@ export async function POST(request: NextRequest) {
                 province: state,
                 zip,
               },
-            },
-            hint
+            }
           );
         } catch (e) {
           console.warn("[abandoned] could not record the checkout at payment", {

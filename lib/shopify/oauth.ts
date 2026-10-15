@@ -20,8 +20,6 @@ export const REQUIRED_SCOPES = [
   // Needed to create the ₹0 gift variants and to hold their stock separately
   // from the paid bottles.
   "write_products",
-  // Abandoned checkouts are kept as draft orders (lib/shopify/drafts.ts).
-  "write_draft_orders",
 ].join(",");
 
 export const shopDomain = () => process.env.SHOPIFY_STORE_DOMAIN;

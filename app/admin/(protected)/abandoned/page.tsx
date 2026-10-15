@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { SITE } from "@/lib/seo";
 import {
-  DraftAccessError,
-  draftsConfigured,
-  listCheckoutDrafts,
+  abandonedStoreConfigured,
+  listCheckouts,
   type AbandonedCheckout,
-} from "@/lib/shopify/drafts";
+} from "@/lib/abandoned/store";
 
 export const dynamic = "force-dynamic";
 
@@ -41,9 +40,6 @@ function ago(iso: string, now: number): string {
   return `${Math.round(hours / 24)} days ago`;
 }
 
-const shopHandle = () =>
-  (process.env.SHOPIFY_STORE_DOMAIN ?? "").replace(/\.myshopify\.com$/, "");
-
 function restoreUrl(r: AbandonedCheckout): string | null {
   return r.restoreToken
     ? `${SITE}/api/cart/restore?t=${encodeURIComponent(r.restoreToken)}`
@@ -66,8 +62,8 @@ function message(r: AbandonedCheckout): string {
 
 const DONE: Record<string, string> = {
   contacted: "Marked as contacted.",
-  dismiss: "Dismissed. The draft order has been deleted from Shopify.",
-  failed: "That did not work — Shopify refused or could not be reached. Try again.",
+  dismiss: "Dismissed. It has been removed from the list.",
+  failed: "That did not work — the store could not be reached. Try again.",
   invalid: "That request was not understood.",
 };
 
@@ -83,13 +79,13 @@ export default async function AbandonedPage({
   const now = requestTime();
 
   let rows: AbandonedCheckout[] = [];
-  let problem: "config" | "access" | "error" | null = draftsConfigured ? null : "config";
+  let problem: "config" | "error" | null = abandonedStoreConfigured ? null : "config";
   let detail = "";
   if (!problem) {
     try {
-      rows = await listCheckoutDrafts(100);
+      rows = await listCheckouts(100);
     } catch (e) {
-      problem = e instanceof DraftAccessError ? "access" : "error";
+      problem = "error";
       detail = e instanceof Error ? e.message : String(e);
     }
   }
@@ -126,8 +122,8 @@ export default async function AbandonedPage({
       </h1>
       <p className="mt-4 max-w-[48rem] text-[0.88rem] leading-[1.7] text-[color:var(--color-charcoal-soft)]">
         Everyone who typed an email or phone number at checkout and did not
-        pay. Each is a draft order in Shopify (Orders → Drafts, tag{" "}
-        <code>qh-checkout</code>). A paid bag leaves this list by itself.
+        pay, kept here on the website (not in Shopify) for 60 days. A paid bag
+        leaves this list by itself.
         Message the customer, then mark them contacted; if they buy, they move
         to Recovered.
       </p>
@@ -140,24 +136,20 @@ export default async function AbandonedPage({
 
       {problem && (
         <div role="alert" className="mt-8 max-w-[48rem] border-l-2 border-[color:var(--color-clay)] bg-[color:var(--color-stardust-soft)] p-4 text-[0.85rem] leading-[1.65]">
-          {problem === "config" && <p>Shopify Admin is not configured on this deployment.</p>}
-          {problem === "access" && (
+          {problem === "config" && (
             <>
-              <p className="font-medium">The Shopify app does not have permission to use draft orders yet.</p>
+              <p className="font-medium">The abandoned-checkout store is not connected yet.</p>
               <p className="mt-2 text-[color:var(--color-charcoal-soft)]">
-                Open <code>/api/shopify/install</code> on this site, approve the
-                new <code>write_draft_orders</code> permission in Shopify, then
-                paste the token it shows into Vercel as{" "}
-                <code>SHOPIFY_ADMIN_TOKEN</code> and redeploy. If Shopify does
-                not ask for the new permission, add it to the app&rsquo;s Admin
-                API scopes in the Shopify app settings first. Until then
-                checkouts are not being recorded.
+                In Vercel, open this project → Storage → Create Database →
+                Upstash for Redis (free plan) → connect it to this project for
+                Production, then redeploy. Until then checkouts are not being
+                recorded.
               </p>
             </>
           )}
           {problem === "error" && (
             <p>
-              Shopify could not be read just now. Refresh in a minute.
+              The abandoned-checkout store could not be read just now. Refresh in a minute.
               <span className="mt-1 block text-[0.72rem] text-[color:var(--color-charcoal-soft)]">{detail.slice(0, 200)}</span>
             </p>
           )}
@@ -195,7 +187,7 @@ export default async function AbandonedPage({
               const digits = r.phone.replace(/\D/g, "");
               const text = message(r);
               return (
-                <li key={r.id} className="grid gap-4 border-b border-[color:var(--color-rule)] py-5 md:grid-cols-12">
+                <li key={r.bag} className="grid gap-4 border-b border-[color:var(--color-rule)] py-5 md:grid-cols-12">
                   <div className="md:col-span-3">
                     <p className="text-[0.95rem]">{r.customerName || "Name not given"}</p>
                     {r.email && <p className="mt-1 break-all text-[0.8rem] text-[color:var(--color-charcoal-soft)]">{r.email}</p>}
@@ -261,16 +253,6 @@ export default async function AbandonedPage({
                         Email
                       </a>
                     )}
-                    {r.legacyId && shopHandle() && (
-                      <a
-                        href={`https://admin.shopify.com/store/${shopHandle()}/draft_orders/${r.legacyId}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[color:var(--color-charcoal-soft)] underline-offset-4 hover:underline"
-                      >
-                        Shopify
-                      </a>
-                    )}
                     {r.txnid && (
                       <Link href="/admin/payments" className="text-[color:var(--color-charcoal-soft)] underline-offset-4 hover:underline">
                         Payments
@@ -278,7 +260,7 @@ export default async function AbandonedPage({
                     )}
                     {!r.recovered && !r.contacted && !r.paidAs && (
                       <form action="/api/admin/abandoned" method="post">
-                        <input type="hidden" name="id" value={r.id} />
+                        <input type="hidden" name="id" value={r.bag} />
                         <input type="hidden" name="view" value={view === "open" ? "" : view} />
                         <button name="action" value="contacted" className="uppercase tracking-[0.2em] text-[color:var(--color-aerial-deep)] underline-offset-4 hover:underline">
                           Mark contacted
@@ -287,7 +269,7 @@ export default async function AbandonedPage({
                     )}
                     {!r.recovered && (
                       <form action="/api/admin/abandoned" method="post">
-                        <input type="hidden" name="id" value={r.id} />
+                        <input type="hidden" name="id" value={r.bag} />
                         <input type="hidden" name="view" value={view === "open" ? "" : view} />
                         <button name="action" value="dismiss" className="uppercase tracking-[0.2em] text-[color:var(--color-clay)] underline-offset-4 hover:underline">
                           Dismiss
@@ -311,7 +293,6 @@ export default async function AbandonedPage({
               <span className="text-[color:var(--color-charcoal)]">Left at PayU</span>{" "}
               means the customer reached the payment page. If they say they were
               charged, check the transaction id under Payments before anything else.
-              Don&rsquo;t use Shopify&rsquo;s &ldquo;Send invoice&rdquo; on these drafts.
             </p>
           </div>
         </>

@@ -38,7 +38,7 @@ import {
   readPendingOrder,
   readSettleState,
 } from "@/lib/payu/pending";
-import { closeCheckoutDraft, draftsConfigured } from "@/lib/shopify/drafts";
+import { abandonedStoreConfigured, closeCheckout } from "@/lib/abandoned/store";
 import {
   ATTENTION_TAG,
   createAttentionOrder,
@@ -380,13 +380,13 @@ async function settle(input: SettleInput): Promise<SettleResult> {
       markCartSettled(cartId, txnid, order),
       emptied,
       // Off the abandoned-checkout list: this bag was bought.
-      // Capped, so a slow Shopify never holds the customer's confirmation
-      // page; a draft left behind is still recognised as paid by its txnid.
-      draftsConfigured
+      // Capped, so a slow store never holds the customer's confirmation
+      // page; a record left behind is still recognised as paid by its txnid.
+      abandonedStoreConfigured
         ? Promise.race([
-            closeCheckoutDraft(cartId, order),
+            closeCheckout(cartId, order),
             sleep(4_000).then(() => {
-              throw new Error("closing the abandoned-checkout draft timed out");
+              throw new Error("closing the abandoned-checkout record timed out");
             }),
           ])
         : Promise.resolve(),

@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { currentStaffShop } from "@/lib/admin/session";
-import { deleteDraft, markDraftContacted } from "@/lib/shopify/drafts";
+import { dismissCheckout, markContacted } from "@/lib/abandoned/store";
 
 export const dynamic = "force-dynamic";
 
 /**
  * Staff actions on an abandoned checkout: mark it contacted, or dismiss it
- * (deletes the draft order). Guarded here as well as by the /admin layout,
+ * (removes it from the list). Guarded here as well as by the /admin layout,
  * since a route handler does not inherit it.
  */
 export async function POST(request: Request): Promise<NextResponse> {
@@ -27,11 +27,11 @@ export async function POST(request: Request): Promise<NextResponse> {
       303
     );
 
-  if (!/^gid:\/\/shopify\/DraftOrder\/\d+$/.test(id)) return back("invalid");
+  if (!/^[0-9a-f]{24}$/.test(id)) return back("invalid");
 
   try {
-    if (action === "contacted") await markDraftContacted(id);
-    else if (action === "dismiss") await deleteDraft(id);
+    if (action === "contacted") await markContacted(id);
+    else if (action === "dismiss") await dismissCheckout(id);
     else return back("invalid");
     return back(action);
   } catch (e) {

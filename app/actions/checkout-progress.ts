@@ -1,7 +1,7 @@
 "use server";
 
 // Saves an unfinished checkout as the customer types, so a bag that is never
-// paid for still shows up in /admin/abandoned. See lib/shopify/drafts.ts.
+// paid for still shows up in /admin/abandoned. See lib/abandoned/store.ts.
 //
 // Called in the background from the checkout form. It must never surface an
 // error to the customer or slow the form down: every failure is logged and
@@ -13,12 +13,7 @@ import { CART_COOKIE } from "@/lib/shopify/cart-cookie";
 import { isPlausibleEmail, normalisePhone } from "@/lib/checkout-contact";
 import { readSettleState } from "@/lib/payu/pending";
 import { issueRestoreToken } from "@/lib/abandoned/restore-token";
-import {
-  DRAFT_HINT_COOKIE,
-  readDraftHint,
-  writeDraftHintValue,
-} from "@/lib/abandoned/hint";
-import { draftsConfigured, saveCheckoutDraft } from "@/lib/shopify/drafts";
+import { abandonedStoreConfigured, saveCheckout } from "@/lib/abandoned/store";
 
 const FIELDS = [
   "firstName",
@@ -36,7 +31,7 @@ type Progress = Partial<Record<(typeof FIELDS)[number], string>>;
 
 export async function saveCheckoutProgress(input: Progress): Promise<void> {
   try {
-    if (!draftsConfigured || !input || typeof input !== "object") return;
+    if (!abandonedStoreConfigured || !input || typeof input !== "object") return;
 
     const clean: Progress = {};
     for (const key of FIELDS) {
@@ -57,7 +52,7 @@ export async function saveCheckoutProgress(input: Progress): Promise<void> {
     // A bag already turned into an order is not abandoned.
     if (readSettleState(record.note).kind === "done") return;
 
-    const draftId = await saveCheckoutDraft(
+    await saveCheckout(
       {
         cartId,
         cart: record.cart,
@@ -74,17 +69,8 @@ export async function saveCheckoutProgress(input: Progress): Promise<void> {
           province: clean.state,
           zip: clean.zip,
         },
-      },
-      readDraftHint(jar.get(DRAFT_HINT_COOKIE)?.value, cartId)
+      }
     );
-
-    jar.set(DRAFT_HINT_COOKIE, writeDraftHintValue(cartId, draftId), {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 14,
-    });
   } catch (e) {
     console.warn("[abandoned] could not save checkout progress", {
       error: e instanceof Error ? e.message : String(e),
