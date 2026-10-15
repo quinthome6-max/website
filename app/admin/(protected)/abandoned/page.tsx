@@ -145,10 +145,13 @@ export default async function AbandonedPage({
             <>
               <p className="font-medium">The Shopify app does not have permission to use draft orders yet.</p>
               <p className="mt-2 text-[color:var(--color-charcoal-soft)]">
-                Give the app the <code>write_draft_orders</code> permission in
-                Shopify (Settings → Apps and sales channels → Develop apps → this
-                app → Configuration → Admin API scopes), save, and reinstall it if
-                Shopify asks. Until then checkouts are not being recorded.
+                Open <code>/api/shopify/install</code> on this site, approve the
+                new <code>write_draft_orders</code> permission in Shopify, then
+                paste the token it shows into Vercel as{" "}
+                <code>SHOPIFY_ADMIN_TOKEN</code> and redeploy. If Shopify does
+                not ask for the new permission, add it to the app&rsquo;s Admin
+                API scopes in the Shopify app settings first. Until then
+                checkouts are not being recorded.
               </p>
             </>
           )}
