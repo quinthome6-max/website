@@ -6,7 +6,7 @@ import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { payuConfigured } from "@/lib/payu/client";
 import { shopifyAdminConfigured } from "@/lib/shopify/admin";
-import { abandonedStoreConfigured, pingAbandonedStore } from "@/lib/abandoned/store";
+import { abandonedStoreConfigured, pingAbandonedStore, redisEnvNames } from "@/lib/abandoned/store";
 import { getToken, shiprocketConfigured } from "@/lib/shiprocket/client";
 
 export const dynamic = "force-dynamic";
@@ -115,6 +115,8 @@ export async function GET() {
       abandonedCheckouts: {
         storeConfigured: abandonedStoreConfigured,
         storeReachable: abandonedStoreConfigured ? await pingAbandonedStore() : false,
+        // Names only. Empty means no Redis is connected to this deployment.
+        redisVariablesVisible: redisEnvNames(),
       },
       shiprocket: await (async () => {
         const base = {

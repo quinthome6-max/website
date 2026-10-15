@@ -22,9 +22,31 @@ import crypto from "node:crypto";
 import type { Cart } from "@/lib/shopify/cart";
 import { txnTag } from "@/lib/shopify/admin";
 
-// Vercel's Upstash integration has used both names.
-const REDIS_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-const REDIS_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+/**
+ * Vercel's Upstash integration has used several names, and lets the person
+ * connecting it add a custom prefix (e.g. STORAGE_KV_REST_API_URL). Take the
+ * standard names first, then any variable ending in one of them. The
+ * read-only token is skipped: this store writes.
+ */
+function envEndingIn(suffixes: string[]): string | undefined {
+  for (const s of suffixes) if (process.env[s]) return process.env[s];
+  for (const s of suffixes) {
+    const key = Object.keys(process.env).find(
+      (k) => k.endsWith(`_${s}`) && !k.includes("READ_ONLY") && process.env[k]
+    );
+    if (key) return process.env[key];
+  }
+  return undefined;
+}
+const REDIS_URL = envEndingIn(["KV_REST_API_URL", "UPSTASH_REDIS_REST_URL"]);
+const REDIS_TOKEN = envEndingIn(["KV_REST_API_TOKEN", "UPSTASH_REDIS_REST_TOKEN"]);
+
+/** Names (never values) of variables that look like a Redis connection. */
+export function redisEnvNames(): string[] {
+  return Object.keys(process.env)
+    .filter((k) => /KV_|REDIS|UPSTASH/i.test(k))
+    .sort();
+}
 const TIMEOUT_MS = 6_000;
 const RECORD_TTL_S = 60 * 24 * 60 * 60;
 const INDEX = "qh:ab:index";
