@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/cart-provider";
 import { formatINR } from "@/lib/utils";
 import { DiscountField } from "@/components/cart/discount-field";
@@ -9,6 +9,7 @@ import { FadeUp } from "@/components/motion/fade-up";
 import { Monogram } from "@/components/brand/logo";
 import { FREE_SHIPPING_FROM } from "@/lib/checkout-config";
 import { deliveryEstimate, deliveryEstimateFromTransit } from "@/lib/delivery";
+import { saveCheckoutProgress } from "@/app/actions/checkout-progress";
 
 const inputClass =
   "w-[100%] border-b border-[color:var(--color-rule)] bg-transparent py-2.5 text-[0.95rem] outline-none transition-colors placeholder:text-[color:var(--color-charcoal-soft)]/60 focus:border-[color:var(--color-charcoal)]";
@@ -101,6 +102,45 @@ export function CheckoutForm({
       clearTimeout(t);
     };
   }, [pin, shipWeight]);
+
+  // Saves the details typed so far as an unfinished checkout (see
+  // app/actions/checkout-progress.ts), so a customer who leaves before paying
+  // can still be followed up. Runs when a field loses focus, only once there
+  // is an email or phone, only when something changed, and in the background:
+  // it never waits on, or reports anything to, the customer.
+  const lastSaved = useRef("");
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => {
+    if (saveTimer.current) clearTimeout(saveTimer.current);
+  }, []);
+  const saveProgress = (form: HTMLFormElement) => {
+    if (saveTimer.current) clearTimeout(saveTimer.current);
+    saveTimer.current = setTimeout(() => {
+      const get = (name: string) =>
+        (form.elements.namedItem(name) as HTMLInputElement | null)?.value.trim() ?? "";
+      const fields = {
+        firstName: get("firstName"),
+        lastName: get("lastName"),
+        email: get("email"),
+        phone: get("phone"),
+        address1: get("address1"),
+        address2: get("address2"),
+        city: get("city"),
+        state: get("state"),
+        zip: get("zip"),
+      };
+      const hasEmail = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(fields.email);
+      const hasPhone = fields.phone.replace(/\D/g, "").length >= 10;
+      if (!hasEmail && !hasPhone) return;
+      const key = JSON.stringify(fields);
+      if (key === lastSaved.current) return;
+      lastSaved.current = key;
+      saveCheckoutProgress(fields).catch(() => {
+        lastSaved.current = ""; // try again on the next change
+      });
+    }, 600);
+  };
+
   const subtotal = cart?.subtotal ?? 0;
   const discount = cart?.discount ?? 0;
   const goods = cart?.total ?? subtotal;
@@ -178,6 +218,11 @@ export function CheckoutForm({
       <form
         method="POST"
         action="/api/payu/initiate"
+        onBlur={(e) => saveProgress(e.currentTarget)}
+        // Pay records everything itself; a save racing it would only duplicate.
+        onSubmit={() => {
+          if (saveTimer.current) clearTimeout(saveTimer.current);
+        }}
         className="grid gap-12 pt-10 md:grid-cols-12 md:gap-16"
       >
         <div className="md:col-span-7">
@@ -262,7 +307,8 @@ export function CheckoutForm({
 
             <p className="mt-10 text-[0.78rem] leading-[1.7] text-[color:var(--color-charcoal-soft)]">
               We ship within India only. Your details are used to fulfil this
-              order — see our{" "}
+              order, and are saved as you type so you can finish it later if
+              you are interrupted — see our{" "}
               <Link
                 href="/privacy"
                 className="underline-offset-4 hover:text-[color:var(--color-charcoal)] hover:underline"

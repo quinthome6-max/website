@@ -45,6 +45,12 @@ export default async function AdminLayout({
             Payments
           </Link>
           <Link
+            href="/admin/abandoned"
+            className="text-[0.62rem] uppercase tracking-[0.28em] text-[color:var(--color-charcoal-soft)] underline-offset-4 hover:underline"
+          >
+            Abandoned
+          </Link>
+          <Link
             href="/"
             className="text-[0.62rem] uppercase tracking-[0.28em] text-[color:var(--color-charcoal-soft)] underline-offset-4 hover:underline"
           >

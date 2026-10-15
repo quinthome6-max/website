@@ -33,7 +33,7 @@ async function probeAdminApi() {
     }
   };
 
-  const [rest, ordersList, graphql] = await Promise.all([
+  const [rest, ordersList, graphql, draftOrders] = await Promise.all([
     call("shop.json"),
     // The order lookup that stops one payment becoming two orders reads this
     // list. Anything but 200 here means that check is running blind.
@@ -57,10 +57,14 @@ async function probeAdminApi() {
         return "network-error";
       }
     })(),
+    // Abandoned checkouts are recorded as draft orders. 403 here means the
+    // app lacks write_draft_orders and /admin/abandoned stays empty.
+    call("draft_orders.json?limit=1&fields=id"),
   ]);
 
   return {
     checked: true,
+    draftOrders,
     restShopJson: rest, // 200 = REST usable, 401 = bad token, 403/404 = REST blocked
     ordersList, // 200 = existing orders can be read (needs read access to orders)
     graphql,

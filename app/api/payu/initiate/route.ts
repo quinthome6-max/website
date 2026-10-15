@@ -10,7 +10,7 @@
 // anything, so whatever Shopify might refuse an order for — a phone number it
 // will not accept, an item that has sold out — is checked here instead.
 
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, after, type NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { cartGetRecord, cartRecheckStock } from "@/lib/shopify/cart";
 import { CART_COOKIE } from "@/lib/shopify/cart-cookie";
@@ -27,6 +27,9 @@ import { shippingFor } from "@/lib/checkout-config";
 import { isPinCode, isPlausibleEmail, normalisePhone } from "@/lib/checkout-contact";
 import { getCommerceMap } from "@/lib/shopify/commerce";
 import { auditCartGifts } from "@/lib/cart-gift-guard";
+import { issueRestoreToken } from "@/lib/abandoned/restore-token";
+import { DRAFT_HINT_COOKIE, readDraftHint } from "@/lib/abandoned/hint";
+import { draftsConfigured, saveCheckoutDraft } from "@/lib/shopify/drafts";
 
 /** Payment must never be served from a cache. */
 export const dynamic = "force-dynamic";
@@ -134,6 +137,46 @@ export async function POST(request: NextRequest) {
         country,
       },
     });
+
+    // Keep the abandoned-checkout draft in step: this bag has now gone to
+    // PayU. Run once the customer is already on their way, and never allowed
+    // to fail the payment — see lib/shopify/drafts.ts.
+    if (draftsConfigured) {
+      const hint = readDraftHint(
+        (await cookies()).get(DRAFT_HINT_COOKIE)?.value,
+        cart.id
+      );
+      after(async () => {
+        try {
+          await saveCheckoutDraft(
+            {
+              cartId: cart.id,
+              cart,
+              stage: "payment",
+              txnid,
+              restoreToken: issueRestoreToken(cart.id),
+              contact: {
+                email,
+                phone: phone.e164,
+                firstName,
+                lastName,
+                address1,
+                address2,
+                city,
+                province: state,
+                zip,
+              },
+            },
+            hint
+          );
+        } catch (e) {
+          console.warn("[abandoned] could not record the checkout at payment", {
+            txnid,
+            error: e instanceof Error ? e.message : String(e),
+          });
+        }
+      });
+    }
 
     const origin = process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin;
     const callback = `${origin}/api/payu/callback`;
