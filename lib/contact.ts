@@ -11,4 +11,4 @@ export const WHATSAPP_NUMBER = "919819616668";
  * render inconsistently in older WhatsApp clients.
  */
 export const WHATSAPP_PREFILL =
-  "Hi Quint Home, I have been through your website and have a query I would like to discuss with the owner.";
+  "Hi Quint Home, I have been through your website and have a query. I would like to speak to the concerned person.";
