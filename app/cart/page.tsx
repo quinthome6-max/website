@@ -4,6 +4,8 @@ import { bagNotice } from "@/lib/checkout-notices";
 
 export const metadata: Metadata = {
   title: "Your Bag",
+  // A bag is per visitor; nothing here belongs in search results.
+  robots: { index: false, follow: true },
   description:
     "Review the diffusers and fragrance oils in your Quint Home bag, then proceed to checkout.",
 };

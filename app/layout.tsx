@@ -35,7 +35,9 @@ export const metadata: Metadata = {
       ? { other: { "msvalidate.01": process.env.BING_SITE_VERIFICATION } }
       : {}),
   },
-  alternates: { canonical: "/" },
+  // No site-wide canonical: a default here is inherited by every page that
+  // does not set its own, which told Google the policy pages, the bag and
+  // every 404 were the homepage. Each indexable page sets its own.
   openGraph: {
     type: "website",
     title: "Quint Home",

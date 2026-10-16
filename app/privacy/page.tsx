@@ -5,6 +5,7 @@ import { FadeUp } from "@/components/motion/fade-up";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
+  alternates: { canonical: "/privacy" },
   description:
     "How Quint Home collects, uses, and protects your personal information – DPDP Act (India) compliant.",
 };

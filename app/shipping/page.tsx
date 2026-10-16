@@ -5,6 +5,7 @@ import { FadeUp } from "@/components/motion/fade-up";
 
 export const metadata: Metadata = {
   title: "Shipping & Returns",
+  alternates: { canonical: "/shipping" },
   description:
     "How your Quint Home order is shipped across India, our exchange policy for damaged or defective items, and the limited 1-year warranty.",
 };

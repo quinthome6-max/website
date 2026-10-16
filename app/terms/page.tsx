@@ -5,6 +5,7 @@ import { FadeUp } from "@/components/motion/fade-up";
 
 export const metadata: Metadata = {
   title: "Terms & Conditions",
+  alternates: { canonical: "/terms" },
   description:
     "The terms that govern your use of www.quinthome.in and any purchase you make from it.",
 };
