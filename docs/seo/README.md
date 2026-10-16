@@ -11,12 +11,17 @@ and Microsoft Clarity, and how the data is read for SEO reports.
 | [04 · Data access for reports](04-data-access.md) | Read-only access so reports can be pulled automatically | 15 min |
 | [05 · Bing Webmaster Tools](05-bing-webmaster.md) | Bing, plus ChatGPT search and Copilot, which use Bing | 5 min |
 
+**Records**
+
+- [CHANGELOG.md](CHANGELOG.md): every SEO change and Search Console finding, dated. **Add an entry for anything done.**
+- [products.md](products.md): all 17 products with their page address and SEO status.
+
 ## Status
 
 Tick these off as they are done.
 
-- [ ] Search Console: Domain property `quinthome.in` verified, and you have Owner access
-- [ ] Search Console: sitemap `https://www.quinthome.in/sitemap.xml` submitted
+- [x] Search Console: property verified, you have access
+- [x] Search Console: sitemap `https://www.quinthome.in/sitemap.xml` submitted (17 Oct 2026, 32 pages)
 - [ ] GA4: property created, `NEXT_PUBLIC_GA_ID` added in Vercel, redeployed
 - [ ] GA4: `payu.in` added as an unwanted referral
 - [ ] GA4: linked to Search Console
