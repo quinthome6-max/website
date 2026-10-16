@@ -20,6 +20,20 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-17 — All pages pushed to Bing via IndexNow
+- **What:** all 32 sitemap URLs submitted through IndexNow (answered 202 Accepted). Shared with Bing, Yandex, Seznam and Naver.
+- **Why:** Bing returned no quinthome.in results, and ChatGPT search draws on Bing.
+- **Where:** key file `public/5ed755914118f6e5f3030d2349826e16.txt`; script `marketing/seo/tools/indexnow.py` (re-run after publishing or changing pages, or pass specific paths).
+- **Next:** Bing Webmaster Tools import (docs/seo/05) to see Bing's index status directly.
+
+## 2026-10-17 — Catalogue made legible to shopping and answer engines (AEO/GEO)
+- **Product markup:** one `Offer` per paid variant (Monolith's Gold and Black, replacing `AggregateOffer`), each with SKU (Shopify variant id; diffusers also keep model as MPN), `priceValidUntil`, `shippingDetails` (₹99 under ₹5,000, otherwise free; 0–3 days handling, 3–5 days transit; India) and `hasMerchantReturnPolicy` (3-day window, exchange, by mail), matching /shipping. Plan T10, audit #7.
+- **Product feed:** `/feeds/products.xml`, Google Merchant format, 18 items (Monolith per finish), live Shopify prices with compare-at as sale price, stock, shipping. For Google Merchant Center and ChatGPT's merchant programme. Plan T11.
+- **llms-full.txt** now includes the 3 candles (audit #29).
+- **Contradictions fixed** (audit #27/#28): the Drift ships without an oil (Diwali guide, gifting text) and without an app (FAQ, two answers); the Pebble described as waterless, no "drops… mist"; /range meta no longer says "Bluetooth"; llms.txt "/range" line includes candles.
+- **Where:** `lib/structured-data.ts`, `app/feeds/products.xml/route.ts`, `app/llms-full.txt/route.ts`, `app/llms.txt/route.ts`, `app/faq/page.tsx`, `lib/gifting.ts`, `lib/data/journal.ts`, `lib/data/diffusers.ts`, `app/range/page.tsx`. Commit `e172ff9`.
+- **Check:** verified on a local build (feed 18 items, Monolith two offers, oil shipping ₹99, candles in llms-full, FAQ text), then live (feed 200, key file served). Next: Google Rich Results Test on a product page; submit the feed in Merchant Center; apply to ChatGPT merchants.
+
 ## 2026-10-17 — Investigation: ChatGPT orders stopped
 - **Reported:** many earlier orders came from ChatGPT, then orders stopped suddenly.
 - **Checked on the live site (all fine):**
@@ -28,6 +42,7 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
   - Checkout end to end, up to PayU's payment page, works for a diffuser with its free oil, a hotel oil, a candle and the Pebble. PayU showed "Total Payable ₹1798" with UPI, cards, net banking, wallets and EMI.
   - All products in stock except Blanc Ritual (sold out, marked OutOfStock).
 - **Found:** Bing returns no quinthome.in results for the brand (automated check, not conclusive). ChatGPT search leans on Bing, and the site was never added to Bing Webmaster Tools.
+- **Clarity, last 30 days (user):** sessions by source: Facebook 155, Google 77, ChatGPT 44, Instagram 24, Direct 7, WhatsApp (l.wl.co) 7, secure.payu.in 5 (returns from the payment page). Real-user speed 82/100 from 186 page views: LCP 3.9 s, INP 200 ms, CLS 0.
 - **Not yet checkable:** whether payments since 10 Oct reached Shopify as orders (PayU webhook set-up and a live paid test were still pending from the 10 Oct checkout rework), and the ChatGPT traffic trend (needs Clarity or GA4).
 - **Next:** (1) compare PayU successful transactions with Shopify orders since 10 Oct, (2) Clarity referrer chatgpt.com trend, (3) Bing Webmaster import + IndexNow, (4) AEO/GEO work below.
 - **Side effect:** the test created about 5 abandoned checkouts named "Test Claude-Check" and opened one PayU page (transaction QHMVBGH4720018D004B5, unpaid). Dismiss them.
