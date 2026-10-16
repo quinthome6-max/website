@@ -20,6 +20,18 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-17 — Investigation: ChatGPT orders stopped
+- **Reported:** many earlier orders came from ChatGPT, then orders stopped suddenly.
+- **Checked on the live site (all fine):**
+  - AI crawlers (GPTBot, OAI-SearchBot, ChatGPT-User, PerplexityBot, ClaudeBot) plus Googlebot and Bingbot get full pages and `/llms.txt`, identical to a browser, with no firewall challenge. robots.txt allows them all.
+  - ChatGPT-style links (`?utm_source=chatgpt.com`), old `/shop/…` links and the Diwali guide all open (200).
+  - Checkout end to end, up to PayU's payment page, works for a diffuser with its free oil, a hotel oil, a candle and the Pebble. PayU showed "Total Payable ₹1798" with UPI, cards, net banking, wallets and EMI.
+  - All products in stock except Blanc Ritual (sold out, marked OutOfStock).
+- **Found:** Bing returns no quinthome.in results for the brand (automated check, not conclusive). ChatGPT search leans on Bing, and the site was never added to Bing Webmaster Tools.
+- **Not yet checkable:** whether payments since 10 Oct reached Shopify as orders (PayU webhook set-up and a live paid test were still pending from the 10 Oct checkout rework), and the ChatGPT traffic trend (needs Clarity or GA4).
+- **Next:** (1) compare PayU successful transactions with Shopify orders since 10 Oct, (2) Clarity referrer chatgpt.com trend, (3) Bing Webmaster import + IndexNow, (4) AEO/GEO work below.
+- **Side effect:** the test created about 5 abandoned checkouts named "Test Claude-Check" and opened one PayU page (transaction QHMVBGH4720018D004B5, unpaid). Dismiss them.
+
 ## 2026-10-17 — Search Console: product rich-result warnings reviewed
 - **What:** Search Console shows 11 product items with *Missing field 'aggregateRating'* and *Missing field 'review'* (warnings, not errors).
 - **Why:** star ratings need genuine per-product reviews. The site has none (placeholder reviews are switched off). Adding ratings without real reviews breaks Google's rules.
