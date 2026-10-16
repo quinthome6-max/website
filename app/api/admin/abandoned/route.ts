@@ -19,10 +19,15 @@ export async function POST(request: Request): Promise<NextResponse> {
   const action = String(form.get("action") ?? "");
   const id = String(form.get("id") ?? "");
   const view = String(form.get("view") ?? "");
+  const range = String(form.get("range") ?? "");
   const back = (done: string) =>
     NextResponse.redirect(
       new URL(
-        `/admin/abandoned?${new URLSearchParams({ ...(view ? { view } : {}), done })}`,
+        `/admin/abandoned?${new URLSearchParams({
+          ...(/^[a-z]{1,12}$/.test(view) ? { view } : {}),
+          ...(/^(7|all)$/.test(range) ? { range } : {}),
+          done,
+        })}`,
         request.url
       ),
       303
