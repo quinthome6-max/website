@@ -94,15 +94,18 @@ export async function POST(request: NextRequest) {
   const form = await request.formData();
   if (String(form.get("company") ?? "").length > 0) return back("denied");
 
-  // The full-access passphrase is checked first, so if the two were ever set
-  // to the same value it would never quietly downgrade an admin.
+  // Each form opens only its own door: the guest form checks the marketing
+  // passphrase alone, the main form the admin passphrase alone.
   const candidate = String(form.get("password") ?? "");
+  const guest = form.get("as") === "guest";
   const principal = !candidate
     ? null
-    : passwordMatches(candidate)
-      ? PASSWORD_PRINCIPAL
-      : marketingPasswordMatches(candidate)
+    : guest
+      ? marketingPasswordMatches(candidate)
         ? MARKETING_PRINCIPAL
+        : null
+      : passwordMatches(candidate)
+        ? PASSWORD_PRINCIPAL
         : null;
   if (!principal) return back("denied");
 
