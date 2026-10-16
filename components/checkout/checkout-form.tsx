@@ -10,6 +10,7 @@ import { Monogram } from "@/components/brand/logo";
 import { FREE_SHIPPING_FROM } from "@/lib/checkout-config";
 import { deliveryEstimate, deliveryEstimateFromTransit } from "@/lib/delivery";
 import { saveCheckoutProgress } from "@/app/actions/checkout-progress";
+import type { CheckoutPrefill } from "@/lib/checkout-prefill";
 
 const inputClass =
   "w-[100%] border-b border-[color:var(--color-rule)] bg-transparent py-2.5 text-[0.95rem] outline-none transition-colors placeholder:text-[color:var(--color-charcoal-soft)]/60 focus:border-[color:var(--color-charcoal)]";
@@ -50,15 +51,94 @@ function Field({
   );
 }
 
+/**
+ * Details remembered on this device for the next order, when the customer
+ * leaves "Remember my details" ticked. Kept in the browser only — never sent
+ * anywhere by this — and cleared by "Not you? Clear".
+ */
+const REMEMBER_KEY = "quint_checkout_details";
+const FIELD_NAMES = [
+  "firstName",
+  "lastName",
+  "email",
+  "phone",
+  "address1",
+  "address2",
+  "city",
+  "state",
+  "zip",
+] as const;
+
+function readRemembered(): Partial<CheckoutPrefill> | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(REMEMBER_KEY);
+    return raw ? (JSON.parse(raw) as Partial<CheckoutPrefill>) : null;
+  } catch {
+    return null;
+  }
+}
+
 export function CheckoutForm({
   shippingFlat,
   notice = null,
+  prefill = null,
 }: {
   shippingFlat: number;
   /** Why the payment could not be started, when the customer was sent back. */
   notice?: string | null;
+  /** Details already on record for this bag, from the server. */
+  prefill?: CheckoutPrefill | null;
 }) {
   const { cart } = useCart();
+
+  // What to fill the form in with: this bag's own record first (it is the
+  // newest), then whatever this device remembered from a previous order. The
+  // form itself only renders once the bag has loaded in the browser, so
+  // reading the device here never disagrees with a server render.
+  const [initial] = useState<Partial<CheckoutPrefill> | null>(() => {
+    const device = readRemembered();
+    if (!prefill && !device) return null;
+    const merged: Partial<CheckoutPrefill> = { ...(device ?? {}) };
+    for (const k of FIELD_NAMES) if (prefill?.[k]) merged[k] = prefill[k];
+    return merged;
+  });
+  const [welcome, setWelcome] = useState(Boolean(initial?.email || initial?.phone));
+  const [remember, setRemember] = useState(true);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const forget = () => {
+    try {
+      window.localStorage.removeItem(REMEMBER_KEY);
+    } catch {
+      /* nothing stored */
+    }
+    const form = formRef.current;
+    if (form) {
+      for (const k of FIELD_NAMES) {
+        const el = form.elements.namedItem(k) as HTMLInputElement | null;
+        if (el) el.value = "";
+      }
+    }
+    setPin("");
+    setWelcome(false);
+  };
+
+  const rememberOnSubmit = (form: HTMLFormElement) => {
+    try {
+      if (!remember) {
+        window.localStorage.removeItem(REMEMBER_KEY);
+        return;
+      }
+      const data: Partial<CheckoutPrefill> = {};
+      for (const k of FIELD_NAMES) {
+        data[k] = (form.elements.namedItem(k) as HTMLInputElement | null)?.value.trim() ?? "";
+      }
+      window.localStorage.setItem(REMEMBER_KEY, JSON.stringify(data));
+    } catch {
+      /* private mode or storage full: just not remembered */
+    }
+  };
   // Worked out on the customer's own clock after mount, so the date always
   // agrees with their device and the server never renders a stale one.
   const [eta, setEta] = useState<string | null>(null);
@@ -72,7 +152,7 @@ export function CheckoutForm({
   const [live, setLive] = useState<
     { etd: string | null; days: number | null; courier: string } | null
   >(null);
-  const [pin, setPin] = useState("");
+  const [pin, setPin] = useState(initial?.zip ?? "");
 
   const shipWeight = Math.max(
     0.5,
@@ -218,30 +298,50 @@ export function CheckoutForm({
       <form
         method="POST"
         action="/api/payu/initiate"
+        ref={formRef}
         onBlur={(e) => saveProgress(e.currentTarget)}
         // Pay records everything itself; a save racing it would only duplicate.
-        onSubmit={() => {
+        onSubmit={(e) => {
           if (saveTimer.current) clearTimeout(saveTimer.current);
+          rememberOnSubmit(e.currentTarget);
         }}
         className="grid gap-12 pt-10 md:grid-cols-12 md:gap-16"
       >
         <div className="md:col-span-7">
           <FadeUp>
+            {welcome && (
+              <p className="mb-8 flex flex-wrap items-baseline justify-between gap-3 border-l-2 border-[color:var(--color-aerial)] bg-[color:var(--color-stardust-soft)] px-4 py-3 text-[0.85rem] leading-[1.6]">
+                <span>
+                  Welcome back{initial?.firstName ? `, ${initial.firstName}` : ""}. We&rsquo;ve filled in
+                  your details — check them and pay.
+                </span>
+                <button
+                  type="button"
+                  onClick={forget}
+                  className="text-[0.72rem] uppercase tracking-[0.2em] text-[color:var(--color-charcoal-soft)] underline-offset-4 hover:text-[color:var(--color-charcoal)] hover:underline"
+                >
+                  Not you? Clear
+                </button>
+              </p>
+            )}
             <p className="font-eyebrow">Contact</p>
             <div className="mt-6 grid gap-6 sm:grid-cols-2">
               <Field
                 name="firstName"
+                defaultValue={initial?.firstName ?? ""}
                 label="First name"
                 required
                 autoComplete="given-name"
               />
               <Field
                 name="lastName"
+                defaultValue={initial?.lastName ?? ""}
                 label="Last name"
                 autoComplete="family-name"
               />
               <Field
                 name="email"
+                defaultValue={initial?.email ?? ""}
                 label="Email"
                 type="email"
                 required
@@ -250,6 +350,7 @@ export function CheckoutForm({
               />
               <Field
                 name="phone"
+                defaultValue={initial?.phone ?? ""}
                 label="Phone"
                 type="tel"
                 required
@@ -267,6 +368,7 @@ export function CheckoutForm({
             <div className="mt-6 grid gap-6 sm:grid-cols-2">
               <Field
                 name="address1"
+                defaultValue={initial?.address1 ?? ""}
                 label="Address"
                 required
                 autoComplete="address-line1"
@@ -274,12 +376,13 @@ export function CheckoutForm({
               />
               <Field
                 name="address2"
+                defaultValue={initial?.address2 ?? ""}
                 label="Apartment, floor (optional)"
                 autoComplete="address-line2"
                 className="sm:col-span-2"
               />
-              <Field name="city" label="City" required autoComplete="address-level2" />
-              <Field name="state" label="State" required autoComplete="address-level1" />
+              <Field name="city" label="City" required autoComplete="address-level2" defaultValue={initial?.city ?? ""} />
+              <Field name="state" label="State" required autoComplete="address-level1" defaultValue={initial?.state ?? ""} />
               <Field
                 name="zip"
                 label="PIN code"
@@ -317,6 +420,16 @@ export function CheckoutForm({
               </Link>
               .
             </p>
+
+            <label className="mt-6 flex cursor-pointer items-center gap-3 text-[0.82rem] text-[color:var(--color-charcoal)]">
+              <input
+                type="checkbox"
+                checked={remember}
+                onChange={(e) => setRemember(e.target.checked)}
+                className="h-4 w-4 accent-[color:var(--color-charcoal)]"
+              />
+              Remember my details on this device for next time
+            </label>
 
             <Link
               href="/cart"

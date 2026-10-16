@@ -115,6 +115,8 @@ export interface AbandonedCheckout {
   restoreToken: string;
   /** The order it became, once recovered. */
   order: string;
+  /** The details as typed, field by field, to fill the form in again. */
+  contact?: CheckoutContact;
   /** Filled in by the list: a Shopify order already carries this PayU txnid. */
   paidAs?: string | null;
 }
@@ -203,7 +205,27 @@ export async function saveCheckout(snap: CheckoutSnapshot): Promise<void> {
     txnid: snap.txnid || prev?.txnid || "",
     restoreToken: snap.restoreToken || prev?.restoreToken || "",
     order: "",
+    contact: mergeContact(prev?.contact, c),
   });
+}
+
+/** Later typing wins field by field; a field left blank keeps what came before. */
+function mergeContact(
+  prev: CheckoutContact | undefined,
+  next: CheckoutContact
+): CheckoutContact {
+  const out: CheckoutContact = { ...(prev ?? {}) };
+  for (const [k, v] of Object.entries(next) as [keyof CheckoutContact, string | undefined][]) {
+    if (v) out[k] = v;
+  }
+  return out;
+}
+
+/** The details last typed for a bag, to fill its checkout form in again. */
+export async function checkoutContactFor(cartId: string): Promise<CheckoutContact | null> {
+  if (!abandonedStoreConfigured) return null;
+  const record = await readRecord(bagKey(cartId));
+  return record?.contact ?? null;
 }
 
 /**
