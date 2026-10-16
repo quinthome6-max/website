@@ -225,7 +225,17 @@ function mergeContact(
 export async function checkoutContactFor(cartId: string): Promise<CheckoutContact | null> {
   if (!abandonedStoreConfigured) return null;
   const record = await readRecord(bagKey(cartId));
-  return record?.contact ?? null;
+  if (!record) return null;
+  if (record.contact) return record.contact;
+  // Saved before the details were kept field by field: name, email and phone
+  // are still enough to spare the customer most of the typing.
+  const [firstName = "", ...rest] = record.customerName.split(" ");
+  return {
+    firstName,
+    lastName: rest.join(" "),
+    email: record.email,
+    phone: record.phone,
+  };
 }
 
 /**
