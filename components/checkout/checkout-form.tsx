@@ -295,8 +295,13 @@ export function CheckoutForm({
 
       {/* A plain form post: the route builds the signed PayU payload server-side
           so the merchant salt never reaches the browser. */}
+      {/* Every field carries a "shipping …" autofill token, so Chrome, Safari
+          and password managers offer the customer's saved address and fill
+          the whole form in one tap. A site cannot read saved addresses
+          itself; it can only label the fields well enough to be offered them. */}
       <form
         method="POST"
+        autoComplete="on"
         action="/api/payu/initiate"
         ref={formRef}
         onBlur={(e) => saveProgress(e.currentTarget)}
@@ -331,13 +336,13 @@ export function CheckoutForm({
                 defaultValue={initial?.firstName ?? ""}
                 label="First name"
                 required
-                autoComplete="given-name"
+                autoComplete="shipping given-name"
               />
               <Field
                 name="lastName"
                 defaultValue={initial?.lastName ?? ""}
                 label="Last name"
-                autoComplete="family-name"
+                autoComplete="shipping family-name"
               />
               <Field
                 name="email"
@@ -345,7 +350,8 @@ export function CheckoutForm({
                 label="Email"
                 type="email"
                 required
-                autoComplete="email"
+                autoComplete="shipping email"
+                inputMode="email"
                 placeholder="you@example.com"
               />
               <Field
@@ -354,7 +360,8 @@ export function CheckoutForm({
                 label="Phone"
                 type="tel"
                 required
-                autoComplete="tel"
+                autoComplete="shipping tel"
+                inputMode="tel"
                 placeholder="10-digit mobile"
                 // The hyphen is escaped on purpose: browsers compile patterns
                 // in a mode where a bare "-" in a class is an error, and an
@@ -371,23 +378,23 @@ export function CheckoutForm({
                 defaultValue={initial?.address1 ?? ""}
                 label="Address"
                 required
-                autoComplete="address-line1"
+                autoComplete="shipping address-line1"
                 className="sm:col-span-2"
               />
               <Field
                 name="address2"
                 defaultValue={initial?.address2 ?? ""}
                 label="Apartment, floor (optional)"
-                autoComplete="address-line2"
+                autoComplete="shipping address-line2"
                 className="sm:col-span-2"
               />
-              <Field name="city" label="City" required autoComplete="address-level2" defaultValue={initial?.city ?? ""} />
-              <Field name="state" label="State" required autoComplete="address-level1" defaultValue={initial?.state ?? ""} />
+              <Field name="city" label="City" required autoComplete="shipping address-level2" defaultValue={initial?.city ?? ""} />
+              <Field name="state" label="State" required autoComplete="shipping address-level1" defaultValue={initial?.state ?? ""} />
               <Field
                 name="zip"
                 label="PIN code"
                 required
-                autoComplete="postal-code"
+                autoComplete="shipping postal-code"
                 pattern="[0-9]{6}"
                 placeholder="400019"
                 inputMode="numeric"
@@ -401,6 +408,7 @@ export function CheckoutForm({
                 <span className={labelClass}>Country</span>
                 <input
                   name="country"
+                  autoComplete="shipping country-name"
                   value="India"
                   readOnly
                   className={`${inputClass} text-[color:var(--color-charcoal-soft)]`}
