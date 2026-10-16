@@ -1,0 +1,226 @@
+{
+ "cover": {
+  "title": "The fifth element",
+  "titleItalic": "of a space.",
+  "subtitle": "Hotel-grade home fragrance from Mumbai – waterless diffusers, signature fragrance oils and soy wax candles."
+ },
+ "story": {
+  "title": "Our Story",
+  "headline": "Our",
+  "headlineItalic": "story.",
+  "standfirst": "It started in Udaipur.",
+  "body": [
+   "A few years ago, our founder checked into one of India's most celebrated hotels, in Udaipur. He expected beauty – the lake, the service. What he did not expect was to stop in a corridor and simply stand there, trying to understand what he was breathing. The fragrance was everywhere and nowhere, woven into the air of the entire palace. The scent, the staff explained, was proprietary.",
+   "It kept happening: Las Vegas, a safari lodge in the Serengeti, a beach hotel in Nusa Dua. Each time: proprietary. Hotels understand something most of us do not. Scent sets the tone before you see anything, before you touch anything. Yet our homes, where we spend most of our lives, smell of nothing in particular.",
+   "Quint Home exists because he could not stop thinking about that. He came to it from real estate, with a deep appreciation for interiors and thoughtful design, and a belief that the spaces we inhabit shape the way we feel. We hold every product to one standard: diffusers that perform consistently, and oils with the depth and strength to fill a room and stay there."
+  ],
+  "vision": "Our vision is to become India's defining premium scenting brand – transforming the way homes, restaurants, hotels and stores use and experience fragrance."
+ },
+ "quintessence": {
+  "title": "Quintessence",
+  "definitionLead": "The most perfect or typical example of a quality.",
+  "definitionItalic": "The fifth and highest element",
+  "definitionTail": "in ancient and medieval philosophy, supposed to be the substance of the heavenly bodies.",
+  "body": "We didn't pick the name out of a dictionary. We picked it because the best version of a thing is rare, and scent is no exception. Done well, it sets the tone of a room before you notice anything else in it. Most of us spend the majority of our lives in homes that smell of nothing at all.",
+  "closing": "We thought that was",
+  "closingItalic": "worth fixing."
+ },
+ "waterless": {
+  "title": "Why Waterless Diffusion Is Better",
+  "headline": "Why waterless diffusion",
+  "headlineItalic": "is better.",
+  "lede": "No water and no heat. Our diffusers atomise the fragrance oil directly with air pressure, as an ultra-fine dry mist. What reaches the room is the fragrance itself, at 70–90% concentration, and it stays in the air for hours.",
+  "principles": [
+   {
+    "title": "A dry mist",
+    "body": "Cold-air nebulisation leaves no wet residue. The room smells of the scent, and of nothing else."
+   },
+   {
+    "title": "High concentration",
+    "body": "Oils at 70–90% concentration, composed to IFRA standards. Top, heart and base notes arrive intact, shaping the room at minute one, at hour three and the morning after."
+   },
+   {
+    "title": "Near silent",
+    "body": "No fan, no gurgling water, no clicking. Quiet enough for a bedroom at night, a study or a working office."
+   },
+   {
+    "title": "Set once",
+    "body": "Pair once with the companion app, set a schedule, and the device keeps to it. No Wi-Fi, no account, no cloud. The Pebble and the Drift run on their own built-in timers instead."
+   },
+   {
+    "title": "Lasts for weeks",
+    "body": "A 50 ml oil lasts approximately 45–60 days, depending on the model and the intensity it is set to."
+   },
+   {
+    "title": "Safe to live with",
+    "body": "No open flame, no heat, no water. Safe around children and pets when used as directed."
+   }
+  ]
+ },
+ "range": {
+  "title": "Our Product Range",
+  "diffusers": {
+   "label": "Diffusers",
+   "headline": "Our product range",
+   "headlineItalic": "diffusers.",
+   "lede": "{count} waterless diffusers, from a car cup holder to an open-plan living room."
+  },
+  "oils": {
+   "label": "Signature Fragrance Oil Blends",
+   "headline": "Our product range",
+   "headlineItalic": "signature fragrance oil blends.",
+   "lede": "Each oil is IFRA-compliant, held at 70–90% concentration and built in three layers: top notes greet a room, heart notes carry it for hours, base notes stay into the next morning."
+  },
+  "candles": {
+   "label": "Candles",
+   "headline": "Our product range",
+   "headlineItalic": "candles."
+  }
+ },
+ "products": [
+  {
+   "slug": "monolith",
+   "headline": "The Monolith.",
+   "headlineItalic": "A column for the open plan.",
+   "description": "An aluminium column, in brushed gold or in black, that brings a hotel-like quality to the larger rooms of a project. It covers up to 1,075 sq ft from a 120 ml bottle. A built-in rechargeable battery means it needs no outlet between charges. Touch controls, ambient mood lighting, a leak-proof body and scheduling from the companion app."
+  },
+  {
+   "slug": "loom",
+   "headline": "The Loom.",
+   "headlineItalic": "A diffuser dressed in fabric.",
+   "description": "Where most diffusers are cold and clinical, the Loom is wrapped in a soft fabric exterior that reads as a textile rather than a device. A candle-like ambient glow adds warmth to a room in the evening. It covers up to 590 sq ft from a 120 ml bottle, with intensity set by hand at the knob or from the companion app."
+  },
+  {
+   "slug": "ember",
+   "headline": "The Ember.",
+   "headlineItalic": "Scent that keeps time.",
+   "description": "A diffuser and an LED clock in one, with automatic time sync, a soft breathing light and a glass-like acrylic body that gives it an almost sculptural quality. It covers up to 540 sq ft from a 60 ml bottle and runs on USB power. One object does two jobs where surface space is limited. Intensity is set from the companion app."
+  },
+  {
+   "slug": "pillar",
+   "headline": "The Pillar.",
+   "headlineItalic": "Two scents, one space.",
+   "description": "Two independent 60 ml bottles, each with its own mist outlet, controlled separately from the companion app. Run one scent, run both side by side, or layer them into a custom blend. Built in aluminium alloy, USB powered and near silent, it covers up to 540 sq ft."
+  },
+  {
+   "slug": "pebble",
+   "headline": "The Pebble.",
+   "headlineItalic": "For the rooms in between.",
+   "description": "A compact plug-in for the smaller rooms of a project, where a larger diffuser will not fit. Its rotatable plug suits any socket orientation, with no app and no assembly. A built-in cyclic timer runs it eight hours on, sixteen off, each day. After sixteen days, a safety shut-off stops it until the power button is pressed. It covers 161–250 sq ft from a 15 ml glass bottle."
+  },
+  {
+   "slug": "drift",
+   "headline": "The Drift.",
+   "headlineItalic": "Scent that travels with you.",
+   "description": "The smallest diffuser in the range, turned from a single piece of aluminium alloy and sized to stand in a car cup holder, on a bathroom shelf or beside a basin. It works the way the larger models do: fragrance oil atomised by air pressure, with no water, no heat and no cartridge to replace. Two controls set the intensity and the timer, and in a car it starts and stops with the engine."
+  }
+ ],
+ "gifting": {
+  "title": "For Gifting",
+  "headline": "For",
+  "headlineItalic": "gifting.",
+  "lede": "The gifts people remember are the ones they live with: an object in the room, used every day, that quietly recalls who gave it. That is the case for giving scent. Not a perfume to wear, but a fragrance for the home itself.",
+  "occasions": [
+   {
+    "title": "Diwali and festive gifting",
+    "body": "Diwali is, above all, a festival of the house: it is cleaned, lit and thrown open to guests. A gift for the home fits the occasion in a way most festive gifting does not."
+   },
+   {
+    "title": "Corporate gifting",
+    "body": "The best corporate gifts are useful, unmistakably well made, and free of a logo the recipient would rather not display. A diffuser on a client's desk is used every day, and remembered for the right reasons."
+   },
+   {
+    "title": "Housewarming and griha pravesh",
+    "body": "A new house smells of paint, dust and packing boxes until someone gives it a scent of its own. Fragrance is often the first thing that makes a new house feel lived in."
+   }
+  ],
+  "guideTitle": "What to give",
+  "guide": [
+   {
+    "who": "For someone new to home fragrance",
+    "what": "The Pebble",
+    "why": "Plugs straight into the wall and runs on its own daily timer, with no app to set up."
+   },
+   {
+    "who": "For the bedside",
+    "what": "The Ember",
+    "why": "A diffuser and a bedside clock in one, controlled from a phone."
+   },
+   {
+    "who": "For living rooms and bedrooms",
+    "what": "The Loom or The Pillar",
+    "why": "One wrapped in soft fabric, the other running two scents at once from separate bottles."
+   },
+   {
+    "who": "When the gift should be seen",
+    "what": "The Monolith",
+    "why": "A cordless aluminium column in brushed gold or matte black, for the largest room in the house."
+   },
+   {
+    "who": "For the car",
+    "what": "The Drift",
+    "why": "Stands in a cup holder, and starts and stops with the engine."
+   },
+   {
+    "who": "A smaller gift",
+    "what": "A fragrance oil or a candle",
+    "why": "A 50 ml oil for someone who already owns a diffuser, or a hand-poured soy wax candle."
+   }
+  ],
+  "notes": [
+   {
+    "title": "Ready to give",
+    "body": "{oilLine}"
+   },
+   {
+    "title": "Choosing a scent",
+    "body": "When you are unsure of someone's taste, lean lighter. Blanc Ritual and First Rain sit comfortably in almost any home."
+   },
+   {
+    "title": "Teams and client lists",
+    "body": "Write to hello@quinthome.in with the number of pieces and where they need to go, and we will help you plan the order."
+   }
+  ]
+ },
+ "custom": {
+  "title": "Custom Scent Solutions",
+  "headline": "Custom",
+  "headlineItalic": "scent solutions.",
+  "lede": "Each hotel that stopped our founder kept its scent to itself. It was proprietary. A project can have the same. Where the brief calls for it, we develop a signature fragrance and custom products, and stay with the project as a partner through supply.",
+  "offerings": [
+   {
+    "title": "Signature scents",
+    "body": "A fragrance developed exclusively for you, to run across one site or many. It becomes part of how a place is remembered, from the first step inside."
+   },
+   {
+    "title": "Custom products",
+    "body": "Where a project calls for something the range does not hold, we can develop custom products for it. Share the brief, and we will say plainly what is possible."
+   },
+   {
+    "title": "Partnership",
+    "body": "We work alongside a project from the first brief through to the supply of devices and oils, for a single site or a rollout across many."
+   }
+  ],
+  "process": [
+   {
+    "title": "The brief",
+    "body": "Tell us about the space: its use, its size, its materials and how it should feel."
+   },
+   {
+    "title": "Recommendation",
+    "body": "We recommend a diffuser sized to each room, and the scent or scents that suit the site."
+   },
+   {
+    "title": "Development",
+    "body": "Where needed, we develop a signature scent or custom products to the brief."
+   },
+   {
+    "title": "Supply",
+    "body": "Devices and oils are dispatched from Mumbai to anywhere in India, each diffuser with a 1-year limited warranty."
+   }
+  ],
+  "contactTitle": "Begin a project",
+  "contactLede": "Share the number of rooms or sites, how each is used, and the feeling the space should leave. We will recommend diffusers and scents, and talk through anything custom.",
+  "closing": "The first thing noticed in a room. Plan for it."
+ }
+}

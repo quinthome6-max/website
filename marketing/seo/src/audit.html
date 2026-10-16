@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="pdf-name" content="Quint-Home-SEO-Audit-Report.pdf">
+<title>Quint Home — SEO Audit Report</title>
+<link rel="stylesheet" href="report.css">
+<style>
+  @page { @bottom-left { content: "Quint Home  ·  SEO Audit Report  ·  October 2026"; } }
+
+  table.reg { font-size: 7.6pt; }
+  table.reg td { padding: 1.05mm 1.8mm; }
+  table.reg .pill { font-size: 6.2pt; }
+</style>
+</head>
+<body>
+
+<!-- ═════════════════════════ COVER ═════════════════════════ -->
+<div class="cover">
+  <img class="logo" src="logo-ivory.svg" alt="Quint Home">
+  <div class="eyebrow">Quint Home · www.quinthome.in</div>
+  <h1>SEO Audit<br><em>Report</em></h1>
+  <p class="sub">A full audit of the website's technical health, page structure, on-page SEO, tracking, AI-search readiness, content and off-page presence, with every issue ranked by priority.</p>
+  <div class="meta">
+    <div><b>Prepared</b>15 October 2026</div>
+    <div><b>Site version audited</b>Live site + code at commit 0e0b88a</div>
+    <div><b>Companion document</b>SEO Plan of Action: 2 Months</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════ CONTENTS ═════════════════════════ -->
+<section>
+  <div class="kicker">Contents</div>
+  <h2>What's in this report</h2>
+  <ol class="toc">
+    <li><span>01</span>Summary and scorecard</li>
+    <li><span>02</span>Site snapshot</li>
+    <li><span>03</span>Website structure and internal linking</li>
+    <li><span>04</span>On-page audit: titles, meta descriptions, H1 and H2</li>
+    <li><span>05</span>Technical SEO: crawling, indexing, schema and speed</li>
+    <li><span>06</span>Tracking and webmaster tools</li>
+    <li><span>07</span>AI search readiness: llms.txt and AI crawlers</li>
+    <li><span>08</span>Off-page presence and competitors</li>
+    <li><span>09</span>Content audit</li>
+    <li><span>10</span>Issue register: every issue, ranked</li>
+  </ol>
+
+  <h3>How this audit was done</h3>
+  <table class="compact">
+    <thead><tr><th style="width:34%">Source</th><th>What it covered</th></tr></thead>
+    <tbody>
+      <tr><td>Website source code</td><td>Every public route, its metadata, headings, structured data, sitemap, robots and analytics code. Read at commit 0e0b88a.</td></tr>
+      <tr><td>Live crawl of www.quinthome.in</td><td>Redirects, status codes, headers and the server HTML of 12 key pages, fetched as both Googlebot and Chrome. All 32 sitemap URLs were checked. Run on 15 October 2026.</td></tr>
+      <tr><td>Lighthouse 12.8 (lab test)</td><td>Mobile and desktop speed, SEO, accessibility and best-practice scores for the homepage, /range and a product page.</td></tr>
+      <tr><td>Web search</td><td>Competitor discovery and search-result landscape for 9 core queries.</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b class="t">What we could not measure yet</b>
+    <p>We have no access to Search Console or analytics, so this report has <strong>no traffic, ranking or indexing baseline</strong>. Semrush returned no data because the sub-account has no API units left, so keyword volumes and backlink counts are missing too. Google's PageSpeed API had no quota, so there is no real-user (field) speed data either. Getting these is the first task in the Plan of Action.</p>
+  </div>
+</section>
+
+<!-- ═════════════════════════ 01 SUMMARY ═════════════════════════ -->
+<section>
+  <div class="kicker">01 · Summary</div>
+  <h2>Well built, but almost invisible to search</h2>
+  <p class="lead">Google can crawl and read every page of quinthome.in. But the site offers only 32 indexable pages, no category pages, four short articles and no analytics, so it has very little to rank with and no way to measure results.</p>
+
+  <div class="grid g4">
+    <div class="card warm"><h5>Overall score</h5><div class="big">48<small> / 100</small></div><p>Our weighted view across 10 areas</p></div>
+    <div class="card"><h5>Indexable pages</h5><div class="big">32</div><p>11 pages, 17 products, 4 articles</p></div>
+    <div class="card"><h5>Homepage, mobile</h5><div class="big">30<small> / 100</small></div><p>Lighthouse performance; content loads in 12.6 s</p></div>
+    <div class="card"><h5>Issues found</h5><div class="big">40</div><p>5 critical · 12 high · 16 medium · 7 low</p></div>
+  </div>
+
+  <h3>Scorecard</h3>
+  <div class="score"><span>Crawling and indexing</span><div class="bar"><i style="width:80%;background:var(--good)"></i></div><span class="v">80</span></div>
+  <div class="score"><span>AI search readiness</span><div class="bar"><i style="width:80%;background:var(--good)"></i></div><span class="v">80</span></div>
+  <div class="score"><span>Page speed (3 pages, mobile)</span><div class="bar"><i style="width:64%;background:var(--warn)"></i></div><span class="v">64</span></div>
+  <div class="score"><span>On-page SEO</span><div class="bar"><i style="width:60%;background:var(--warn)"></i></div><span class="v">60</span></div>
+  <div class="score"><span>Structured data</span><div class="bar"><i style="width:55%;background:var(--warn)"></i></div><span class="v">55</span></div>
+  <div class="score"><span>Site structure</span><div class="bar"><i style="width:45%;background:var(--warn)"></i></div><span class="v">45</span></div>
+  <div class="score"><span>Trust signals</span><div class="bar"><i style="width:35%;background:var(--bad)"></i></div><span class="v">35</span></div>
+  <div class="score"><span>Content depth</span><div class="bar"><i style="width:30%;background:var(--bad)"></i></div><span class="v">30</span></div>
+  <div class="score"><span>Tracking and measurement</span><div class="bar"><i style="width:25%;background:var(--bad)"></i></div><span class="v">25</span></div>
+  <div class="score"><span>Off-page authority</span><div class="bar"><i style="width:10%;background:var(--bad)"></i></div><span class="v">10</span></div>
+  <p class="small muted" style="margin-top:2mm">Scores are our assessment against standard e-commerce SEO checks, not a tool's output. The page-speed score averages Lighthouse mobile results for the homepage (30), /range (87) and The Monolith (75).</p>
+
+  <div class="grid g2" style="margin-top:5mm">
+    <div class="card">
+      <h5>Five things to fix first</h5>
+      <ol style="font-size:8.3pt;margin-bottom:0">
+        <li><strong>Policy pages tell Google they are the homepage.</strong> /shipping, /privacy and /terms all carry a canonical tag pointing to the homepage.</li>
+        <li><strong>There is no Google Analytics</strong>, and no Search Console or Bing verification on the site.</li>
+        <li><strong>The business enquiry form does not submit.</strong> Every B2B lead from /businesses is lost.</li>
+        <li><strong>The homepage is slow on phones.</strong> A 4.5 MB hero video is the largest element; mobile content appears after 12.6 s in the lab test.</li>
+        <li><strong>There are no category pages</strong> for diffusers, oils or candles. Nothing targets "waterless diffuser" or "fragrance oil".</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h5>What is already right</h5>
+      <ul style="font-size:8.3pt;margin-bottom:0">
+        <li>Every page is fully server-rendered. Googlebot sees the same HTML as visitors.</li>
+        <li>The sitemap lists only live URLs (all 32 return 200) and includes 48 product images.</li>
+        <li>robots.txt keeps cart, checkout and admin out, and deliberately welcomes AI crawlers.</li>
+        <li>A good llms.txt already exists, with prices, links and key facts.</li>
+        <li>One H1 per page, clean readable URLs, real 404s, and 301 redirects for old product URLs.</li>
+        <li>Product pages carry Product and Breadcrumb schema with live Shopify prices.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════ 02 SNAPSHOT ═════════════════════════ -->
+<section>
+  <div class="kicker">02 · Site snapshot</div>
+  <h2>A premium catalogue of 17 products on a modern stack</h2>
+  <p class="lead">Quint Home sells hotel-grade home fragrance from Mumbai at the top of the Indian market: diffusers from ₹3,999 to ₹18,999, above every product in the competitor roundups we found.</p>
+
+  <table>
+    <thead><tr><th style="width:30%">Item</th><th>Finding</th></tr></thead>
+    <tbody>
+      <tr><td>Domain</td><td>https://www.quinthome.in. All http and non-www versions redirect here. The bare http domain takes two hops.</td></tr>
+      <tr><td>Platform</td><td>Next.js 16 on Vercel (Mumbai edge), with Shopify for products and prices, PayU for payments and Shiprocket for delivery</td></tr>
+      <tr><td>Catalogue</td><td>6 waterless diffusers (₹3,999–₹18,999) · 8 fragrance oils, 50 ml (₹899; ₹1,099 for the Hotel Credential oils) · 3 soy candles, 300 ml (₹1,699)</td></tr>
+      <tr><td>Indexable URLs</td><td>32: home, /range, 9 information pages, 17 product pages, 4 journal articles</td></tr>
+      <tr><td>Market</td><td>India only. Free shipping at ₹5,000 and over, otherwise ₹99</td></tr>
+      <tr><td>B2B offer</td><td>/businesses: commercial machines, bulk oil and signature scents for hotels, offices and retail</td></tr>
+      <tr><td>Social and listings</td><td>Instagram (@shopquinthome) is the only profile linked. We found no Google Business Profile, marketplace listing or press mention.</td></tr>
+      <tr><td>Search visibility</td><td><strong>Unknown.</strong> There is no Search Console or Semrush access yet. In a web-search test of brand queries, the site did not appear; unrelated "Quint" products did.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout sage">
+    <b class="t">Brand-name risk</b>
+    <p>"Quint" is shared with other products in search, such as a German "Quint" diffuser and Quintessence Paris. Brand searches need consistent "Quint Home" naming across the website, Google Business Profile, Instagram and press, so that Google links them as one brand.</p>
+  </div>
+</section>
+
+<!-- ═════════════════════════ 03 STRUCTURE ═════════════════════════ -->
+<section>
+  <div class="kicker">03 · Website structure</div>
+  <h2>A flat site with one shop page and no category pages</h2>
+  <p class="lead">Every product sits under a single /range page. Diffusers, oils and candles are only jump links (#diffusers, #oils, #candles) within it, which Google treats as one page, so no category can rank on its own.</p>
+
+  <div class="tree">
+    <div class="root"><div class="node root-n"><b>Home</b><small>/</small></div></div>
+    <div class="branches" style="grid-template-columns: repeat(7, 1fr);">
+      <div class="br"><div class="node"><b>The Range</b><small>/range</small></div>
+        <div class="kids">
+          <div class="node anchor"><b>#diffusers</b><small>6 products</small></div>
+          <div class="node anchor"><b>#oils</b><small>8 products</small></div>
+          <div class="node anchor"><b>#candles</b><small>3 products</small></div>
+          <div class="node"><b>17 product pages</b><small>/range/{name}</small></div>
+        </div>
+      </div>
+      <div class="br"><div class="node"><b>Find Your Scent</b><small>/find-your-scent</small></div>
+        <div class="kids"><div class="node warn"><b>Quiz</b><small>68 words; results only after clicking</small></div></div>
+      </div>
+      <div class="br"><div class="node"><b>About</b><small>/about</small></div></div>
+      <div class="br"><div class="node"><b>Journal</b><small>/journal</small></div>
+        <div class="kids"><div class="node warn"><b>4 articles</b><small>3 are under 220 words</small></div></div>
+      </div>
+      <div class="br"><div class="node"><b>For Businesses</b><small>/businesses</small></div>
+        <div class="kids"><div class="node warn"><b>Enquiry form</b><small>does not submit</small></div></div>
+      </div>
+      <div class="br"><div class="node"><b>FAQ · Contact</b><small>/faq · /contact</small></div></div>
+      <div class="br"><div class="node warn"><b>Policies</b><small>/shipping · /privacy · /terms</small></div>
+        <div class="kids"><div class="node anchor"><b>/refunds</b><small>307 to /shipping</small></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="legend"><span><i></i>Indexable page</span><span><i class="a"></i>Jump link or redirect, not a page</span><span><i class="w"></i>Has an SEO problem</span></div>
+  <style>.tree .branches::before{left:calc(100%/14);right:calc(100%/14)}</style>
+
+  <h3>URL patterns</h3>
+  <table class="compact">
+    <thead><tr><th>Pattern</th><th>Example</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>/range/{product}</td><td>/range/monolith, /range/grand-lobby, /range/the-forest</td><td><span class="pill p-ok">Good</span> Short and readable. The URLs carry no category words (e.g. "diffuser"), which is acceptable.</td></tr>
+      <tr><td>/journal/{post}</td><td>/journal/what-is-a-waterless-diffuser</td><td><span class="pill p-med">Mixed</span> /journal/a-lake-palace-in-udaipur does not match its title, "Why your home deserves scent that was actually designed"</td></tr>
+      <tr><td>/range#oils</td><td>Category links in the header and footer</td><td><span class="pill p-high">Problem</span> Fragments are not separate pages, so categories cannot rank</td></tr>
+      <tr><td>/range?category=oils</td><td>"All scents" link on diffuser pages</td><td><span class="pill p-low">Minor</span> Nothing reads the parameter; the page just opens at the top</td></tr>
+      <tr><td>Legacy /shop/*</td><td>/shop/tabletop-a326 → /range/monolith</td><td><span class="pill p-ok">Good</span> Permanent 301 redirects are in place</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="pb" style="margin-top:0">Navigation and internal links</h3>
+  <table class="compact">
+    <thead><tr><th style="width:28%">Area</th><th>Finding</th><th style="width:14%">Priority</th></tr></thead>
+    <tbody>
+      <tr><td>Header</td><td>The Range (dropdown of jump links), Find Your Scent, About, Journal, For Businesses. Contact and FAQ are only in the footer.</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td>Homepage</td><td>Links to all 6 diffusers, all 8 oils and 3 articles, but <strong>no candles</strong>. The candle section is switched off in code.</td><td><span class="pill p-high">High</span></td></tr>
+      <tr><td>Diffuser pages</td><td>Link to all 6 diffusers (compare table) and 4 oils. No visible breadcrumb.</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td>Oil pages</td><td>Link to 4 diffusers, but not to the other 7 oils. The breadcrumb reads "Shop — Fragrance Oils", while the schema says "The Range".</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td>Candle pages</td><td>Link only to the other 2 candles. Nothing links between candles and diffusers or oils.</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td>Journal articles</td><td>Only the Diwali guide links to products (11 links). The other 3 articles have no links in the text.</td><td><span class="pill p-high">High</span></td></tr>
+      <tr><td>Trust information</td><td>No street address or visible phone number anywhere on the site</td><td><span class="pill p-high">High</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═════════════════════════ 04 ON-PAGE ═════════════════════════ -->
+<section>
+  <div class="kicker">04 · On-page audit</div>
+  <h2>Titles are close; descriptions run long; headings rarely name the product type</h2>
+  <p class="lead">No two pages share a title, and every page has exactly one H1. But 13 meta descriptions are longer than Google shows, product H1s are bare names like "Terrain", and candles are missing from the site's main titles.</p>
+
+  <h3>Main pages: title, meta description and H1</h3>
+  <p class="small muted">Rule of thumb: titles 30–60 characters, meta descriptions 70–160. Counts include the " · Quint Home" suffix.</p>
+  <table class="compact">
+    <thead><tr><th style="width:15%">Page</th><th style="width:31%">Title (characters)</th><th class="num" style="width:8%">Meta</th><th style="width:28%">H1</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>/</td><td>Quint Home — Waterless Diffusers &amp; Fragrance Oils, Mumbai (57)</td><td class="num">182</td><td>"Waterless electronic diffusers and IFRA-compliant fragrance oils, made in Mumbai" (hidden; screen readers only)</td><td><span class="pill p-high">Fix</span> Meta too long; H1 hidden; no candles</td></tr>
+      <tr><td>/range</td><td>Diffusers &amp; Fragrance Oils — The Full Range · Quint Home (56)</td><td class="num">174</td><td>"The diffusers, and the oils that go in them."</td><td><span class="pill p-high">Fix</span> Meta too long; candles missing from title and H1</td></tr>
+      <tr><td>/find-your-scent</td><td>Find Your Scent — Home Fragrance Oil Quiz · Quint Home (54)</td><td class="num">149</td><td>"Find your home fragrance oil" (hidden)</td><td><span class="pill p-med">Thin</span> 68 words on the page</td></tr>
+      <tr><td>/about</td><td>About — Hotel-Grade Home Fragrance from Mumbai · Quint Home (59)</td><td class="num">135</td><td>"Quintessence"</td><td><span class="pill p-med">Fix</span> H1 says nothing about the business</td></tr>
+      <tr><td>/journal</td><td>Journal — Writing on Scent, Diffusers and the Home · Quint Home (63)</td><td class="num">145</td><td>"Writing on scent, the device, and the home."</td><td><span class="pill p-low">Minor</span> Title 3 characters long</td></tr>
+      <tr><td>/businesses</td><td>Scenting for Hotels, Retail &amp; Offices · Quint Home (50)</td><td class="num">131</td><td>"Scent your space."</td><td><span class="pill p-med">Fix</span> H1 has no keyword; "scent marketing" missing</td></tr>
+      <tr><td>/faq</td><td>FAQ — Waterless Diffusers &amp; Fragrance Oils · Quint Home (55)</td><td class="num">141</td><td>"Your questions, answered."</td><td><span class="pill p-med">Fix</span> Meta promises coverage and shipping answers the page doesn't have</td></tr>
+      <tr><td>/contact</td><td>Contact · Quint Home (20)</td><td class="num">142</td><td>"Get in touch with us."</td><td><span class="pill p-low">Minor</span> Title too short</td></tr>
+      <tr><td>/shipping</td><td>Shipping &amp; Returns · Quint Home (31)</td><td class="num">135</td><td>"Shipping &amp; Returns."</td><td><span class="pill p-crit">Critical</span> Canonical points to the homepage</td></tr>
+      <tr><td>/privacy</td><td>Privacy Policy · Quint Home (27)</td><td class="num">99</td><td>"Privacy Policy."</td><td><span class="pill p-crit">Critical</span> Canonical points to the homepage</td></tr>
+      <tr><td>/terms</td><td>Terms &amp; Conditions · Quint Home (31)</td><td class="num">85</td><td>"Terms &amp; Conditions."</td><td><span class="pill p-crit">Critical</span> Canonical points to the homepage</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Journal articles</h3>
+  <table class="compact">
+    <thead><tr><th style="width:44%">Title (characters)</th><th class="num">Meta</th><th class="num">Words</th><th>H2s in the body</th></tr></thead>
+    <tbody>
+      <tr><td>What to gift this Diwali: premium, corporate and housewarming gifts (SEO title, 59)</td><td class="num">171</td><td class="num">~857</td><td>6 good question-led H2s</td></tr>
+      <tr><td>Why we don't use water, and why it changes the air you breathe (75)</td><td class="num">200</td><td class="num">~159</td><td>None</td></tr>
+      <tr><td>Top, heart, base: how to read a Quint Home scent profile (69)</td><td class="num">173</td><td class="num">~125</td><td>None</td></tr>
+      <tr><td>Why your home deserves scent that was actually designed (68)</td><td class="num">203</td><td class="num">~212</td><td>None</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Product pages (17)</h3>
+  <table class="compact">
+    <thead><tr><th style="width:18%">Type</th><th style="width:34%">Title pattern and example</th><th style="width:22%">H1</th><th>Issues</th></tr></thead>
+    <tbody>
+      <tr><td>Diffusers (6)</td><td>"The Monolith — Waterless Diffuser, Up to 1,075 sq ft · Quint Home" (65)</td><td>"The Monolith"</td><td>Monolith (65) and Pillar (61) titles are too long. The description template reads "covering Up to 1,075 sq ft" and "covering Cars and compact spaces".</td></tr>
+      <tr><td>Oils (8)</td><td>"Terrain — IFRA Fragrance Oil, 50 ml · Quint Home" (48)</td><td>"Terrain"</td><td>6 of 8 descriptions are 164–178 characters. "Diffuser" is not in the title. The H1 is the name alone.</td></tr>
+      <tr><td>Candles (3)</td><td>"The Forest — Bergamot &amp; Vetiver Soy Candle, 300 ml · Quint Home" (63)</td><td>"The Forest. A green, wooded calm."</td><td>The Forest title is 63 characters. "Scented candle" never appears in the title.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>H2 structure</h3>
+  <table class="compact">
+    <thead><tr><th style="width:18%">Page</th><th>Current H2s</th><th style="width:30%">Problem</th></tr></thead>
+    <tbody>
+      <tr><td>/</td><td>Objects that elevate your home… · Five things that set us apart. · There's one for every room. · A scent library, made the way perfumers do. · Set it once, then forget about it. · It started in Udaipur. · The moods we kept coming back to. · Writing on scent, hotels, and homes.</td><td>Brand voice, but none use a search term ("waterless diffuser", "fragrance oils", "candles")</td></tr>
+      <tr><td>/range</td><td>6 diffusers… · Find the diffuser that fits. · The oils… · The candles… · Subscribe and save 15% on refills.</td><td>Good shape. The subscription offer is not actually available.</td></tr>
+      <tr><td>Product pages</td><td>Diffusers: "Find the diffuser that fits." · "Pairs with the oils." Oils: "Tell us the mood…" · "Goes in the diffusers."</td><td>The same H2s repeat on every product page, and there are no specification or FAQ headings</td></tr>
+      <tr><td>/about</td><td>It started in Udaipur. · The scent that stopped me in a corridor…</td><td>"It started in Udaipur." also appears on the homepage</td></tr>
+      <tr><td>/contact</td><td>None</td><td>No H2s</td></tr>
+      <tr><td>3 short articles</td><td>Only the closing call to action</td><td>No body subheadings to structure the text</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Images and alt text</h3>
+  <ul>
+    <li>All storefront images use Next.js image optimisation. No content image is missing an alt attribute.</li>
+    <li><strong>Every slide in a product gallery shares one alt text.</strong> Grid images use the bare name ("The Monolith"), and the oil "notes" card reuses the bottle's alt.</li>
+    <li>Thumbnails and the oil picker use empty alt text. That is acceptable for repeated decorative images.</li>
+    <li>The sitemap lists 48 product and article images for Google Images, but leaves out the Monolith's black finish and the oil notes cards.</li>
+  </ul>
+</section>
+
+<!-- ═════════════════════════ 05 TECHNICAL ═════════════════════════ -->
+<section>
+  <div class="kicker">05 · Technical SEO</div>
+  <h2>A strong foundation with one serious canonical bug and a heavy homepage</h2>
+  <p class="lead">Crawling, rendering and redirects are in good shape. Three things need urgent work: a site-wide default canonical that points pages at the homepage, product schema that misses Google's shopping fields, and a homepage that is slow on phones.</p>
+
+  <h3>Crawling and indexing</h3>
+  <table class="compact">
+    <thead><tr><th style="width:22%">Check</th><th>Finding</th><th style="width:13%">Status</th></tr></thead>
+    <tbody>
+      <tr><td>robots.txt</td><td>Allows everything except /cart, /checkout, /order/, /api/ and /admin. Nine AI crawlers are allowed by name. Points to the sitemap. Its "Host:" line is ignored by Google; harmless.</td><td><span class="pill p-ok">Good</span></td></tr>
+      <tr><td>XML sitemap</td><td>32 URLs, all returning 200, with 48 image entries. Only the 4 articles carry a last-modified date (deliberate). No category URLs, because none exist.</td><td><span class="pill p-ok">Good</span></td></tr>
+      <tr><td>Canonical tags</td><td>The root layout sets <code>canonical: "/"</code> as a default. Every page without its own setting inherits it: <strong>/shipping, /privacy, /terms, /cart, the checkout and order pages and all 404s point to the homepage</strong>. The sitemap submits three of these pages while their canonical says otherwise.</td><td><span class="pill p-crit">Critical</span></td></tr>
+      <tr><td>Rendering</td><td>Every page is server-rendered, and Googlebot gets byte-identical HTML to Chrome. Product spec sheets, however, sit inside a hidden gallery slide.</td><td><span class="pill p-ok">Good</span></td></tr>
+      <tr><td>Redirects</td><td>http and non-www redirect (308) to https://www. The bare http domain takes 2 hops. /refunds uses a <strong>temporary 307</strong> to /shipping. Legacy /shop URLs return 301.</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td>404 pages</td><td>Real 404 status with noindex. The default Next.js 404 has two title tags and no links back to the shop. An unknown product URL returns an empty body.</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td>Indexing in cart</td><td>/cart has no noindex tag. robots.txt blocks it, so the risk is low.</td><td><span class="pill p-low">Low</span></td></tr>
+      <tr><td>Language</td><td><code>lang="en"</code>; articles declare en-IN. No hreflang is needed for an India-only site.</td><td><span class="pill p-low">Low</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Structured data (schema)</h3>
+  <table class="compact">
+    <thead><tr><th style="width:20%">Page type</th><th style="width:30%">Emitted</th><th>Gaps</th></tr></thead>
+    <tbody>
+      <tr><td>Every page</td><td>Organization, WebSite</td><td>No address, contact point, founder or founding date. Instagram is the only sameAs profile.</td></tr>
+      <tr><td>Product pages</td><td>Product, Offer, BreadcrumbList</td><td><strong>No shippingDetails, hasMerchantReturnPolicy or priceValidUntil.</strong> No SKU on oils and candles, and no GTIN. Only one image each. The Monolith uses AggregateOffer, which Google's merchant listings do not accept. No reviews (correct, as there are no real reviews yet).</td></tr>
+      <tr><td>Articles</td><td>BlogPosting, BreadcrumbList</td><td>Author is the company rather than a person. dateModified never changes.</td></tr>
+      <tr><td>/faq</td><td>FAQPage (8 questions)</td><td>Fine to keep. Google now shows FAQ rich results only for government and health sites, but AI assistants read it.</td></tr>
+      <tr><td>/range, /journal, /about, /businesses, /contact</td><td>None beyond the site-wide two</td><td>Missing CollectionPage/ItemList, Blog, AboutPage + Person, Service, ContactPage and breadcrumbs</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Page speed (Lighthouse lab test, 15 October 2026)</h3>
+  <table class="compact">
+    <thead><tr><th>Page</th><th class="num">Perf.</th><th class="num">SEO</th><th class="num">Access.</th><th class="num">Best pr.</th><th class="num">FCP</th><th class="num">LCP</th><th class="num">TBT</th><th class="num">CLS</th><th>Largest element</th></tr></thead>
+    <tbody>
+      <tr><td>Home, mobile</td><td class="num" style="color:var(--bad);font-weight:600">30</td><td class="num">100</td><td class="num">96</td><td class="num">79</td><td class="num">4.6 s</td><td class="num" style="color:var(--bad);font-weight:600">12.6 s</td><td class="num">1,650 ms</td><td class="num">0</td><td>Hero video, 4.5 MB</td></tr>
+      <tr><td>Home, desktop</td><td class="num" style="color:var(--good);font-weight:600">94</td><td class="num">100</td><td class="num">96</td><td class="num">78</td><td class="num">0.6 s</td><td class="num">0.9 s</td><td class="num">0 ms</td><td class="num">0</td><td>Hero video</td></tr>
+      <tr><td>/range, mobile</td><td class="num">87</td><td class="num">100</td><td class="num">93</td><td class="num">79</td><td class="num">1.1 s</td><td class="num">3.3 s</td><td class="num">270 ms</td><td class="num">0</td><td>Intro paragraph</td></tr>
+      <tr><td>Monolith, mobile</td><td class="num">75</td><td class="num">100</td><td class="num">93</td><td class="num">79</td><td class="num">1.6 s</td><td class="num">3.8 s</td><td class="num">350 ms</td><td class="num">0.001</td><td>Main product photo</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">Lab results from one machine under Lighthouse's simulated slow-4G mobile throttling. Real-user Core Web Vitals will come from Search Console once it is connected. Google's targets: LCP under 2.5 s, INP under 200 ms, CLS under 0.1.</p>
+
+  <h4>What slows the mobile homepage</h4>
+  <ul>
+    <li><strong>The hero video (hero-3.mp4, 4.5 MB)</strong> is set to preload fully, has no poster image, and is the largest element on screen. The hero still images are lazy-loaded, and nothing on the page has high fetch priority.</li>
+    <li><strong>The Meta Pixel blocks the main thread for about 1.1 s</strong> on mobile, and Microsoft Clarity for about 0.3 s. Both load on every page.</li>
+    <li>Total page weight is 6.3 MB. Lighthouse flags about 98 KB of unused JavaScript and legacy JavaScript polyfills.</li>
+    <li><strong>Images, videos and icons are never cached by browsers</strong> (<code>max-age=0</code>). The image optimiser cache lasts only 60 seconds, and only WebP is served, not the smaller AVIF.</li>
+    <li>Two unused videos (hero-deep.mp4 at 6.2 MB and hero-5.mp4 at 4.6 MB) are still deployed.</li>
+    <li>Pages regenerate in a US-East server region, even though the store serves only India.</li>
+  </ul>
+
+  <h3>Other technical checks</h3>
+  <table class="compact">
+    <thead><tr><th style="width:24%">Check</th><th>Finding</th><th style="width:13%">Status</th></tr></thead>
+    <tbody>
+      <tr><td>Social previews</td><td>No og:image on any non-product page; og:title is just "Quint Home" on all 11 of them. Links shared on WhatsApp and Instagram show no picture.</td><td><span class="pill p-high">High</span></td></tr>
+      <tr><td>HTTPS and security headers</td><td>HTTPS with HSTS. No Content-Security-Policy, X-Content-Type-Options or Referrer-Policy on storefront pages. The site advertises "x-powered-by: Next.js".</td><td><span class="pill p-low">Low</span></td></tr>
+      <tr><td>Icons</td><td>favicon.ico and a 512 px icon are present. No Apple touch icon or web app manifest.</td><td><span class="pill p-low">Low</span></td></tr>
+      <tr><td>Accessibility</td><td>Scores of 93–96. Some colour-contrast failures, and a hidden overlay that contains focusable elements.</td><td><span class="pill p-low">Low</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═════════════════════════ 06 TRACKING ═════════════════════════ -->
+<section>
+  <div class="kicker">06 · Tracking and webmaster tools</div>
+  <h2>The site measures ads, not search</h2>
+  <p class="lead">The Meta Pixel tracks the full purchase funnel and Clarity records sessions. But there is no Google Analytics and no visible Search Console or Bing verification, so nobody can see what organic search earns.</p>
+
+  <table>
+    <thead><tr><th style="width:20%">Tool</th><th style="width:13%">Status</th><th>Finding</th><th style="width:28%">Action</th></tr></thead>
+    <tbody>
+      <tr><td>Google Search Console</td><td><span class="pill p-crit">Unconfirmed</span></td><td>There is no verification tag on the site. The property may be verified by DNS, which we could not check.</td><td>Confirm access, or verify a Domain property by DNS. Submit the sitemap.</td></tr>
+      <tr><td>Google Analytics 4</td><td><span class="pill p-crit">Missing</span></td><td>No GA4, Google Tag Manager or Google Ads tag anywhere in the code or the live HTML</td><td>Install GA4 with e-commerce events (view_item, add_to_cart, begin_checkout, purchase)</td></tr>
+      <tr><td>Bing Webmaster Tools</td><td><span class="pill p-high">Missing</span></td><td>No msvalidate tag. Bing also feeds ChatGPT search and Copilot.</td><td>Import from Search Console. Turn on IndexNow.</td></tr>
+      <tr><td>Microsoft Clarity</td><td><span class="pill p-ok">Live</span></td><td>Project ybcekf8e6g, on every page. No custom tags or events.</td><td>Connect it to GA4. Tag sessions by page type and order.</td></tr>
+      <tr><td>Meta Pixel</td><td><span class="pill p-ok">Live</span></td><td>PageView, ViewContent, AddToCart, InitiateCheckout and Purchase all fire correctly. No server-side Conversions API. Costs about 1.1 s of mobile load time.</td><td>Load it after the page is interactive, or server-side</td></tr>
+      <tr><td>Google Merchant Center</td><td><span class="pill p-high">Missing</span></td><td>No product feed for free Shopping listings</td><td>Create an account and a feed that uses quinthome.in URLs</td></tr>
+      <tr><td>Google Business Profile</td><td><span class="pill p-high">Not found</span></td><td>No listing found, and no address on the website</td><td>Create one (storefront or service area)</td></tr>
+      <tr><td>Consent</td><td><span class="pill p-med">Gap</span></td><td>The Pixel and Clarity load without consent. India's DPDP Act requires notice and consent for personal data.</td><td>Add a consent banner and Google Consent Mode</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">Tracking IDs are hard-coded in the components rather than set as environment variables. That works, but it makes test and live data harder to separate.</p>
+</section>
+
+<!-- ═════════════════════════ 07 AI ═════════════════════════ -->
+<section>
+  <div class="kicker">07 · AI search readiness</div>
+  <h2>Ahead of most Indian competitors, with small factual errors to fix</h2>
+  <p class="lead">Quint Home already does what most brands haven't: it welcomes AI crawlers by name and publishes llms.txt files, so ChatGPT, Claude, Perplexity and Google's AI answers can read the catalogue. The gaps are factual consistency and too few answer-style pages.</p>
+
+  <table>
+    <thead><tr><th style="width:24%">Check</th><th>Finding</th><th style="width:13%">Status</th></tr></thead>
+    <tbody>
+      <tr><td>AI crawler access</td><td>GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-User, PerplexityBot, Perplexity-User, Google-Extended and Applebot-Extended are allowed by name, with private paths still blocked</td><td><span class="pill p-ok">Good</span></td></tr>
+      <tr><td>/llms.txt</td><td>1,352 words, built from live catalogue and Shopify prices: key facts, every product with price and link, gifting, journal, policies</td><td><span class="pill p-ok">Good</span></td></tr>
+      <tr><td>/llms-full.txt</td><td>4,105 words, but <strong>it leaves out candles entirely</strong> while presenting itself as the full catalogue</td><td><span class="pill p-high">High</span></td></tr>
+      <tr><td>Factual consistency</td><td>llms.txt, the gifting copy and the Diwali guide say every diffuser includes a free oil; the Drift does not. The FAQ says only the Pebble lacks the app; the Drift lacks it too. The site summary omits candles.</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td>Entity signals</td><td>The Organization schema has no address and no founder. The founder, Semil Rambhiya, appears only on /about, not as an author or in the schema. Instagram is the only linked profile.</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td>Answer-ready content</td><td>Assistants quote clear answers to questions such as "waterless vs ultrasonic", "how long does a 50 ml oil last" or "best diffuser for a 3BHK". The site has 8 FAQs and one long guide.</td><td><span class="pill p-high">High</span></td></tr>
+      <tr><td>Third-party mentions</td><td>AI answers lean on reviews, press and listicles. We found none for Quint Home (see section 08).</td><td><span class="pill p-high">High</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═════════════════════════ 08 OFF-PAGE ═════════════════════════ -->
+<section>
+  <div class="kicker">08 · Off-page and competitors</div>
+  <h2>The field is open: no Indian brand owns waterless or hotel-scent search</h2>
+  <p class="lead">For "waterless diffuser" and every hotel-fragrance query we tested, results were directories (IndiaMART), forums, press releases and foreign brands. Only InstaCuppa's blog showed up repeatedly. Quint Home has no backlinks, press or listings that we could find.</p>
+
+  <h3>Search-result landscape (9 queries)</h3>
+  <table class="compact">
+    <thead><tr><th style="width:30%">Query</th><th>Who appeared</th></tr></thead>
+    <tbody>
+      <tr><td>waterless diffuser India</td><td>InstaCuppa blog, IndiaMART, Global Sources, Ubuy, foreign brands. No Indian specialist brand.</td></tr>
+      <tr><td>nebulizing diffuser India</td><td>Mixed with medical nebulisers; InstaCuppa, IndiaMART, Alibaba</td></tr>
+      <tr><td>hotel fragrance diffuser India</td><td>TechEnclave forum, IndiaMART, hotel press releases. No brand.</td></tr>
+      <tr><td>scent diffuser for hotels India</td><td>IndiaMART storefronts (e.g. Fumemix, ₹29,000–34,999 machines)</td></tr>
+      <tr><td>scent marketing company India</td><td>YourStory profile, a competitor's Notion and Google Sites pages, IndiaMART</td></tr>
+      <tr><td>luxury scented candles India</td><td>ELLE Decor India, Outlook Business, Harper's Bazaar India, Shazé</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">Searches ran through a US-based search tool, so these results show direction, not verified Google India rankings. Confirm them in an incognito google.co.in session or in Search Console.</p>
+
+  <h3>Main competitors</h3>
+  <table class="compact">
+    <thead><tr><th style="width:17%">Brand</th><th style="width:25%">Sells</th><th style="width:15%">Price</th><th>SEO strength</th></tr></thead>
+    <tbody>
+      <tr><td>The Aroma Aisle<br><span class="muted">thearomaaisle.com</span></td><td>Waterless home, car, portable and HVAC diffusers; IFRA oils; gifts</td><td>₹999–₹18,000</td><td>32-post blog with India-specific topics (1BHK/3BHK, monsoon, pets, babies, office). Category pages, including Commercial.</td></tr>
+      <tr><td>Aéromé<br><span class="muted">aerome.in</span></td><td>Home and car diffusers, sprays, perfumes; business and event scenting</td><td>Car diffuser ₹2,790</td><td>Hotel client logos (Taj, Oberoi, JW Marriott), celebrity content, category pages for home, car, business and events. On Amazon. Mumbai-based.</td></tr>
+      <tr><td>InstaCuppa<br><span class="muted">instacuppastore.com</span></td><td>Appliances, including a waterless diffuser</td><td>₹2,999–₹3,199</td><td>Strongest diffuser content we saw: 11+ guides, comparison tables, FAQs, sources. Ranks for most diffuser queries.</td></tr>
+      <tr><td>IRIS Home Fragrances</td><td>Candles, reed diffusers, vaporisers, app diffusers</td><td>Mass to mid</td><td>About 8,500 retail outlets; offline-led</td></tr>
+      <tr><td>B2B scent firms</td><td>La Vie'scent, Pure Ved, Fumemix, Wikka Fragrance</td><td>Machines ₹29k+</td><td>Visibility through IndiaMART, YourStory and free hosted pages; weak websites</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Quint Home's off-page footprint</h3>
+  <div class="grid g3">
+    <div class="card"><h5>Backlinks</h5><div class="big">—</div><p>Not measured (Semrush had no units). No links or mentions found in search.</p></div>
+    <div class="card"><h5>Press and listicles</h5><div class="big">0</div><p>Found none. Competitors appear in ELLE Decor, D2C Insider and Indian Retailer.</p></div>
+    <div class="card"><h5>Profiles and listings</h5><div class="big">1</div><p>Instagram only. No Google Business Profile, Amazon, IndiaMART or Pinterest.</p></div>
+  </div>
+  <div class="callout">
+    <b class="t">The opportunity</b>
+    <p>Quint Home has the highest price point, the "hotel-grade" story and a Mumbai base. The hotel-scent and commercial-scenting topics have no strong Indian brand pages, and B2B searches are dominated by directories. A focused set of category, B2B and guide pages, backed by PR in Indian lifestyle and trade media, can win these queries within months, not years.</p>
+  </div>
+</section>
+
+<!-- ═════════════════════════ 09 CONTENT ═════════════════════════ -->
+<section>
+  <div class="kicker">09 · Content audit</div>
+  <h2>Beautiful copy, but too little of it to rank</h2>
+  <p class="lead">The brand writing is strong, but most pages carry fewer than 300 words. Oil pages share most of their text, three of four articles are under 220 words, and some claims on the site contradict each other.</p>
+
+  <h3>Words on each page (visible text in the main area)</h3>
+  <table class="compact">
+    <thead><tr><th>Page</th><th class="num">Words</th><th>Comment</th></tr></thead>
+    <tbody>
+      <tr><td>Homepage</td><td class="num">934</td><td>Healthy</td></tr>
+      <tr><td>/range</td><td class="num">735</td><td>Healthy, but "coming soon" copy for candles sits next to live candles</td></tr>
+      <tr><td>/about</td><td class="num">586</td><td>Good founder story</td></tr>
+      <tr><td>/faq</td><td class="num">584</td><td>8 questions; missing coverage, shipping, returns, pets, safety, oil lifespan</td></tr>
+      <tr><td>Diffuser page (Monolith)</td><td class="num">561</td><td>Unique description (84–123 words); specs hidden in a gallery slide</td></tr>
+      <tr><td>Oil page (Terrain)</td><td class="num">284</td><td><strong>About 50 words unique</strong>; the rest is shared across all 8 oils</td></tr>
+      <tr><td>Candle page (The Forest)</td><td class="num">222</td><td>About 60 words unique</td></tr>
+      <tr><td>/journal</td><td class="num">193</td><td>A list of 4 posts</td></tr>
+      <tr><td>/businesses</td><td class="num">171</td><td>Thin for the most valuable B2B queries; placeholder testimonials</td></tr>
+      <tr><td>/find-your-scent</td><td class="num">68</td><td>Quiz results and product links appear only after clicking</td></tr>
+      <tr><td>/contact</td><td class="num">60</td><td>No address, map or hours</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Accuracy and trust problems</h3>
+  <table class="compact">
+    <thead><tr><th style="width:36%">Problem</th><th>Where</th><th style="width:13%">Priority</th></tr></thead>
+    <tbody>
+      <tr><td>Placeholder client testimonials are live</td><td>/businesses (marked "TODO: replace with real, approved client testimonials" in code)</td><td><span class="pill p-high">High</span></td></tr>
+      <tr><td>"Subscribe and save 15% on refills" is advertised, but subscriptions are switched off</td><td>/range and every oil page</td><td><span class="pill p-high">High</span></td></tr>
+      <tr><td>"Reed diffusers &amp; candles are coming soon", while candles are on sale on the same page</td><td>/range browse chips</td><td><span class="pill p-high">High</span></td></tr>
+      <tr><td>"Every diffuser ships with a free 50 ml oil": the Drift does not</td><td>Diwali guide, gifting copy, llms.txt</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td>FAQ says only the Pebble lacks the app; the Drift does too</td><td>/faq</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td>Pebble copy says "add a few drops of oil… ultra-quiet mist", which conflicts with the waterless positioning</td><td>/range/pebble</td><td><span class="pill p-med">Medium</span></td></tr>
+      <tr><td>/range meta description mentions "app control over Bluetooth", which was removed from the rest of the copy</td><td>/range</td><td><span class="pill p-low">Low</span></td></tr>
+      <tr><td>Free-shipping wording varies: "over", "above", "and above" ₹5,000</td><td>Announcement bar, meta tags, policies</td><td><span class="pill p-low">Low</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Blog and newsletter</h3>
+  <ul>
+    <li><strong>Journal:</strong> 4 posts in 7 months (March, March, April, September 2026). Only the Diwali guide is long enough and well structured to rank. All posts are by "Quint Editorial", with no named author.</li>
+    <li><strong>Newsletter:</strong> the footer form creates a Shopify customer tagged "newsletter" (single opt-in). There is no email platform, welcome series or automation. When an existing customer subscribes, their marketing consent is not updated.</li>
+  </ul>
+</section>
+
+<!-- ═════════════════════════ 10 ISSUE REGISTER ═════════════════════════ -->
+<section>
+  <div class="kicker">10 · Issue register</div>
+  <h2>All 40 issues, ranked</h2>
+  <p class="lead" style="margin-bottom:3mm">Effort is S (under a day), M (1–3 days) or L (a week or more). Owners: Dev = website developer, SEO = SEO team, Content = writer, Client = Quint Home.</p>
+
+  <table class="compact reg">
+    <thead><tr><th class="num" style="width:4%">#</th><th style="width:38%">Issue</th><th style="width:11%">Priority</th><th style="width:11%">Area</th><th style="width:6%">Effort</th><th style="width:8%">Owner</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>Policy, cart, checkout, order and 404 pages canonicalise to the homepage</td><td><span class="pill p-crit">Critical</span></td><td>Technical</td><td>S</td><td>Dev</td><td>app/layout.tsx:26</td></tr>
+      <tr><td class="num">2</td><td>No Google Analytics 4, so organic traffic and revenue are unmeasured</td><td><span class="pill p-crit">Critical</span></td><td>Tracking</td><td>S</td><td>Dev, SEO</td><td>app/layout.tsx, components/analytics/</td></tr>
+      <tr><td class="num">3</td><td>Search Console and Bing access unconfirmed; sitemap submission unknown</td><td><span class="pill p-crit">Critical</span></td><td>Tracking</td><td>S</td><td>SEO, Client</td><td>DNS / metadata.verification</td></tr>
+      <tr><td class="num">4</td><td>Business enquiry form has no submit action, so B2B leads are lost</td><td><span class="pill p-crit">Critical</span></td><td>Conversion</td><td>S</td><td>Dev</td><td>app/businesses/page.tsx:235, 266</td></tr>
+      <tr><td class="num">5</td><td>Mobile homepage LCP 12.6 s: 4.5 MB hero video, no poster, lazy hero images</td><td><span class="pill p-crit">Critical</span></td><td>Speed</td><td>M</td><td>Dev</td><td>components/sections/hero.tsx</td></tr>
+      <tr><td class="num">6</td><td>No category pages for diffusers, oils or candles</td><td><span class="pill p-high">High</span></td><td>Structure</td><td>M</td><td>Dev, Content</td><td>app/range/, header, footer</td></tr>
+      <tr><td class="num">7</td><td>Product schema lacks shipping, returns, priceValidUntil, SKU and GTIN; Monolith uses AggregateOffer</td><td><span class="pill p-high">High</span></td><td>Schema</td><td>M</td><td>Dev</td><td>lib/structured-data.ts</td></tr>
+      <tr><td class="num">8</td><td>Placeholder testimonials on /businesses</td><td><span class="pill p-high">High</span></td><td>Trust</td><td>S</td><td>Client</td><td>app/businesses/page.tsx:30</td></tr>
+      <tr><td class="num">9</td><td>"Subscribe and save 15%" advertised but not available</td><td><span class="pill p-high">High</span></td><td>Trust</td><td>S</td><td>Dev</td><td>app/range/page.tsx:444; oil-hero.tsx:233</td></tr>
+      <tr><td class="num">10</td><td>Thin product copy: oils ~50 unique words, candles ~60</td><td><span class="pill p-high">High</span></td><td>Content</td><td>L</td><td>Content</td><td>lib/data/oils.ts, candles.ts</td></tr>
+      <tr><td class="num">11</td><td>Only 4 articles; 3 under 220 words with no product links</td><td><span class="pill p-high">High</span></td><td>Content</td><td>L</td><td>Content</td><td>lib/data/journal.ts</td></tr>
+      <tr><td class="num">12</td><td>Candles missing from home, /range title and H1, summaries and site search; "coming soon" chip</td><td><span class="pill p-high">High</span></td><td>On-page</td><td>S</td><td>Dev</td><td>app/page.tsx, range/page.tsx, shop-browser.tsx</td></tr>
+      <tr><td class="num">13</td><td>Meta Pixel (~1.1 s) and Clarity (~0.3 s) block the main thread on mobile</td><td><span class="pill p-high">High</span></td><td>Speed</td><td>S</td><td>Dev</td><td>components/analytics/</td></tr>
+      <tr><td class="num">14</td><td>No og:image and a generic og:title on all non-product pages</td><td><span class="pill p-high">High</span></td><td>Social</td><td>S</td><td>Dev</td><td>app/layout.tsx:27</td></tr>
+      <tr><td class="num">15</td><td>Product H1s are bare names; homepage H1 is hidden</td><td><span class="pill p-high">High</span></td><td>On-page</td><td>S</td><td>Dev</td><td>diffuser-hero.tsx, oil-hero.tsx, app/page.tsx:36</td></tr>
+      <tr><td class="num">16</td><td>No address or phone on the site; thin Organization schema; no Google Business Profile</td><td><span class="pill p-high">High</span></td><td>Trust</td><td>S</td><td>Client, Dev</td><td>footer.tsx, app/layout.tsx:51</td></tr>
+      <tr><td class="num">17</td><td>Static assets never cached; image cache 60 s; no AVIF</td><td><span class="pill p-high">High</span></td><td>Speed</td><td>S</td><td>Dev</td><td>next.config.ts</td></tr>
+      <tr><td class="num">18</td><td>Meta descriptions over 160 characters on 13 URLs</td><td><span class="pill p-med">Medium</span></td><td>On-page</td><td>S</td><td>SEO, Dev</td><td>page metadata, range/[slug]</td></tr>
+      <tr><td class="num">19</td><td>Titles over 60 characters on 7 URLs; /contact and /privacy too short</td><td><span class="pill p-med">Medium</span></td><td>On-page</td><td>S</td><td>SEO, Dev</td><td>page metadata, journal seoTitle</td></tr>
+      <tr><td class="num">20</td><td>Description template grammar: "covering Up to 1,075 sq ft"</td><td><span class="pill p-med">Medium</span></td><td>On-page</td><td>S</td><td>Dev</td><td>app/range/[slug]/page.tsx:94</td></tr>
+      <tr><td class="num">21</td><td>Same H2s repeated on every product page; no spec or FAQ headings</td><td><span class="pill p-med">Medium</span></td><td>On-page</td><td>M</td><td>Dev, Content</td><td>product templates</td></tr>
+      <tr><td class="num">22</td><td>Spec sheets only in a hidden gallery slide</td><td><span class="pill p-med">Medium</span></td><td>Content</td><td>M</td><td>Dev</td><td>diffuser-hero.tsx, oil-hero.tsx</td></tr>
+      <tr><td class="num">23</td><td>/find-your-scent thin; results only after clicking</td><td><span class="pill p-med">Medium</span></td><td>Content</td><td>M</td><td>Dev</td><td>scent-finder.tsx</td></tr>
+      <tr><td class="num">24</td><td>Every gallery slide shares one alt text</td><td><span class="pill p-med">Medium</span></td><td>Images</td><td>S</td><td>Dev</td><td>product-gallery.tsx:100</td></tr>
+      <tr><td class="num">25</td><td>/refunds is a temporary 307 redirect</td><td><span class="pill p-med">Medium</span></td><td>Technical</td><td>S</td><td>Dev</td><td>app/refunds/page.tsx</td></tr>
+      <tr><td class="num">26</td><td>No branded 404 page; product 404 body is empty</td><td><span class="pill p-med">Medium</span></td><td>Technical</td><td>S</td><td>Dev</td><td>app/not-found.tsx (new)</td></tr>
+      <tr><td class="num">27</td><td>FAQ lacks coverage, shipping, returns, pets and oil-life answers; Drift app error</td><td><span class="pill p-med">Medium</span></td><td>Content</td><td>S</td><td>Content</td><td>app/faq/page.tsx</td></tr>
+      <tr><td class="num">28</td><td>Contradictions: Drift free oil, Pebble "mist" copy, Bluetooth claim</td><td><span class="pill p-med">Medium</span></td><td>Content</td><td>S</td><td>Content</td><td>gifting.ts, diffusers.ts, journal.ts</td></tr>
+      <tr><td class="num">29</td><td>llms-full.txt leaves out candles</td><td><span class="pill p-med">Medium</span></td><td>AI search</td><td>S</td><td>Dev</td><td>app/llms-full.txt/route.ts</td></tr>
+      <tr><td class="num">30</td><td>Oil pages don't link sibling oils; candles not cross-linked</td><td><span class="pill p-med">Medium</span></td><td>Linking</td><td>S</td><td>Dev</td><td>range/[slug], candle-compare.tsx</td></tr>
+      <tr><td class="num">31</td><td>No visible breadcrumbs on diffuser pages; labels inconsistent</td><td><span class="pill p-med">Medium</span></td><td>Linking</td><td>S</td><td>Dev</td><td>diffuser-hero.tsx, oil-hero.tsx</td></tr>
+      <tr><td class="num">32</td><td>Newsletter: single opt-in into Shopify, no email flows, consent not updated</td><td><span class="pill p-med">Medium</span></td><td>Email</td><td>M</td><td>Dev, Client</td><td>lib/shopify/admin.ts:773</td></tr>
+      <tr><td class="num">33</td><td>Tracking loads without consent (DPDP Act)</td><td><span class="pill p-med">Medium</span></td><td>Tracking</td><td>M</td><td>Dev</td><td>components/analytics/</td></tr>
+      <tr><td class="num">34</td><td>Article author is the company, not a person; dateModified never set</td><td><span class="pill p-low">Low</span></td><td>Schema</td><td>S</td><td>Dev</td><td>lib/structured-data.ts:154</td></tr>
+      <tr><td class="num">35</td><td>Dead filter link /range?category=oils</td><td><span class="pill p-low">Low</span></td><td>Linking</td><td>S</td><td>Dev</td><td>app/range/[slug]/page.tsx:206</td></tr>
+      <tr><td class="num">36</td><td>http → https → www takes two redirect hops</td><td><span class="pill p-low">Low</span></td><td>Technical</td><td>S</td><td>Dev</td><td>Vercel domain settings</td></tr>
+      <tr><td class="num">37</td><td>10.8 MB of unused hero videos deployed; unused packages</td><td><span class="pill p-low">Low</span></td><td>Speed</td><td>S</td><td>Dev</td><td>public/videos/, package.json</td></tr>
+      <tr><td class="num">38</td><td>No security headers (CSP, nosniff, referrer policy); x-powered-by shown</td><td><span class="pill p-low">Low</span></td><td>Technical</td><td>S</td><td>Dev</td><td>next.config.ts</td></tr>
+      <tr><td class="num">39</td><td>No Apple touch icon or web manifest; lang "en" vs en-IN</td><td><span class="pill p-low">Low</span></td><td>Technical</td><td>S</td><td>Dev</td><td>app/</td></tr>
+      <tr><td class="num">40</td><td>Brand name collision with other "Quint" products in search</td><td><span class="pill p-low">Low</span></td><td>Off-page</td><td>Ongoing</td><td>SEO</td><td>Brand naming everywhere</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">The SEO Plan of Action schedules every item above across the 8 weeks.</p>
+</section>
+
+</body>
+</html>

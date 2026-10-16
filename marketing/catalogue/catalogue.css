@@ -1,0 +1,601 @@
+/* Quint Home — print catalogue. A4 portrait, 210 × 297 mm.
+   Tokens copied from app/globals.css: the catalogue is rendered standalone,
+   so it cannot lean on the site's stylesheet being present. */
+
+:root {
+  --white: #ffffff;
+  --stardust: #eee4d8;
+  --stardust-soft: #f5efe6;
+  --aerial: #77918d;
+  --aerial-soft: #aebcb9;
+  --aerial-deep: #5a7370;
+  --verdant: #293329;
+  --clay: #c15a27;
+  --clay-deep: #6a2e0c;
+  --charcoal: #3a3532;
+  --charcoal-soft: #6a625e;
+  --rule: #e6dfd2;
+  --rule-soft: #efe9dd;
+  /* Hairlines on the warm grounds, where --rule (itself a stardust) vanishes. */
+  --rule-warm: rgba(58, 53, 50, .16);
+
+  --serif: "Literata", Georgia, "Times New Roman", serif;
+  --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --mx: 16mm;          /* side margin */
+  --mt: 17mm;          /* top margin */
+  --mb: 22mm;          /* bottom margin, above the folio */
+  --bleed: 0mm;        /* 3mm in the print edition, set on <body class="bleed"> */
+}
+body.bleed { --bleed: 3mm; }
+
+/* Static font instances, bundled (SIL Open Font License — see catalogue/fonts).
+   Google Fonts serves Literata and Inter as variable fonts, which Chromium's
+   PDF engine cannot embed: it drew every glyph as a Type 3 shape instead, which
+   print preflight flags and which can rasterise badly on a press. Static files
+   embed as real fonts, and rendering no longer needs the network. */
+@font-face { font-family: "Literata"; src: url("../fonts/literata-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: "Literata"; src: url("../fonts/literata-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: "Literata"; src: url("../fonts/literata-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: "Literata"; src: url("../fonts/literata-latin-500-italic.woff2") format("woff2"); font-weight: 500; font-style: italic; unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: "Literata"; src: url("../fonts/literata-latin-ext-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: "Literata"; src: url("../fonts/literata-latin-ext-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: "Inter"; src: url("../fonts/inter-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: "Inter"; src: url("../fonts/inter-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: "Inter"; src: url("../fonts/inter-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-style: normal; unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: "Inter"; src: url("../fonts/inter-latin-ext-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: "Inter"; src: url("../fonts/inter-latin-ext-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+/* "№" sits in the Cyrillic subset of both families; loaded for that glyph only. */
+@font-face { font-family: "Inter"; src: url("../fonts/inter-cyrillic-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; unicode-range: U+2116; }
+@font-face { font-family: "Inter"; src: url("../fonts/inter-cyrillic-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; unicode-range: U+2116; }
+@font-face { font-family: "Literata"; src: url("../fonts/literata-cyrillic-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; unicode-range: U+2116; }
+@font-face { font-family: "Literata"; src: url("../fonts/literata-cyrillic-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; unicode-range: U+2116; }
+
+/* @page size is written by build.ts: A4 for screen, A4 + 3mm bleed for print. */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  background: #d9d4cc;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 9pt;
+  line-height: 1.62;
+  color: var(--charcoal);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "kern", "liga";
+}
+
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* ── Page ─────────────────────────────────────────────────────────────── */
+
+.page {
+  /* The trim is always A4; the bleed edition extends the ground colour 3mm
+     past it on every side, and pushes the content in by the same amount so it
+     lands in exactly the same place once trimmed. */
+  width: calc(210mm + 2 * var(--bleed));
+  height: calc(297mm + 2 * var(--bleed));
+  position: relative;
+  overflow: hidden;
+  padding: calc(var(--mt) + var(--bleed)) calc(var(--mx) + var(--bleed)) calc(var(--mb) + var(--bleed));
+  display: flex;
+  flex-direction: column;
+  break-after: page;
+  page-break-after: always;
+  margin: 0 auto;
+}
+.page:last-child { break-after: auto; page-break-after: auto; }
+
+/* Light neutrals only, as on the website: white sections, stardust bands. */
+.ground-white         { background: var(--white); }
+.ground-stardust-soft { background: var(--stardust-soft); }
+.ground-stardust      { background: var(--stardust); }
+
+@media screen {
+  .page { margin: 10mm auto; box-shadow: 0 2mm 8mm rgba(0,0,0,.12); }
+}
+
+/* ── Eyebrow: monogram · chapter · label, then a hairline to the edge ── */
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 2.4mm;
+  font-size: 6.6pt;
+  font-weight: 500;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+  flex-shrink: 0;
+}
+.eyebrow::after {
+  content: "";
+  flex: 1;
+  height: .2mm;
+  background: var(--rule);
+  order: 2;
+}
+.eyebrow .mono { width: 3.2mm; height: 3.2mm; flex-shrink: 0; }
+.eyebrow .eyebrow-extra { order: 3; letter-spacing: .24em; }
+.ground-stardust .eyebrow::after,
+.ground-stardust-soft .eyebrow::after { background: var(--rule-warm); }
+
+/* ── Headlines follow the site: roman line, italic tail in sage ─────── */
+
+.display {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 31pt;
+  line-height: 1.03;
+  letter-spacing: -.02em;
+  color: var(--charcoal);
+  max-width: 150mm;
+  text-wrap: balance;
+}
+/* The site's one sage accent: the italic tail of a headline, once a page. */
+.display em { font-style: italic; color: var(--aerial-deep); }
+
+.lede {
+  font-family: var(--serif);
+  font-size: 11.6pt;
+  line-height: 1.52;
+  color: var(--charcoal);
+  max-width: 142mm;
+  text-wrap: pretty;
+}
+
+.sub-eyebrow {
+  font-size: 6.2pt;
+  font-weight: 500;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--clay);
+}
+
+.num {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 11pt;
+  color: var(--clay);
+  display: block;
+  margin-bottom: 2mm;
+}
+
+.prose p { margin-bottom: 3.2mm; text-wrap: pretty; }
+.prose p:last-child { margin-bottom: 0; }
+
+.band { width: 100%; overflow: hidden; background: var(--stardust-soft); }
+
+/* ── Folio ─────────────────────────────────────────────────────────── */
+
+.folio {
+  position: absolute;
+  left: calc(var(--mx) + var(--bleed));
+  right: calc(var(--mx) + var(--bleed));
+  bottom: calc(9mm + var(--bleed));
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  padding-top: 3mm;
+  border-top: .2mm solid var(--rule);
+  font-size: 5.8pt;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+}
+.folio span:nth-child(2) { text-align: center; }
+.folio span:nth-child(3) { text-align: right; }
+.ground-stardust .folio,
+.ground-stardust-soft .folio { border-top-color: var(--rule-warm); }
+
+/* ── Cover ─────────────────────────────────────────────────────────── */
+
+.cover { height: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.cover-top { display: flex; flex-direction: column; align-items: center; gap: 5mm; margin-top: 4mm; }
+.cover-mono { width: 10mm; height: 10mm; color: var(--charcoal); }
+.cover-logo { width: 62mm; height: auto; color: var(--charcoal); }
+.cover-plate {
+  /* 95 × 119 mm keeps the 750 px cover photograph at 200 ppi. */
+  margin-top: 16mm;
+  width: 95mm;
+  height: 119mm;
+  overflow: hidden;
+  outline: .25mm solid var(--rule-warm);
+  outline-offset: 3mm;
+}
+.cover-plate img { object-position: 50% 50%; }
+.cover-title { margin-top: 18mm; }
+.cover-title h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 26pt;
+  line-height: 1.08;
+  letter-spacing: -.018em;
+  color: var(--charcoal);
+}
+.cover-title h1 em { font-style: italic; color: var(--aerial-deep); }
+.cover-title p {
+  text-wrap: balance;
+  margin: 4.5mm auto 0;
+  max-width: 120mm;
+  font-size: 9pt;
+  line-height: 1.6;
+  color: var(--charcoal-soft);
+}
+.cover-foot {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 3.5mm;
+  border-top: .2mm solid var(--rule-warm);
+  font-size: 6pt;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+}
+
+/* ── Contents ──────────────────────────────────────────────────────── */
+
+.contents { flex: 1; display: flex; flex-direction: column; }
+.contents .display { margin-top: 16mm; }
+.contents > ol { list-style: none; margin-top: 16mm; }
+.contents > ol > li { border-bottom: .2mm solid var(--rule); }
+.contents > ol > li:last-child { border-bottom: 0; }
+.c-row { display: flex; align-items: baseline; gap: 4mm; padding: 7mm 0; }
+.c-num { font-family: var(--serif); font-style: italic; font-size: 10pt; color: var(--clay); width: 8mm; }
+.c-label { font-family: var(--serif); font-size: 14pt; letter-spacing: -.01em; }
+.c-rule { flex: 1; }
+.c-page { font-size: 6.4pt; letter-spacing: .28em; color: var(--charcoal-soft); }
+/* The parts of a chapter sit under it, indented to its title: one entry, three
+   places to turn to. */
+.has-parts .c-row { padding-bottom: 3mm; }
+.c-parts { list-style: none; padding: 0 0 5mm 12mm; }
+.c-parts li { display: flex; align-items: baseline; gap: 4mm; padding: 2.6mm 0; }
+.c-parts .c-label { font-style: italic; font-size: 11.4pt; color: var(--charcoal-soft); }
+
+.contents-foot {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 3.5mm;
+  border-top: .2mm solid var(--rule);
+  font-size: 6pt;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+}
+
+/* ── Story ─────────────────────────────────────────────────────────── */
+
+.story { flex: 1; display: flex; flex-direction: column; }
+.story .display { margin-top: 13mm; }
+/* The line the website opens the story with, kept beneath the title. */
+.standfirst {
+  margin-top: 3.5mm;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15pt;
+  line-height: 1.3;
+  letter-spacing: -.01em;
+  color: var(--charcoal-soft);
+}
+.story-grid { display: grid; grid-template-columns: 58mm 1fr; gap: 11mm; margin-top: 9mm; }
+.founder img { height: 77mm; }
+.founder figcaption { margin-top: 2.2mm; font-size: 5.8pt; letter-spacing: .28em; text-transform: uppercase; color: var(--charcoal-soft); }
+.story .prose { font-size: 9pt; }
+/* The image and the vision share the lower page, in the same two columns as
+   the founder and the story above them. */
+.story-foot { flex: 1; margin-top: 11mm; display: grid; grid-template-columns: 58mm 1fr; gap: 11mm; align-items: stretch; }
+.story-vibe { height: auto; overflow: hidden; }
+.story-vibe img { object-position: 50% 52%; }
+.vision {
+  display: flex;
+  flex-direction: column;
+  padding-top: 5mm;
+  border-top: .3mm solid var(--charcoal);
+}
+.vision p:last-child {
+  margin-top: auto;
+  font-family: var(--serif);
+  font-size: 19pt;
+  line-height: 1.3;
+  letter-spacing: -.01em;
+  text-wrap: pretty;
+}
+
+/* ── Quintessence: the word, as the About page sets it ─────────────── */
+
+.quint { flex: 1; display: flex; flex-direction: column; }
+.q-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 10mm; margin-top: 16mm; }
+.q-word {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 62pt;
+  line-height: .92;
+  letter-spacing: -.03em;
+  color: var(--charcoal);
+}
+.q-word em { font-style: normal; color: var(--clay); }
+.q-meta {
+  text-align: right;
+  font-size: 6.4pt;
+  line-height: 1.9;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+  padding-bottom: 1.5mm;
+}
+.q-meta span { color: var(--aerial-deep); }
+.q-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12mm;
+  margin-top: 11mm;
+  padding-top: 9mm;
+  border-top: .2mm solid var(--rule-warm);
+}
+.q-def {
+  font-family: var(--serif);
+  font-size: 16pt;
+  line-height: 1.3;
+  letter-spacing: -.012em;
+  text-wrap: balance;
+}
+.q-def em { font-style: italic; color: var(--aerial-deep); }
+.q-body p { font-size: 9.8pt; line-height: 1.8; color: var(--charcoal-soft); text-wrap: pretty; }
+.q-body .q-close {
+  margin-top: 6mm;
+  font-family: var(--serif);
+  font-size: 14pt;
+  line-height: 1.3;
+  letter-spacing: -.012em;
+  color: var(--charcoal);
+}
+.q-close em { font-style: italic; color: var(--clay); }
+.quint .band { margin-top: auto; height: 104mm; }
+.quint .band img { object-position: 45% 50%; }
+
+/* ── Why waterless ─────────────────────────────────────────────────── */
+
+.concept { flex: 1; display: flex; flex-direction: column; }
+.concept .display { margin-top: 13mm; }
+/* Roman line, then the whole italic tail on its own line. */
+.concept .display em { display: block; }
+.concept .lede { margin-top: 7mm; }
+.principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8mm 9mm; margin-top: 11mm; }
+.principle { padding-top: 4mm; border-top: .2mm solid var(--rule); }
+.principle p { font-size: 8.6pt; line-height: 1.58; color: var(--charcoal-soft); }
+.principle h3, .offering h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 13pt;
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  margin-bottom: 2mm;
+}
+.concept .band { margin-top: auto; height: 74mm; }
+.concept .band img { object-position: 50% 40%; }
+
+/* ── Our product range: shared by diffusers, oils and candles ──────── */
+
+.range { flex: 1; display: flex; flex-direction: column; }
+.range .display { margin-top: 10mm; font-size: 26pt; max-width: none; }
+.range .display em { display: block; }
+.range .lede { margin-top: 4mm; font-size: 10.4pt; max-width: 160mm; }
+
+/* Two diffusers to a page, each in its own half so the second always starts
+   at the same height whatever the first one's text runs to. */
+.pcards { flex: 1; display: grid; grid-template-rows: 1fr 1fr; margin-top: 6mm; }
+.pcard { padding-top: 6mm; border-top: .2mm solid var(--rule); }
+.pc-top { display: grid; grid-template-columns: 54mm 1fr; gap: 8mm; }
+.pc-hero { width: 54mm; height: 67.5mm; overflow: hidden; background: var(--stardust-soft); }
+.pc-text { display: flex; flex-direction: column; }
+.p-name {
+  display: flex;
+  justify-content: space-between;
+  font-size: 6.4pt;
+  font-weight: 500;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--clay);
+}
+.p-name span { color: var(--charcoal-soft); font-weight: 400; letter-spacing: .26em; }
+.p-headline {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 17pt;
+  line-height: 1.1;
+  letter-spacing: -.018em;
+  margin-top: 2.6mm;
+  text-wrap: balance;
+}
+.p-headline em { font-style: italic; color: var(--aerial-deep); display: block; }
+.p-desc { margin-top: 4mm; font-size: 8.8pt; line-height: 1.6; text-wrap: pretty; }
+.p-best {
+  margin-top: auto;
+  padding-top: 2.4mm;
+  border-top: .2mm solid var(--rule);
+  font-size: 8pt;
+}
+.p-best span {
+  display: block;
+  font-size: 5.8pt;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--charcoal-soft);
+  margin-bottom: .8mm;
+}
+/* The spec sheet as a strip: eight cells, four across, label over value. */
+.specs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 6mm; margin-top: 4mm; }
+.specs div { padding: 1.7mm 0 1.9mm; border-top: .2mm solid var(--rule-soft); }
+.specs dt { font-size: 5.4pt; letter-spacing: .24em; text-transform: uppercase; color: var(--charcoal-soft); }
+.specs dd { margin-top: .5mm; font-size: 7.7pt; line-height: 1.35; }
+
+/* ── Oils: all eight on one page, two across ───────────────────────── */
+
+.oil-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
+  gap: 0 10mm;
+  margin-top: 6mm;
+  border-bottom: .2mm solid var(--rule);
+}
+.oil {
+  display: grid;
+  grid-template-columns: 28mm 1fr;
+  gap: 5.5mm;
+  align-items: center;
+  padding: 3mm 0;
+  border-top: .2mm solid var(--rule);
+}
+.oil figure { width: 28mm; height: 36mm; overflow: hidden; background: var(--stardust-soft); }
+/* The bottle stands mid-frame with a good deal of backdrop around it; at this
+   size that leaves the label unreadable, so the frame closes in on it. */
+.oil figure img { transform: scale(1.62); transform-origin: 50% 61%; }
+.s-mood { font-size: 5.6pt; letter-spacing: .26em; text-transform: uppercase; color: var(--charcoal-soft); }
+.oil h3, .candle h3 { font-family: var(--serif); font-weight: 400; letter-spacing: -.012em; line-height: 1.2; }
+.oil h3 { font-size: 13pt; margin-top: .8mm; }
+/* Hotel Credential, set small under the name it belongs to. */
+.oil h3 .badge {
+  display: block;
+  margin-top: .7mm;
+  font-family: var(--sans);
+  font-size: 5.2pt;
+  line-height: 1.3;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--clay);
+}
+.s-tag { font-family: var(--serif); font-style: italic; font-size: 8.1pt; line-height: 1.4; color: var(--charcoal-soft); margin-top: .8mm; text-wrap: pretty; }
+.notes { margin-top: 1.8mm; }
+.notes div { display: grid; grid-template-columns: 9.5mm 1fr; gap: 1.5mm; padding: .75mm 0; border-top: .2mm solid var(--rule-soft); font-size: 7pt; line-height: 1.36; }
+.notes dt { font-size: 5.2pt; letter-spacing: .22em; text-transform: uppercase; color: var(--charcoal-soft); padding-top: .35mm; }
+
+/* ── Candles: three across ─────────────────────────────────────────── */
+
+.candle-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8mm; margin-top: 9mm; }
+.candle { display: flex; flex-direction: column; }
+.candle figure { height: 90mm; overflow: hidden; background: var(--stardust-soft); }
+.candle figure img { object-position: 50% 60%; }
+.cd-notes { margin-top: 4.5mm; font-size: 6.2pt; font-weight: 500; letter-spacing: .28em; text-transform: uppercase; color: var(--clay); }
+.candle h3 { font-size: 17pt; margin-top: 1.6mm; }
+.candle .s-tag { font-size: 9.4pt; margin-top: 1.2mm; }
+.cd-desc { margin-top: 3mm; margin-bottom: 4mm; font-size: 8.5pt; line-height: 1.58; color: var(--charcoal-soft); text-wrap: pretty; }
+
+/* Three short facts across the foot of a page, under a full rule. */
+.notes3 {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8mm;
+  padding-top: 4.5mm;
+  border-top: .3mm solid var(--charcoal);
+}
+.notes3 p { font-family: var(--serif); font-size: 9.6pt; line-height: 1.42; text-wrap: pretty; }
+.notes3 span { display: block; font-family: var(--sans); font-size: 5.8pt; letter-spacing: .26em; text-transform: uppercase; color: var(--clay); margin-bottom: 1.4mm; }
+/* Size and burn time are a few words; the care line is four sentences. */
+.candle-notes { grid-template-columns: 28mm 36mm 1fr; }
+.candle-notes .wide { font-size: 8.8pt; }
+
+/* ── Gifting ───────────────────────────────────────────────────────── */
+
+.gifting { flex: 1; display: flex; flex-direction: column; }
+.gift-top { display: grid; grid-template-columns: 1fr 50mm; gap: 12mm; align-items: start; margin-top: 13mm; }
+.gifting .lede { margin-top: 6mm; font-size: 10.8pt; }
+.gift-img { height: 62mm; overflow: hidden; }
+.gift-img img { object-position: 50% 66%; }
+.occasions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9mm; margin-top: 9mm; }
+.offering { padding-top: 4mm; border-top: .3mm solid var(--charcoal); }
+.offering p { font-size: 8.6pt; line-height: 1.58; text-wrap: pretty; }
+.gifting .sub-eyebrow { margin-top: 9mm; }
+/* Who it is for, what to give them, and why — a row each, three columns. */
+.gift-guide { margin-top: 3mm; border-bottom: .2mm solid var(--rule-warm); }
+.gift-guide div {
+  display: grid;
+  grid-template-columns: 54mm 42mm 1fr;
+  gap: 5mm;
+  align-items: baseline;
+  padding: 2.1mm 0;
+  border-top: .2mm solid var(--rule-warm);
+}
+.gift-guide dt { font-family: var(--serif); font-style: italic; font-size: 9.4pt; color: var(--charcoal-soft); }
+.gift-guide dd { font-size: 8.3pt; line-height: 1.45; color: var(--charcoal-soft); text-wrap: pretty; }
+.gift-guide .g-what { font-family: var(--serif); font-size: 10.6pt; line-height: 1.25; color: var(--charcoal); }
+.gifting .notes3 p { font-size: 9pt; }
+
+/* ── Custom scent solutions — and the back cover ───────────────────── */
+
+/* The back cover carries no folio, so it can use the depth one would take. */
+.page[data-key="custom"] { padding-bottom: calc(15mm + var(--bleed)); }
+.custom { height: 100%; display: flex; flex-direction: column; }
+.custom .display { margin-top: 12mm; }
+.custom .lede { margin-top: 6mm; }
+.offerings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9mm; margin-top: 10mm; }
+.custom > .sub-eyebrow { margin-top: 10mm; }
+.process { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6mm; margin-top: 5mm; }
+.process li { position: relative; padding-top: 11mm; }
+.process li::before {
+  content: "";
+  position: absolute;
+  top: 3.6mm;
+  left: 8.4mm;
+  right: -6mm;
+  height: .2mm;
+  background: var(--rule-warm);
+}
+.process li:last-child::before { display: none; }
+.step {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 7.4mm;
+  height: 7.4mm;
+  border-radius: 50%;
+  border: .25mm solid var(--clay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 8pt;
+  color: var(--clay);
+}
+.process h4 { font-family: var(--serif); font-weight: 400; font-size: 11pt; margin-bottom: 1.5mm; }
+.process p { font-size: 8.2pt; line-height: 1.55; color: var(--charcoal-soft); text-wrap: pretty; }
+.process { margin-bottom: 7mm; }
+
+/* How to begin: the invitation on the left, where to send it on the right. */
+.begin {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: 62mm 1fr;
+  gap: 12mm;
+  padding-top: 7mm;
+  border-top: .3mm solid var(--charcoal);
+}
+.begin-lede { margin-top: 3mm; font-family: var(--serif); font-size: 10.6pt; line-height: 1.5; text-wrap: pretty; }
+/* Solar Clay's one outing on the back cover, as the site's call to action. */
+.closing { margin-top: 5mm; font-family: var(--serif); font-style: italic; font-size: 10.6pt; line-height: 1.4; color: var(--clay); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10mm; align-content: start; }
+.contact-grid div { padding: 3mm 0; border-bottom: .2mm solid var(--rule-warm); }
+.contact-grid div:nth-child(-n + 2) { padding-top: 0; }
+.contact-grid dt { font-size: 5.8pt; letter-spacing: .3em; text-transform: uppercase; color: var(--charcoal-soft); }
+.contact-grid dd { font-family: var(--serif); font-size: 12pt; margin-top: 1mm; color: var(--charcoal); }
+/* The back cover closes on the brand mark, centred and stacked as on the front. */
+.contact-foot {
+  margin-top: 6mm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3mm;
+  color: var(--charcoal);
+}
+.contact-mono { width: 7mm; height: 7mm; }
+.contact-logo { width: 40mm; height: auto; }

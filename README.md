@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Quint Home — www.quinthome.in
 
-## Getting Started
+The storefront for Quint Home: waterless diffusers, fragrance oils and candles.
+Next.js on Vercel, with Shopify for products and orders, PayU for payment and
+Shiprocket for delivery.
 
-First, run the development server:
+## Project structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+app/            Pages and API routes (Next.js App Router)
+  admin/        Staff area: GST invoices, gift stock, payments, abandoned checkouts
+  api/          PayU, Shopify, delivery, admin and status endpoints
+components/     UI, grouped by area (home, product, cart, checkout, layout, …)
+lib/            Logic and data
+  data/         The catalogue: diffusers, oils, candles, journal, reviews
+  shopify/      Storefront and Admin API clients
+  payu/         Payment signing, verification and order settlement
+  abandoned/    Unpaid-checkout records (Upstash Redis) and restore links
+public/         Images, videos and fonts served by the site
+docs/           How the checkout and layout rules work
+
+marketing/      Material made from the site's data, not part of the website
+  catalogue/    Print catalogue: build.ts + tools/ → out/*.pdf
+  seo/          SEO audit and plan: src/*.html → *.pdf
+
+assets/         Local only, never committed: raw photos, design exports, zips
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Generated output (`marketing/*/out`, the PDFs, `.next/`) and everything in
+`assets/` are git-ignored.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Working on it
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev          # http://localhost:3000
+npm run build        # what Vercel runs
+```
 
-## Learn More
+Environment variables live in the Vercel project (Shopify, PayU, Shiprocket,
+Upstash). `/api/checkout/status` shows which ones the live site can see —
+names only — and which commit it was built from.
 
-To learn more about Next.js, take a look at the following resources:
+## Deploying
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Pushing to `main` on GitHub (`quinthome6-max/website`) deploys to production.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Marketing material
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npx tsx marketing/catalogue/build.ts && python3 marketing/catalogue/tools/render.py
+python3 marketing/seo/render.py
+```
