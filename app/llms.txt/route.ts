@@ -128,7 +128,7 @@ ${[
 ## Optional
 
 ${[
-  ["/range", "The full range", "Every diffuser and oil on one page"],
+  ["/range", "The full range", "Every diffuser, oil and candle on one page"],
   ["/find-your-scent", "Find your scent", "Guided quiz that recommends an oil"],
   ["/about", "About", "Why the brand exists and how the oils are built"],
   ["/businesses", "For businesses", "Hotels, retail and office installations"],

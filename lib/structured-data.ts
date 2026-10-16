@@ -1,6 +1,8 @@
 import type { Candle, Diffuser, FragranceOil, Product } from "@/lib/types";
 import type { ShopifyCommerce } from "@/lib/shopify/commerce";
 import { SITE, BRAND, abs } from "@/lib/seo";
+import { FREE_SHIPPING_FROM, SHIPPING_FLAT } from "@/lib/checkout-config";
+import { numericId } from "@/lib/shopify/admin";
 
 /**
  * JSON-LD for the storefront.
@@ -21,6 +23,48 @@ function availability(available: boolean): string {
     : "https://schema.org/OutOfStock";
 }
 
+/**
+ * Shipping as /shipping states it, for one unit bought on its own: free at
+ * ₹5,000 and over, otherwise the flat rate; dispatched within 3 business days,
+ * delivered in 3–5. Google Shopping and ChatGPT shopping read these.
+ */
+function shippingDetails(price: number): Record<string, unknown> {
+  return {
+    "@type": "OfferShippingDetails",
+    shippingRate: {
+      "@type": "MonetaryAmount",
+      value: price >= FREE_SHIPPING_FROM ? 0 : SHIPPING_FLAT,
+      currency: "INR",
+    },
+    shippingDestination: { "@type": "DefinedRegion", addressCountry: "IN" },
+    deliveryTime: {
+      "@type": "ShippingDeliveryTime",
+      handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 3, unitCode: "DAY" },
+      transitTime: { "@type": "QuantitativeValue", minValue: 3, maxValue: 5, unitCode: "DAY" },
+    },
+  };
+}
+
+/**
+ * /shipping: no refunds; a damaged or defective item reported within 3 days is
+ * exchanged. The closest schema.org reading of that is a 3-day window with an
+ * exchange rather than money back.
+ */
+const RETURN_POLICY = {
+  "@type": "MerchantReturnPolicy",
+  applicableCountry: "IN",
+  returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+  merchantReturnDays: 3,
+  returnMethod: "https://schema.org/ReturnByMail",
+  refundType: "https://schema.org/ExchangeRefund",
+  merchantReturnLink: `${SITE}/shipping`,
+};
+
+/** Prices are reviewed at least yearly; the end of next year is a true bound. */
+function priceValidUntil(): string {
+  return `${new Date().getFullYear() + 1}-12-31`;
+}
+
 export function productJsonLd(
   product: Product,
   commerce: ShopifyCommerce | undefined,
@@ -33,28 +77,35 @@ export function productJsonLd(
   const candle = isCandle ? (product as Candle) : null;
   const diffuser = isOil || isCandle ? null : (product as Diffuser);
 
-  // Every finish is a real, separately purchasable variant, so they belong in
-  // the markup as such rather than being flattened into one offer.
+  // Every finish is a real, separately purchasable variant, so each is its
+  // own Offer with its own SKU. (An AggregateOffer is not accepted by Google's
+  // merchant listings.) ₹0 complimentary variants are never offers.
+  const paid = (commerce?.variants ?? []).filter((v) => v.price > 0);
+  const offerBase = {
+    "@type": "Offer",
+    priceCurrency: "INR",
+    priceValidUntil: priceValidUntil(),
+    itemCondition: "https://schema.org/NewCondition",
+    url,
+    seller: { "@id": ORG_ID },
+    hasMerchantReturnPolicy: RETURN_POLICY,
+  };
   const offers =
-    commerce && commerce.variants.length > 1
-      ? {
-          "@type": "AggregateOffer",
-          priceCurrency: "INR",
-          lowPrice: Math.min(...commerce.variants.map((v) => v.price)),
-          highPrice: Math.max(...commerce.variants.map((v) => v.price)),
-          offerCount: commerce.variants.length,
-          availability: availability(commerce.available),
-          url,
-          seller: { "@id": ORG_ID },
-        }
+    paid.length > 1
+      ? paid.map((v) => ({
+          ...offerBase,
+          name: `${product.name} — ${v.title}`,
+          sku: String(numericId(v.id) ?? v.id),
+          price: v.price,
+          availability: availability(v.available),
+          shippingDetails: shippingDetails(v.price),
+        }))
       : {
-          "@type": "Offer",
-          priceCurrency: "INR",
+          ...offerBase,
+          ...(paid[0] ? { sku: String(numericId(paid[0].id) ?? paid[0].id) } : {}),
           price,
           availability: availability(commerce?.available ?? true),
-          url,
-          itemCondition: "https://schema.org/NewCondition",
-          seller: { "@id": ORG_ID },
+          shippingDetails: shippingDetails(price),
         };
 
   const additional = [
@@ -81,7 +132,7 @@ export function productJsonLd(
           {
             "@type": "PropertyValue",
             name: "App control",
-            value: diffuser.bluetooth ? "Bluetooth companion app" : "On-device only",
+            value: diffuser.bluetooth ? "App-controllable" : "No app (on-device controls)",
           },
         ]
       : []),
@@ -101,8 +152,8 @@ export function productJsonLd(
         ? "Scented Candle"
         : "Electric Aroma Diffuser",
     brand: { "@type": "Brand", name: BRAND },
-    // Model codes are real manufacturer identifiers; oils have none, and
-    // inventing one would be worse than omitting the field.
+    // Model codes are real manufacturer identifiers; oils and candles have
+    // none, so their SKU is the Shopify variant id, on the offer.
     ...(diffuser ? { mpn: diffuser.model, sku: diffuser.model } : {}),
     offers,
     ...(additional.length ? { additionalProperty: additional } : {}),

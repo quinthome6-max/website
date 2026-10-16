@@ -1,5 +1,6 @@
 import { diffusers } from "@/lib/data/diffusers";
 import { oils } from "@/lib/data/oils";
+import { candles, CANDLE_CARE, CANDLE_MAKE } from "@/lib/data/candles";
 import { journal } from "@/lib/data/journal";
 import { getCommerceMap } from "@/lib/shopify/commerce";
 import { FREE_SHIPPING_FROM, SHIPPING_FLAT } from "@/lib/checkout-config";
@@ -65,6 +66,20 @@ ${o.tagline}
 ${o.description}`;
   });
 
+  const candleBlocks = candles.map(
+    (k) => `### ${k.name}
+
+URL: ${abs(`/range/${k.slug}`)}
+Price: ${inr(priceOf(k, commerce))}
+Fragrance: ${k.notesLine}
+Size: ${k.volumeML} ml, 100% soy wax, hand-poured
+Burn time: up to ${k.burnHours} hours
+
+${k.tagline}
+
+${k.description}`
+  );
+
   const articleBlocks = journal.map(
     (a) => `### ${a.title}
 
@@ -110,6 +125,14 @@ ${diffuserBlocks.join("\n\n")}
 ## Fragrance oils (${oils.length})
 
 ${oilBlocks.join("\n\n")}
+
+## Candles (${candles.length})
+
+${CANDLE_MAKE}
+
+${CANDLE_CARE}
+
+${candleBlocks.join("\n\n")}
 
 ## Journal (${journal.length})
 

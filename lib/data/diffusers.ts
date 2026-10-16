@@ -95,7 +95,7 @@ const diffusersByDefinition: Diffuser[] = [
     tier: "entry",
     tagline: "Scent Your Space. No Setup Required.",
     description:
-      "The Pebble is the effortless way to fill any room with your favourite essential oil blend. Simply plug it into any wall socket, add a few drops of oil, and let the ultra-quiet mist do the rest. Its compact, rotatable plug fits virtually any outlet orientation – perfect for bathrooms, kitchens, and tight spaces where a larger diffuser just won't fit.\n\nA built-in 24-hour intelligent cyclic timer takes care of the scheduling, so you get consistent fragrance without lifting a finger. No fussing with apps, no mess, no noise.",
+      "The Pebble is the effortless way to fill any room with your favourite Quint Home fragrance oil. Simply plug it into any wall socket and let its ultra-quiet, waterless diffusion do the rest. Its compact, rotatable plug fits virtually any outlet orientation – perfect for bathrooms, kitchens, and tight spaces where a larger diffuser just won't fit.\n\nA built-in 24-hour intelligent cyclic timer takes care of the scheduling, so you get consistent fragrance without lifting a finger. No fussing with apps, no mess, no noise.",
     priceINR: 3999,
     bluetooth: false,
     coverageSqFt: [161, 250],
