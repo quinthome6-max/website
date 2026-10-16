@@ -121,6 +121,14 @@ export async function GET() {
         ? `${process.env.PAYU_MERCHANT_KEY.slice(0, 3)}… (len ${process.env.PAYU_MERCHANT_KEY.length})`
         : null,
       adminApi,
+      // Search and analytics tools: on or off on this deployment (no ids shown).
+      tracking: {
+        googleAnalytics: Boolean(process.env.NEXT_PUBLIC_GA_ID),
+        searchConsoleMetaTag: Boolean(process.env.GOOGLE_SITE_VERIFICATION),
+        bingMetaTag: Boolean(process.env.BING_SITE_VERIFICATION),
+        clarity: true,
+        metaPixel: true,
+      },
       // /admin/abandoned needs a Redis store (Upstash) on the Vercel project.
       abandonedCheckouts: {
         storeConfigured: abandonedStoreConfigured,

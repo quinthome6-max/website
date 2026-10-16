@@ -46,3 +46,6 @@ yarn-error.log*
 
 # Downloaded environment files (values are secrets)
 *.env
+
+# Downloaded analytics data (may contain page URLs and traffic figures)
+/marketing/seo/data/

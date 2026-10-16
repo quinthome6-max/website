@@ -9,6 +9,7 @@ import { Grain } from "@/components/atmosphere/grain";
 import { ImageGuard } from "@/components/atmosphere/image-guard";
 import { Clarity } from "@/components/analytics/clarity";
 import { MetaPixel } from "@/components/analytics/meta-pixel";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { WhatsAppButton } from "@/components/layout/whatsapp-button";
 import { CartProvider } from "@/components/cart/cart-provider";
 import { CartDrawer } from "@/components/cart/cart-drawer";
@@ -23,6 +24,17 @@ export const metadata: Metadata = {
   description:
     "Hotel-grade home fragrance from Mumbai. Waterless electronic diffusers and IFRA-compliant fragrance oils, designed to be displayed.",
   metadataBase: new URL("https://www.quinthome.in"),
+  // Ownership proof for Google Search Console and Bing Webmaster Tools, from
+  // Vercel env vars (the "content" value of each tool's meta tag). Not needed
+  // when the domain is verified by DNS instead. See docs/seo/.
+  verification: {
+    ...(process.env.GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+      : {}),
+    ...(process.env.BING_SITE_VERIFICATION
+      ? { other: { "msvalidate.01": process.env.BING_SITE_VERIFICATION } }
+      : {}),
+  },
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
@@ -94,6 +106,7 @@ export default function RootLayout({
           <WhatsAppButton />
           <Clarity />
           <MetaPixel />
+          <GoogleAnalytics />
         </CartProvider>
       </body>
     </html>

@@ -12,6 +12,8 @@
  * every event follows.
  */
 
+import { gaEvent } from "@/lib/analytics/ga4";
+
 export const META_PIXEL_ID = "1843486567026202";
 
 /** The browser pixel hashes these itself before they leave the page. */
@@ -153,6 +155,10 @@ export function viewContent(p: {
   value: number;
   category?: string;
 }): void {
+  gaEvent("view_item", {
+    value: p.value,
+    items: [{ item_id: p.id, item_name: p.name, item_category: p.category, price: p.value, quantity: 1 }],
+  });
   track("ViewContent", {
     content_ids: [p.id],
     content_name: p.name,
@@ -168,6 +174,15 @@ export function addToCart(p: {
   value: number;
   name?: string;
 }): void {
+  gaEvent("add_to_cart", {
+    value: p.value,
+    items: p.contents.map((c, i) => ({
+      item_id: c.id,
+      ...(i === 0 && p.name ? { item_name: p.name } : {}),
+      price: c.item_price,
+      quantity: c.quantity,
+    })),
+  });
   track("AddToCart", {
     content_ids: p.contents.map((c) => c.id),
     contents: p.contents,
@@ -182,6 +197,10 @@ export function initiateCheckout(p: {
   contents: PixelContent[];
   value: number;
 }): void {
+  gaEvent("begin_checkout", {
+    value: p.value,
+    items: p.contents.map((c) => ({ item_id: c.id, price: c.item_price, quantity: c.quantity })),
+  });
   track("InitiateCheckout", {
     content_ids: p.contents.map((c) => c.id),
     contents: p.contents,
@@ -197,6 +216,11 @@ export function purchase(p: {
   value: number;
   orderId: string;
 }): void {
+  gaEvent("purchase", {
+    transaction_id: p.orderId,
+    value: p.value,
+    items: p.contents.map((c) => ({ item_id: c.id, price: c.item_price, quantity: c.quantity })),
+  });
   track("Purchase", {
     content_ids: p.contents.map((c) => c.id),
     contents: p.contents,
