@@ -2,9 +2,12 @@ import { NextResponse, type NextRequest } from "next/server";
 import {
   ADMIN_COOKIE,
   ADMIN_SESSION_MAX_AGE,
+  MARKETING_PRINCIPAL,
   PASSWORD_PRINCIPAL,
   adminPasswordConfigured,
   issueSession,
+  marketingPasswordConfigured,
+  marketingPasswordMatches,
   passwordMatches,
 } from "@/lib/admin/session";
 
@@ -75,7 +78,7 @@ export async function POST(request: NextRequest) {
   const back = (reason: string) =>
     NextResponse.redirect(new URL(`/admin/login?error=${reason}`, request.url), 303);
 
-  if (!adminPasswordConfigured()) return back("denied");
+  if (!adminPasswordConfigured() && !marketingPasswordConfigured()) return back("denied");
 
   if (looksAutomated(request)) return back("denied");
 
@@ -91,17 +94,27 @@ export async function POST(request: NextRequest) {
   const form = await request.formData();
   if (String(form.get("company") ?? "").length > 0) return back("denied");
 
+  // The full-access passphrase is checked first, so if the two were ever set
+  // to the same value it would never quietly downgrade an admin.
   const candidate = String(form.get("password") ?? "");
-  if (!candidate || !passwordMatches(candidate)) return back("denied");
+  const principal = !candidate
+    ? null
+    : passwordMatches(candidate)
+      ? PASSWORD_PRINCIPAL
+      : marketingPasswordMatches(candidate)
+        ? MARKETING_PRINCIPAL
+        : null;
+  if (!principal) return back("denied");
 
   // Correct passphrase: clear the count so a valid user is not locked out by
   // their own earlier typos.
   attempts.delete(ip);
 
-  const session = issueSession(PASSWORD_PRINCIPAL, now + ADMIN_SESSION_MAX_AGE * 1000);
+  const session = issueSession(principal, now + ADMIN_SESSION_MAX_AGE * 1000);
   if (!session) return back("config");
 
-  const res = NextResponse.redirect(new URL("/admin", request.url), 303);
+  const home = principal === MARKETING_PRINCIPAL ? "/admin/abandoned" : "/admin";
+  const res = NextResponse.redirect(new URL(home, request.url), 303);
   res.cookies.set(ADMIN_COOKIE, session, {
     httpOnly: true, sameSite: "lax", secure: true, path: "/", maxAge: ADMIN_SESSION_MAX_AGE,
   });

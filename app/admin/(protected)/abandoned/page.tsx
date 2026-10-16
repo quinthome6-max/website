@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SITE } from "@/lib/seo";
+import { currentViewer } from "@/lib/admin/session";
 import {
   abandonedStoreConfigured,
   listCheckouts,
@@ -75,6 +76,7 @@ export default async function AbandonedPage({
   searchParams: Promise<Query>;
 }) {
   const q = await searchParams;
+  const staff = (await currentViewer())?.role === "staff";
   const view: View = q.view === "recovered" || q.view === "all" ? q.view : "open";
   const now = requestTime();
 
@@ -253,7 +255,7 @@ export default async function AbandonedPage({
                         Email
                       </a>
                     )}
-                    {r.txnid && (
+                    {staff && r.txnid && (
                       <Link href="/admin/payments" className="text-[color:var(--color-charcoal-soft)] underline-offset-4 hover:underline">
                         Payments
                       </Link>
@@ -292,7 +294,7 @@ export default async function AbandonedPage({
             <p className="mt-3">
               <span className="text-[color:var(--color-charcoal)]">Left at PayU</span>{" "}
               means the customer reached the payment page. If they say they were
-              charged, check the transaction id under Payments before anything else.
+              charged, {staff ? "check the transaction id under Payments" : "pass the transaction id to the admin"} before anything else.
             </p>
           </div>
         </>

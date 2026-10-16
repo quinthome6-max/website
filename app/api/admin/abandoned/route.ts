@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { currentStaffShop } from "@/lib/admin/session";
+import { currentViewer } from "@/lib/admin/session";
 import { dismissCheckout, markContacted } from "@/lib/abandoned/store";
 
 export const dynamic = "force-dynamic";
@@ -10,7 +10,8 @@ export const dynamic = "force-dynamic";
  * since a route handler does not inherit it.
  */
 export async function POST(request: Request): Promise<NextResponse> {
-  if (!(await currentStaffShop())) {
+  // Staff and the marketing team alike: this is the page marketing is for.
+  if (!(await currentViewer())) {
     return NextResponse.json({ error: "Not authorised" }, { status: 401 });
   }
 

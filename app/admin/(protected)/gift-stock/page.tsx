@@ -1,8 +1,10 @@
 import { GiftStockRunner } from "@/components/admin/gift-stock-runner";
+import { requireStaff } from "@/lib/admin/session";
 
 export const dynamic = "force-dynamic";
 
-export default function GiftStockPage() {
+export default async function GiftStockPage() {
+  await requireStaff();
   return (
     <>
       <h1 style={{ fontFamily: "var(--font-serif)", fontSize: "1.6rem" }}>

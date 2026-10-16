@@ -1,5 +1,9 @@
 import { redirect } from "next/navigation";
-import { adminPasswordConfigured, currentStaffShop } from "@/lib/admin/session";
+import {
+  adminPasswordConfigured,
+  currentViewer,
+  marketingPasswordConfigured,
+} from "@/lib/admin/session";
 import { oauthConfigured } from "@/lib/shopify/oauth";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +18,8 @@ export default async function AdminLogin({
 }: {
   searchParams: Promise<{ error?: string }>;
 }) {
-  if (await currentStaffShop()) redirect("/admin");
+  const viewer = await currentViewer();
+  if (viewer) redirect(viewer.role === "marketing" ? "/admin/abandoned" : "/admin");
   const { error } = await searchParams;
 
   return (
@@ -49,7 +54,7 @@ export default async function AdminLogin({
       {/* Passphrase, for somebody who needs the invoices but has no Shopify
           account — an accountant, typically. Hidden entirely when unset, so an
           unconfigured deployment shows no way in rather than a dead form. */}
-      {adminPasswordConfigured() && (
+      {(adminPasswordConfigured() || marketingPasswordConfigured()) && (
         <>
           {oauthConfigured() && (
           <div className="mt-10 flex items-center gap-4">

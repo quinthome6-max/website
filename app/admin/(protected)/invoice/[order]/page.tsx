@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireStaff } from "@/lib/admin/session";
 import { notFound } from "next/navigation";
 import { getInvoice } from "@/lib/admin/orders";
 import { invoiceHtml } from "@/lib/admin/invoice-html";
@@ -15,6 +16,7 @@ export default async function InvoicePage({
 }: {
   params: Promise<{ order: string }>;
 }) {
+  await requireStaff();
   const { order } = await params;
   const orderNumber = Number(order);
   if (!Number.isInteger(orderNumber) || orderNumber <= 0) notFound();

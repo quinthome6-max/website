@@ -1,3 +1,4 @@
+import { requireStaff } from "@/lib/admin/session";
 export const dynamic = "force-dynamic";
 
 interface Query {
@@ -78,6 +79,7 @@ export default async function PaymentsPage({
 }: {
   searchParams: Promise<Query>;
 }) {
+  await requireStaff();
   const q = await searchParams;
   const result = outcome(q);
 

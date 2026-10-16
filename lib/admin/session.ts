@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { apiSecret, normalizeShop, shopDomain } from "@/lib/shopify/oauth";
 
 /**
@@ -20,6 +21,10 @@ export const ADMIN_COOKIE = "quint_admin_session";
 /** Marks a passphrase sign-in, so the header can show how someone got in. It is
  *  deliberately not a valid shop domain, so it cannot collide with one. */
 export const PASSWORD_PRINCIPAL = "passphrase";
+
+/** Marks a sign-in with the marketing passphrase: abandoned checkouts only,
+ *  nothing else in /admin. Likewise not a valid shop domain. */
+export const MARKETING_PRINCIPAL = "marketing";
 
 /** Eight hours. Long enough for a working day, short enough that a forgotten
  *  laptop stops mattering by morning. */
@@ -79,14 +84,38 @@ export function verifySession(value: string | undefined, nowMs: number): string 
   // A token minted for a different store must not open this one. The
   // passphrase principal is not a shop, so it is allowed through explicitly
   // rather than by loosening the comparison.
-  if (shop === PASSWORD_PRINCIPAL) return shop;
+  if (shop === PASSWORD_PRINCIPAL || shop === MARKETING_PRINCIPAL) return shop;
   return shop && shop === normalizeShop(shopDomain()) ? shop : null;
 }
 
-/** The signed-in shop for the current request, or null. */
+/**
+ * The signed-in staff member for the current request, or null.
+ *
+ * Staff means full access. A marketing sign-in is deliberately not staff, so
+ * every existing check on this function — invoices, payments, gift stock and
+ * their routes — keeps the marketing team out without each needing a change.
+ */
 export async function currentStaffShop(): Promise<string | null> {
+  const viewer = await currentViewer();
+  return viewer?.role === "staff" ? viewer.principal : null;
+}
+
+export type AdminRole = "staff" | "marketing";
+
+/** Whoever is signed in to /admin, with what they may see, or null. */
+export async function currentViewer(): Promise<{ principal: string; role: AdminRole } | null> {
   const jar = await cookies();
-  return verifySession(jar.get(ADMIN_COOKIE)?.value, Date.now());
+  const principal = verifySession(jar.get(ADMIN_COOKIE)?.value, Date.now());
+  if (!principal) return null;
+  return { principal, role: principal === MARKETING_PRINCIPAL ? "marketing" : "staff" };
+}
+
+/** For staff-only pages: sends a marketing sign-in to the one page it may use. */
+export async function requireStaff(): Promise<string> {
+  const viewer = await currentViewer();
+  if (!viewer) redirect("/admin/login");
+  if (viewer.role !== "staff") redirect("/admin/abandoned");
+  return viewer.principal;
 }
 
 /**
@@ -105,7 +134,21 @@ export const adminPasswordConfigured = (): boolean =>
  * anything about the secret.
  */
 export function passwordMatches(candidate: string): boolean {
-  const expected = process.env.ADMIN_PASSWORD;
+  return secretMatches(candidate, process.env.ADMIN_PASSWORD);
+}
+
+/**
+ * A second passphrase for the performance-marketing team. It opens abandoned
+ * checkouts and nothing else. Unset (or under 8 characters) means closed.
+ */
+export const marketingPasswordConfigured = (): boolean =>
+  Boolean(process.env.MARKETING_PASSWORD && process.env.MARKETING_PASSWORD.length >= 8);
+
+export function marketingPasswordMatches(candidate: string): boolean {
+  return secretMatches(candidate, process.env.MARKETING_PASSWORD);
+}
+
+function secretMatches(candidate: string, expected: string | undefined): boolean {
   if (!expected || expected.length < 8) return false;
   const a = crypto.createHash("sha256").update(candidate, "utf8").digest();
   const b = crypto.createHash("sha256").update(expected, "utf8").digest();

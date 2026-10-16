@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireStaff } from "@/lib/admin/session";
 import { listInvoices, adminConfigured } from "@/lib/admin/orders";
 import { supplierGaps } from "@/lib/admin/supplier";
 
@@ -13,6 +14,7 @@ const DATE = new Intl.DateTimeFormat("en-IN", {
 
 /** Orders with their GST, newest first — the "all info in one place" view. */
 export default async function AdminHome() {
+  await requireStaff();
   const gaps = supplierGaps();
 
   if (!adminConfigured) {
