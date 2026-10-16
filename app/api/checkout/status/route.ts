@@ -102,6 +102,16 @@ export async function GET() {
   return NextResponse.json(
     {
       headlessCheckout,
+      // Which repository and commit this deployment was built from (Vercel's
+      // own system variables; public information about the build, no secrets).
+      deployedFrom: {
+        repo:
+          process.env.VERCEL_GIT_REPO_OWNER && process.env.VERCEL_GIT_REPO_SLUG
+            ? `${process.env.VERCEL_GIT_REPO_OWNER}/${process.env.VERCEL_GIT_REPO_SLUG}`
+            : null,
+        branch: process.env.VERCEL_GIT_COMMIT_REF ?? null,
+        commit: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? null,
+      },
       checkoutGoesTo: headlessCheckout ? "/checkout (PayU)" : "Shopify checkout",
       shopifyAndPayuKeysVisibleToThisBuild: relatedKeys,
       // Enough to tell one credential from another, never enough to use them.
