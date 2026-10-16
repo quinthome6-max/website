@@ -215,6 +215,16 @@ export function CheckoutForm({
       const key = JSON.stringify(fields);
       if (key === lastSaved.current) return;
       lastSaved.current = key;
+      // Kept on this device as they type, not only when they pay, so someone
+      // who leaves and comes back on their own finds the form filled in even
+      // after the bag itself has expired.
+      if (remember) {
+        try {
+          window.localStorage.setItem(REMEMBER_KEY, key);
+        } catch {
+          /* private mode or storage full: just not remembered */
+        }
+      }
       saveCheckoutProgress(fields).catch(() => {
         lastSaved.current = ""; // try again on the next change
       });
@@ -433,7 +443,17 @@ export function CheckoutForm({
               <input
                 type="checkbox"
                 checked={remember}
-                onChange={(e) => setRemember(e.target.checked)}
+                onChange={(e) => {
+                  setRemember(e.target.checked);
+                  // Unticked means forget now, not only at the next payment.
+                  if (!e.target.checked) {
+                    try {
+                      window.localStorage.removeItem(REMEMBER_KEY);
+                    } catch {
+                      /* nothing stored */
+                    }
+                  }
+                }}
                 className="h-4 w-4 accent-[color:var(--color-charcoal)]"
               />
               Remember my details on this device for next time
