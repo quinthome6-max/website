@@ -22,7 +22,7 @@ Tick these off as they are done.
 
 - [x] Search Console: property verified, you have access
 - [x] Search Console: sitemap `https://www.quinthome.in/sitemap.xml` submitted (17 Oct 2026, 32 pages)
-- [ ] GA4: property created, `NEXT_PUBLIC_GA_ID` added in Vercel, redeployed
+- [x] GA4: property created and live on the site (G-T5Y716X7TM, 17 Oct 2026)
 - [ ] GA4: `payu.in` added as an unwanted referral
 - [ ] GA4: linked to Search Console
 - [ ] Clarity: you have Admin access to project `ybcekf8e6g`

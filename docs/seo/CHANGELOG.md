@@ -20,6 +20,12 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-17 — Google Analytics 4 switched on (G-T5Y716X7TM)
+- **What:** GA4 measurement id `G-T5Y716X7TM` set as the default in `lib/analytics/ga4.ts` (public id, like the Clarity and Pixel ids; `NEXT_PUBLIC_GA_ID` in Vercel would override it). The site's own GA4 code is used; the snippet from Google was not pasted in, which would double-count.
+- **Where:** commit `166946b`.
+- **Check:** live status `tracking.googleAnalytics: true`; a real browser on /range/grand-lobby loaded gtag.js for G-T5Y716X7TM and sent `page_view` to Google Analytics. Shop events (view_item, add_to_cart, begin_checkout, purchase) were verified on a local build earlier.
+- **Next (in GA4):** add `payu.in` and `secure.payu.in` as unwanted referrals, link Search Console, data retention 14 months, mark `purchase` as a key event (docs/seo/02, steps 4–7).
+
 ## 2026-10-17 — All pages pushed to Bing via IndexNow
 - **What:** all 32 sitemap URLs submitted through IndexNow (answered 202 Accepted). Shared with Bing, Yandex, Seznam and Naver.
 - **Why:** Bing returned no quinthome.in results, and ChatGPT search draws on Bing.
