@@ -6,6 +6,7 @@ import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { payuConfigured } from "@/lib/payu/client";
 import { shopifyAdminConfigured } from "@/lib/shopify/admin";
+import { GA_ID } from "@/lib/analytics/ga4";
 import { abandonedStoreConfigured, pingAbandonedStore, redisEnvNames } from "@/lib/abandoned/store";
 import { getToken, shiprocketConfigured } from "@/lib/shiprocket/client";
 
@@ -123,7 +124,7 @@ export async function GET() {
       adminApi,
       // Search and analytics tools: on or off on this deployment (no ids shown).
       tracking: {
-        googleAnalytics: Boolean(process.env.NEXT_PUBLIC_GA_ID),
+        googleAnalytics: Boolean(GA_ID),
         searchConsoleMetaTag: Boolean(process.env.GOOGLE_SITE_VERIFICATION),
         bingMetaTag: Boolean(process.env.BING_SITE_VERIFICATION),
         clarity: true,

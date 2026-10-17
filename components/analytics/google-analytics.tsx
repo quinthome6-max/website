@@ -2,8 +2,7 @@ import Script from "next/script";
 import { GA_ID } from "@/lib/analytics/ga4";
 
 /**
- * Google Analytics 4. Off until NEXT_PUBLIC_GA_ID is set in Vercel (the "G-…"
- * measurement id), so a deployment without it sends nothing.
+ * Google Analytics 4 (measurement id in lib/analytics/ga4.ts).
  *
  * afterInteractive, like Clarity and the Meta Pixel: analytics must never sit
  * in front of the page rendering. Events sent earlier wait in dataLayer.

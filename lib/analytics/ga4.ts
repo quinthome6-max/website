@@ -11,7 +11,9 @@
  * changes from the browser history, so they are not sent by hand.
  */
 
-export const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "";
+/** quinthome.in's GA4 web stream. Public by nature (it is in every page), so
+ *  kept here like the Clarity and Meta Pixel ids; NEXT_PUBLIC_GA_ID overrides. */
+export const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-T5Y716X7TM";
 
 type Gtag = (...args: unknown[]) => void;
 
