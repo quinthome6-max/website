@@ -35,8 +35,10 @@ export interface InvoiceLine {
    */
   listPrice: number;
   /** Reduction from listPrice, inclusive of tax. Equals the whole list price
-   *  on a gift line. */
+   *  on a gift line; on a paid line, its share of any discount code. */
   discount: number;
+  /** The part of `discount` that came from a discount code (0 on a gift). */
+  codeDiscount: number;
   tax: TaxSplit;
   /** Set when the line could not be classified and needs a human. */
   unclassified: boolean;
@@ -81,6 +83,12 @@ export interface Invoice {
   discountTotal: number;
   /** What Shopify recorded as charged for the order, after any discount code. */
   totalPaid: number;
+  /** Value given away as complimentary bottles. */
+  giftDiscount: number;
+  /** Taken off by discount codes, across the items and shipping. */
+  codeDiscount: number;
+  /** The codes used, as entered. */
+  discountCodes: string[];
 }
 
 interface RawAddress {
@@ -112,7 +120,15 @@ interface RawOrder {
   total_price: string;
   shipping_address?: RawAddress | null;
   billing_address?: RawAddress | null;
-  shipping_lines?: { title: string; price: string }[] | null;
+  shipping_lines?:
+    | {
+        title: string;
+        price: string;
+        /** After any discount code that applies to shipping. */
+        discounted_price?: string | null;
+      }[]
+    | null;
+  discount_codes?: { code: string; amount: string }[] | null;
   line_items: {
     title: string;
     variant_title?: string | null;
@@ -120,6 +136,8 @@ interface RawOrder {
     quantity: number;
     price: string;
     properties?: { name: string; value: string }[] | null;
+    /** Shopify's share-out of order discounts (codes) onto this line. */
+    discount_allocations?: { amount: string }[] | null;
   }[];
 }
 
@@ -182,7 +200,9 @@ function classifyLine(title: string, sku: string | null): { hsn: HsnClass; uncla
   if (bySku) return { hsn: bySku, unclassified: false };
 
   const t = title.toLowerCase();
-  if (/diffuser|pebble|monolith|loom|pillar|ember/.test(t)) {
+  // The Drift is a diffuser too (category "diffuser" in lib/data); its title
+  // carries neither "diffuser" nor an A-series SKU, so it is named here.
+  if (/diffuser|pebble|monolith|loom|pillar|ember|drift/.test(t)) {
     return { hsn: DIFFUSER_HSN, unclassified: false };
   }
   if (/oil|ritual|terrain|rain|hour|solitude|shoreline|lobby|arrival/.test(t)) {
@@ -190,6 +210,12 @@ function classifyLine(title: string, sku: string | null): { hsn: HsnClass; uncla
   }
   return { hsn: OIL_HSN, unclassified: true };
 }
+
+const round2 = (n: number) => Math.round(n * 100) / 100;
+
+/** Sum of Shopify's discount allocations on a line, in rupees. */
+const allocated = (a?: { amount: string }[] | null): number =>
+  round2((a ?? []).reduce((t, x) => t + (Number(x.amount) || 0), 0));
 
 /** Build the invoice view of one Shopify order. */
 export function toInvoice(
@@ -219,7 +245,11 @@ export function toInvoice(
     // supply as reducing the transaction value, so this is also the figure
     // that belongs in the return.
     const listPrice = isGift ? listPriceFor?.(li.title) ?? 0 : unit;
-    const discount = isGift ? listPrice * li.quantity : 0;
+    // A discount code is shared out over the lines by Shopify. The same rule
+    // applies: it is shown on the invoice at the time of supply, so the tax is
+    // worked on what was actually charged for the line, not its list price.
+    const codeDiscount = isGift ? 0 : allocated(li.discount_allocations);
+    const discount = isGift ? listPrice * li.quantity : codeDiscount;
 
     return {
       title: li.title,
@@ -230,14 +260,20 @@ export function toInvoice(
       unitPrice: unit,
       listPrice,
       discount,
-      tax: splitInclusive(unit * li.quantity, hsn.ratePercent, interState),
+      codeDiscount,
+      tax: splitInclusive(unit * li.quantity - codeDiscount, hsn.ratePercent, interState),
       unclassified,
     };
   });
 
   // Shipping is a supply too. It follows the rate of what is being shipped,
   // which is 18% for everything in this catalogue.
-  const shippingGross = (order.shipping_lines ?? []).reduce((t, s) => t + Number(s.price), 0);
+  // What shipping actually cost, after a code that discounts it.
+  const shippingList = (order.shipping_lines ?? []).reduce((t, s) => t + Number(s.price), 0);
+  const shippingGross = (order.shipping_lines ?? []).reduce(
+    (t, s) => t + Number(s.discounted_price ?? s.price),
+    0
+  );
   const shipping = shippingGross > 0 ? splitInclusive(shippingGross, 18, interState) : null;
 
   const totals = totalSplits([...lines.map((l) => l.tax), ...(shipping ? [shipping] : [])]);
@@ -267,6 +303,11 @@ export function toInvoice(
     discountTotal:
       Math.round(lines.reduce((t, l) => t + l.discount, 0) * 100) / 100,
     totalPaid: Number(order.total_price) || 0,
+    giftDiscount: round2(lines.reduce((t, l) => t + (l.discount - l.codeDiscount), 0)),
+    codeDiscount: round2(
+      lines.reduce((t, l) => t + l.codeDiscount, 0) + (shippingList - shippingGross)
+    ),
+    discountCodes: (order.discount_codes ?? []).map((d) => d.code).filter(Boolean),
   };
 }
 

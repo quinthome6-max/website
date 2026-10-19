@@ -342,8 +342,11 @@ ${inv.needsAttention.length ? `<div class="warn noprint"><strong>Needs attention
 </div>
 
 <div class="summary">
-  <div><span>Value of items</span><span>${money(inv.totals.gross + inv.discountTotal)}</span></div>
-  <div class="band"><span>Complimentary${inv.discountTotal > 0 ? "" : " discount"}</span><span>−${money(inv.discountTotal)}</span></div>
+  <div><span>Value of items</span><span>${money(inv.totals.gross + inv.giftDiscount + inv.codeDiscount)}</span></div>
+  <div class="band"><span>Complimentary${inv.giftDiscount > 0 ? "" : " discount"}</span><span>−${money(inv.giftDiscount)}</span></div>
+  ${inv.codeDiscount > 0
+    ? `<div class="band"><span>Discount${inv.discountCodes.length ? ` (${esc(inv.discountCodes.join(", "))})` : ""}</span><span>−${money(inv.codeDiscount)}</span></div>`
+    : ""}
   <div><span>Total Before Tax</span><span>${money(inv.totals.taxable)}</span></div>
   ${inter
     ? `<div><span>IGST @ 18%</span><span>${money(inv.totals.igst)}</span></div>`

@@ -98,18 +98,20 @@ export function buildOrderEmail(inv: Invoice, invoiceAttached: boolean): BuiltEm
           ? l.variantTitle
           : "",
       quantity: l.quantity,
-      amount: l.tax.gross,
+      // Before any discount code, which gets its own row below.
+      amount: l.tax.gross + l.codeDiscount,
       gift,
       image: product ? `${SITE}/images/email/products/${product.slug}.jpg` : null,
       url: product ? `${SITE}/range/${product.slug}` : SITE,
     };
   });
-  const items = lines.reduce((t, l) => t + l.amount, 0);
-  const shipping = inv.shipping?.gross ?? 0;
-  // What was actually charged; anything between that and the lines is a
-  // discount code applied to the whole order.
-  const total = inv.totalPaid || items + shipping;
-  const codeDiscount = Math.max(0, Math.round((items + shipping - total) * 100) / 100);
+  // Shipping before any code that discounted it; the code's whole effect is
+  // the one Discount row, so the rows add up to what was charged.
+  const lineCodes = inv.lines.reduce((t, l) => t + l.codeDiscount, 0);
+  const shipping = (inv.shipping?.gross ?? 0) + Math.max(0, inv.codeDiscount - lineCodes);
+  const codeDiscount = inv.codeDiscount;
+  const total = inv.totalPaid || lines.reduce((t, l) => t + l.amount, 0) + shipping - codeDiscount;
+  const codeLabel = inv.discountCodes.length ? `Discount (${inv.discountCodes.join(", ")})` : "Discount";
   const address = [
     inv.customer.name,
     ...inv.customer.addressLines,
@@ -167,7 +169,7 @@ export function buildOrderEmail(inv: Invoice, invoiceAttached: boolean): BuiltEm
     <p style="margin:0 0 4px;font-family:${SANS};font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:${C.soft}">Your order</p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${lineRows}
       ${shipping > 0 ? `<tr><td></td><td style="padding:14px 12px 0 0;font-family:${SANS};font-size:14px;color:${C.soft}">Shipping</td><td align="right" style="padding:14px 0 0;font-family:${SANS};font-size:14px;color:${C.charcoal}">${money(shipping)}</td></tr>` : `<tr><td></td><td style="padding:14px 12px 0 0;font-family:${SANS};font-size:14px;color:${C.soft}">Shipping</td><td align="right" style="padding:14px 0 0;font-family:${SANS};font-size:14px;color:${C.charcoal}">Free</td></tr>`}
-      ${codeDiscount > 0 ? `<tr><td></td><td style="padding:10px 12px 0 0;font-family:${SANS};font-size:14px;color:${C.soft}">Discount</td><td align="right" style="padding:10px 0 0;font-family:${SANS};font-size:14px;color:${C.charcoal}">−${money(codeDiscount)}</td></tr>` : ""}
+      ${codeDiscount > 0 ? `<tr><td></td><td style="padding:10px 12px 0 0;font-family:${SANS};font-size:14px;color:${C.soft}">${esc(codeLabel)}</td><td align="right" style="padding:10px 0 0;font-family:${SANS};font-size:14px;color:${C.charcoal}">−${money(codeDiscount)}</td></tr>` : ""}
       <tr><td></td><td style="padding:10px 12px 0 0;font-family:${SERIF};font-size:18px;color:${C.charcoal}">Total paid</td><td align="right" style="padding:10px 0 0;font-family:${SERIF};font-size:18px;color:${C.charcoal};white-space:nowrap">${money(total)}</td></tr>
       <tr><td></td><td colspan="2" style="padding:4px 0 0;font-family:${SANS};font-size:12px;color:${C.soft}">Inclusive of GST · paid via ${esc(inv.paymentMode || "PayU")}</td></tr>
     </table>
@@ -221,7 +223,7 @@ export function buildOrderEmail(inv: Invoice, invoiceAttached: boolean): BuiltEm
         `${l.name}${l.variant ? ` (${l.variant})` : ""} × ${l.quantity} — ${l.gift ? "Free" : money(l.amount)}`
     ),
     `Shipping — ${shipping > 0 ? money(shipping) : "Free"}`,
-    ...(codeDiscount > 0 ? [`Discount — −${money(codeDiscount)}`] : []),
+    ...(codeDiscount > 0 ? [`${codeLabel} — −${money(codeDiscount)}`] : []),
     `Total paid — ${money(total)} (inclusive of GST)`,
     ``,
     `Delivering to:`,
