@@ -57,7 +57,9 @@ export default function RootLayout({
     >
       <body
         suppressHydrationWarning
-        className="flex min-h-screen flex-col bg-[color:var(--color-white)] text-[color:var(--color-charcoal)]"
+        // Product pages on mobile carry a sticky buy bar (68px + the home
+        // indicator); pad the page so the footer's last lines clear it.
+        className="flex min-h-screen flex-col bg-[color:var(--color-white)] text-[color:var(--color-charcoal)] max-lg:has-[[data-mobile-buy-bar]]:pb-[calc(68px+env(safe-area-inset-bottom))]"
       >
         {/* Names the home page as the brand's entity, which is what search
             engines use to decide the page to show for a brand query — without

@@ -20,6 +20,12 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-19 — Customer reviews on every product page; product-page CRO pass
+- **What:** customers can now write reviews on all 17 product pages. Each page shows stars + average + count under the product name, and a reviews section (average, star breakdown, review list, "Write a review") above the comparison block. Reviews are held for staff approval at `/admin/reviews` and only approved ones are shown. The Product markup now carries `aggregateRating` and up to 5 `review` entries, built from the same approved reviews the page renders. With none approved, nothing is emitted, so no product has stars in the markup yet. Same release: a 5-point overview dropdown under each diffuser's name; a trust strip under Add to bag (free shipping rule, 3-day dispatch, secure PayU checkout, warranty/exchange); a key-features image as gallery slide 2 on each diffuser; the included-oil picker moved into a popup; the Drift no longer says it ships with an oil.
+- **Why:** audit item "Missing aggregateRating / review" (Search Console product snippets). Stars can only be real: the site had no review data, so ratings were not invented.
+- **Where:** `lib/reviews/store.ts`, `lib/redis.ts`, `app/actions/reviews.ts`, `components/reviews/*`, `app/admin/(protected)/reviews/`, `app/api/admin/reviews/route.ts`, `lib/structured-data.ts`, `app/range/[slug]/page.tsx`, product components; images in `public/images/diffusers/key-features/`.
+- **Check:** after the first reviews are approved, run the page through Google's Rich Results Test and watch Search Console → Product snippets for the warning clearing. Add a line about reviews (name and city published, email private) to the privacy policy.
+
 ## 2026-10-17 — Google Analytics 4 switched on (G-T5Y716X7TM)
 - **What:** GA4 measurement id `G-T5Y716X7TM` set as the default in `lib/analytics/ga4.ts` (public id, like the Clarity and Pixel ids; `NEXT_PUBLIC_GA_ID` in Vercel would override it). The site's own GA4 code is used; the snippet from Google was not pasted in, which would double-count.
 - **Where:** commit `166946b`.

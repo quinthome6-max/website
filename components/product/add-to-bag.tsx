@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { PriceTag } from "@/components/product/price-tag";
+import { TrustStrip } from "@/components/product/trust-strip";
 import { useCart } from "@/components/cart/cart-provider";
 
 interface Props {
@@ -23,6 +24,12 @@ interface Props {
    * up yet, which adds the diffuser alone rather than blocking the sale.
    */
   giftVariantId?: string | null;
+  /** Devices show the 1-year warranty in the trust strip; others the exchange. */
+  warranty?: boolean;
+  /** What comes free with it, shown under the price, e.g. the included oil. */
+  perk?: string;
+  /** Rendered directly above the button, e.g. the included-oil picker bar. */
+  beforeButton?: ReactNode;
 }
 
 export function AddToBag({
@@ -37,6 +44,9 @@ export function AddToBag({
   available = true,
   attributes,
   giftVariantId,
+  warranty = false,
+  perk,
+  beforeButton,
 }: Props) {
   const [mode, setMode] = useState<"one-time" | "subscribe">("one-time");
   const subscribePrice = Math.round(priceINR * 0.85);
@@ -44,7 +54,10 @@ export function AddToBag({
   const soldOut = !available;
 
   return (
-    <div className="grid gap-5">
+    // grid-cols-1 is minmax(0, 1fr): a plain grid sizes its column to the
+    // widest unbreakable child (the oil bar's one-line scent name), which
+    // pushed the whole buy box past a phone's screen.
+    <div className="grid grid-cols-1 gap-5">
       {/* Plain price line – shown when there's no subscribe/one-time chooser
           (e.g. diffusers), otherwise the price lives inside the options below. */}
       {!subscribeOffer && (
@@ -67,6 +80,15 @@ export function AddToBag({
             listClassName="text-[0.95rem]"
           />
         </div>
+      )}
+
+      {perk && (
+        <p className="-mt-1 flex items-center gap-2.5 text-[0.86rem] leading-[1.4] text-[color:var(--color-charcoal)]">
+          <span className="rounded-[4px] bg-[color:var(--color-clay)] px-2 py-0.5 text-[0.62rem] font-medium uppercase tracking-[0.12em] text-[color:var(--color-ivory)]">
+            Free
+          </span>
+          {perk}
+        </p>
       )}
 
       {subscribeOffer && (
@@ -145,6 +167,8 @@ export function AddToBag({
         </fieldset>
       )}
 
+      {beforeButton}
+
       <button
         type="button"
         disabled={soldOut || !variantId || pending}
@@ -170,9 +194,7 @@ export function AddToBag({
         )}
       </button>
 
-      <p className="mt-1 text-[0.7rem] uppercase tracking-[0.24em] text-[color:var(--color-charcoal-soft)]">
-        Free shipping over ₹5,000
-      </p>
+      <TrustStrip priceINR={priceINR} warranty={warranty} />
     </div>
   );
 }

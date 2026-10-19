@@ -45,6 +45,9 @@ export default async function AdminLayout({
               <Link href="/admin/payments" className={link}>
                 Payments
               </Link>
+              <Link href="/admin/reviews" className={link}>
+                Reviews
+              </Link>
             </>
           )}
           <Link href="/admin/abandoned" className={link}>

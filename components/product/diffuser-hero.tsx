@@ -1,15 +1,17 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import { FadeUp } from "@/components/motion/fade-up";
 import { Monogram } from "@/components/brand/logo";
 import { ProductGallery } from "@/components/product/product-gallery";
 import { AddToBag } from "@/components/product/add-to-bag";
 import { MobileBuyBar } from "@/components/product/mobile-buy-bar";
+import { OilPicker } from "@/components/product/oil-picker";
 import { PairBundle, type PairOption } from "@/components/product/pair-bundle";
 import { oils, oilNoteSummary } from "@/lib/data/oils";
 import { cn } from "@/lib/utils";
+import { RatingLine } from "@/components/reviews/rating-line";
+import type { ReviewSummary } from "@/lib/reviews/store";
 import type { Diffuser } from "@/lib/types";
 import {
   shopifyHandle,
@@ -30,8 +32,11 @@ export function DiffuserHero({
   product,
   commerce,
   commerceMap,
+  reviewSummary,
 }: {
   product: Diffuser;
+  /** Approved reviews only; shown as stars under the name. */
+  reviewSummary: ReviewSummary;
   commerce?: ShopifyCommerce;
   /** Whole catalogue, so bundle partners can resolve their Shopify variant. */
   commerceMap?: Record<string, ShopifyCommerce>;
@@ -151,7 +156,7 @@ export function DiffuserHero({
             key={s.label}
             className="grid grid-cols-[6.5rem_1fr] gap-3 border-b border-[color:var(--color-rule)] py-1.5"
           >
-            <dt className="pt-0.5 text-[0.46rem] uppercase tracking-[0.18em] text-[color:var(--color-charcoal-soft)]">
+            <dt className="pt-0.5 text-[0.54rem] uppercase tracking-[0.18em] text-[color:var(--color-charcoal-soft)]">
               {s.label}
             </dt>
             <dd className="text-[0.74rem] leading-snug text-[color:var(--color-charcoal)]">
@@ -209,17 +214,73 @@ export function DiffuserHero({
             </h1>
           </FadeUp>
 
+          {/* Stars just under the name: the average and count of approved
+               reviews, or an invitation to write the first one. */}
+          <FadeUp delay={0.09}>
+            <div className="mt-4">
+              <RatingLine summary={reviewSummary} />
+            </div>
+          </FadeUp>
+
           <FadeUp delay={0.12}>
             <p className="mt-5 max-w-[40ch] text-[var(--text-lg)] leading-[1.5] text-[color:var(--color-charcoal-soft)]">
               {tagline}
             </p>
           </FadeUp>
 
+          {/* Overview – the reasons to buy, straight under the name, before the
+               price. Open by default so the pointers are read, not hunted for;
+               a native <details> so it collapses without any script. */}
+          <FadeUp delay={0.14}>
+            <details
+              open
+              className="group mt-7 border-y border-[color:var(--color-rule)]"
+            >
+              <summary className="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden">
+                <span className="text-[0.7rem] font-medium uppercase tracking-[0.24em] text-[color:var(--color-charcoal)]">
+                  Overview
+                </span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  aria-hidden="true"
+                  className="h-4 w-4 text-[color:var(--color-charcoal-soft)] transition-transform duration-300 group-open:rotate-180"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </summary>
+              <ul className="grid gap-2.5 pb-5">
+                {product.highlights.map((h) => (
+                  <li
+                    key={h}
+                    className="flex gap-3 text-[0.95rem] leading-[1.45] text-[color:var(--color-charcoal)]"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                      className="mt-[0.2em] h-4 w-4 shrink-0 text-[color:var(--color-clay)]"
+                    >
+                      <path d="m5 12.5 4.5 4.5L19 7.5" />
+                    </svg>
+                    {h}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </FadeUp>
+
           {/* Colour selector – only when the model ships in more than one finish */}
           {colors && colors.length > 1 && (
             <FadeUp delay={0.16}>
-              <div className="mt-8">
-                <p className="text-[0.58rem] uppercase tracking-[0.32em] text-[color:var(--color-charcoal-soft)]">
+              <div className="mt-7">
+                <p className="text-[0.66rem] uppercase tracking-[0.28em] text-[color:var(--color-charcoal-soft)]">
                   Finish – {color?.name}
                 </p>
                 <div className="mt-3 flex items-center gap-3">
@@ -246,10 +307,10 @@ export function DiffuserHero({
           )}
 
           {/* Price + Add to bag – directly under the finish, so the price and
-               the button are in view with the product rather than below a long
-               scent picker. The chosen oil follows and still rides along. */}
+               the button are in view with the product. The included oil is a
+               single bar above the button; its tiles open in a popup. */}
           <FadeUp delay={0.18}>
-            <div id="buy" className="mt-10 scroll-mt-24">
+            <div id="buy" className="mt-8 scroll-mt-24">
               {/* No subscribe & save on diffusers – that offer is for the oils only */}
               <AddToBag
                 priceINR={buy.price}
@@ -263,107 +324,21 @@ export function DiffuserHero({
                 available={variant ? variant.available : false}
                 attributes={complimentaryOil}
                 giftVariantId={giftVariantId}
+                warranty
+                // The included oil is chosen in a bar right above the button;
+                // its tiles open in a popup rather than filling the column.
+                beforeButton={
+                  product.includesOil ? (
+                    <OilPicker
+                      oils={offeredOils}
+                      value={selectedOil.slug}
+                      onChange={setOilSlug}
+                    />
+                  ) : undefined
+                }
               />
             </div>
           </FadeUp>
-
-          {/* --- Choose your included oil – it ships with the diffuser either
-               way, so the choice can follow the decision to buy. --- */}
-          {product.includesOil && (
-          <FadeUp delay={0.2}>
-            <div className="mt-8 border-t border-[color:var(--color-rule)] pt-8">
-              {/* Tiles rather than a dropdown: the oils are photographed, and a
-                  scent name means little without seeing the bottle. Native radios
-                  underneath, so arrow keys and screen readers behave. */}
-              <fieldset className="min-w-0">
-                <legend className="text-[0.58rem] uppercase tracking-[0.32em] text-[color:var(--color-charcoal-soft)]">
-                  Choose your included oil
-                </legend>
-                <div className="mt-4 grid grid-cols-4 gap-2 sm:gap-2.5">
-                  {offeredOils.map((o) => {
-                    const active = o.slug === oilSlug;
-                    return (
-                      <label
-                        key={o.slug}
-                        className="group cursor-pointer"
-                        title={`${o.name} – ${oilNoteSummary(o)}`}
-                      >
-                        <input
-                          type="radio"
-                          name="starting-oil"
-                          value={o.slug}
-                          checked={active}
-                          onChange={() => setOilSlug(o.slug)}
-                          className="peer sr-only"
-                        />
-                        <span
-                          className={cn(
-                            "relative block aspect-square overflow-hidden bg-[color:var(--color-stardust-soft)] outline-offset-2 transition-all duration-300 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-[color:var(--color-clay)]",
-                            active
-                              ? "ring-1 ring-[color:var(--color-clay)] ring-offset-2 ring-offset-[color:var(--color-white)]"
-                              : "opacity-[0.72] group-hover:opacity-100"
-                          )}
-                        >
-                          <Image
-                            src={o.image}
-                            alt=""
-                            fill
-                            sizes="(min-width: 640px) 7rem, 23vw"
-                            className="object-cover transition-transform duration-700 ease-[var(--ease-quint)] group-hover:scale-[1.05]"
-                          />
-                          {o.tier === "hotel-credential" && (
-                            <span className="absolute right-0 top-0 bg-[color:var(--color-clay)] px-1.5 py-0.5 text-[0.5rem] uppercase tracking-[0.14em] text-[color:var(--color-ivory)]">
-                              +₹200
-                            </span>
-                          )}
-                        </span>
-                        <span
-                          className={cn(
-                            "mt-1.5 block font-[family-name:var(--font-serif)] text-[0.72rem] leading-tight transition-colors",
-                            active
-                              ? "text-[color:var(--color-clay)]"
-                              : "text-[color:var(--color-charcoal)]"
-                          )}
-                        >
-                          {o.name}
-                        </span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </fieldset>
-
-              {/* Live scent profile for the chosen oil – so the name in the
-                  dropdown is never a mystery. Updates as the selection changes. */}
-              <div className="mt-3 border-t border-[color:var(--color-rule)] pt-3">
-                <p className="font-[family-name:var(--font-serif)] text-[0.92rem] italic leading-[1.5] text-[color:var(--color-charcoal)]">
-                  {selectedOil.tagline}
-                </p>
-                <dl className="mt-2.5 grid gap-1.5">
-                  {([
-                    ["Top", selectedOil.notes.top],
-                    ["Heart", selectedOil.notes.heart],
-                    ["Base", selectedOil.notes.base],
-                  ] as const).map(([label, notes]) => (
-                    <div key={label} className="flex gap-3">
-                      <dt className="w-9 shrink-0 pt-0.5 text-[0.56rem] uppercase tracking-[0.2em] text-[color:var(--color-charcoal-soft)]">
-                        {label}
-                      </dt>
-                      <dd className="text-[0.78rem] leading-[1.5] text-[color:var(--color-charcoal)]">
-                        {notes.join(" · ")}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-
-              <p className="mt-3 text-[0.72rem] leading-[1.5] text-[color:var(--color-charcoal-soft)]">
-                Your first 50 ml is included free (Hotel Credential oils carry a
-                ₹200 supplement). Swap scents or add more anytime.
-              </p>
-            </div>
-          </FadeUp>
-          )}
 
           {/* Bundle – add another oil to the set */}
           <FadeUp delay={0.24}>
@@ -375,7 +350,8 @@ export function DiffuserHero({
                 basePriceINR={variant?.price ?? product.priceINR}
                 baseName={product.name}
                 partnerNoun="oil"
-                heading="Add another oil"
+                // The Drift ships without an oil, so there is no "another".
+                heading={product.includesOil ? "Add another oil" : "Add an oil"}
                 options={oilOptions}
               />
             </div>
@@ -384,14 +360,13 @@ export function DiffuserHero({
           {/* Assurances */}
           <FadeUp delay={0.24}>
             <ul className="mt-8 grid gap-2.5 border-t border-[color:var(--color-rule)] pt-8 text-[0.8rem] leading-[1.5] text-[color:var(--color-charcoal-soft)]">
-              <li className="flex items-baseline gap-3">
-                <span className="text-[color:var(--color-clay)]">–</span>
-                Ships with your chosen 50 ml oil, ready to use.
-              </li>
-              <li className="flex items-baseline gap-3">
-                <span className="text-[color:var(--color-clay)]">–</span>
-                1-year limited device warranty.
-              </li>
+              {/* The warranty now sits in the trust strip under the button. */}
+              {product.includesOil && (
+                <li className="flex items-baseline gap-3">
+                  <span className="text-[color:var(--color-clay)]">–</span>
+                  Ships with your chosen 50 ml oil, ready to use.
+                </li>
+              )}
               <li className="flex items-baseline gap-3">
                 <span className="text-[color:var(--color-clay)]">–</span>
                 IFRA-compliant oils at 70–90% concentration.
@@ -399,10 +374,10 @@ export function DiffuserHero({
             </ul>
           </FadeUp>
 
-          {/* --- Overview – moved up, right after the buy box --- */}
+          {/* --- Description – the long-form story, after the configurators --- */}
           <FadeUp delay={0.06}>
             <div className="mt-14 border-t border-[color:var(--color-rule)] pt-10">
-              <p className={sectionLabel}>Overview</p>
+              <p className={sectionLabel}>About the {product.name.replace(/^The /, "")}</p>
               <div className="mt-6 space-y-5">
                 {descriptionParagraphs.map((para, i) => (
                   <p

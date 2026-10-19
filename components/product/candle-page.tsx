@@ -15,6 +15,9 @@ import {
   productJsonLd,
 } from "@/lib/structured-data";
 import type { Candle } from "@/lib/types";
+import { RatingLine } from "@/components/reviews/rating-line";
+import { ReviewsSection } from "@/components/reviews/reviews-section";
+import { approvedReviews, summarize } from "@/lib/reviews/store";
 
 /**
  * Candle PDP. Deliberately simpler than the diffuser and oil pages: a candle
@@ -30,6 +33,8 @@ export async function CandleProductPage({ candle }: { candle: Candle }) {
     candle.priceINR,
     candle.listPriceINR
   );
+  // Approved reviews only – pending ones never reach the page.
+  const reviews = await approvedReviews(candle.slug);
 
   return (
     <div className="pb-[var(--spacing-section)]">
@@ -42,7 +47,7 @@ export async function CandleProductPage({ candle }: { candle: Candle }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: jsonLdScript(productJsonLd(candle, commerce, price)),
+          __html: jsonLdScript(productJsonLd(candle, commerce, price, reviews)),
         }}
       />
       <script
@@ -99,6 +104,11 @@ export async function CandleProductPage({ candle }: { candle: Candle }) {
                 </em>
               </h1>
 
+              {/* Stars just under the name */}
+              <div className="mt-4">
+                <RatingLine summary={summarize(reviews)} />
+              </div>
+
               <p className="mt-6 max-w-[46ch] text-[0.92rem] leading-[1.7] text-[color:var(--color-charcoal)]">
                 {candle.description}
               </p>
@@ -144,6 +154,9 @@ export async function CandleProductPage({ candle }: { candle: Candle }) {
       </section>
 
       <CandleScenes candle={candle} />
+
+      {/* Reviews, just above the comparison */}
+      <ReviewsSection slug={candle.slug} productName={candle.name} reviews={reviews} />
 
       <CandleCompare current={candle.slug} />
 

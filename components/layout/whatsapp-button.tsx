@@ -8,6 +8,9 @@ import { WHATSAPP_NUMBER, WHATSAPP_PREFILL } from "@/lib/contact";
  * Carries data-site-chrome so it hides alongside the header and footer if the
  * holding page is ever switched back on, and sits at z-40 so the cart drawer
  * (z-100) and the mobile menu (z-50) both cover it rather than fighting it.
+ * On a product page on mobile it rides above the sticky buy bar instead of
+ * covering its Add to bag button, and fades out while the bar steps aside for
+ * the in-page buy box, whose full-width button it would otherwise sit on.
  */
 export function WhatsAppButton() {
   const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
@@ -17,11 +20,12 @@ export function WhatsAppButton() {
   return (
     <a
       data-site-chrome
+      data-whatsapp-button
       href={href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Message Quint Home on WhatsApp"
-      className="group fixed bottom-5 right-5 z-40 flex h-[52px] w-[52px] items-center justify-center rounded-full bg-[color:var(--color-charcoal)] text-[color:var(--color-ivory)] shadow-[0_10px_30px_-8px_rgba(58,53,50,0.55)] transition-[background-color,transform] duration-500 ease-[var(--ease-quint)] hover:bg-[color:var(--color-clay-deep)] hover:-translate-y-0.5 md:bottom-8 md:right-8 md:h-[56px] md:w-[56px]"
+      className="group fixed bottom-5 right-5 z-40 flex h-[52px] w-[52px] items-center justify-center rounded-full bg-[color:var(--color-charcoal)] text-[color:var(--color-ivory)] shadow-[0_10px_30px_-8px_rgba(58,53,50,0.55)] transition-[background-color,transform,opacity] duration-500 ease-[var(--ease-quint)] hover:bg-[color:var(--color-clay-deep)] hover:-translate-y-0.5 md:bottom-8 md:right-8 md:h-[56px] md:w-[56px] max-lg:[body:has([data-mobile-buy-bar]:not([data-hidden]))_&]:bottom-[calc(68px+env(safe-area-inset-bottom)+14px)] max-lg:[body:has([data-mobile-buy-bar][data-hidden])_&]:pointer-events-none max-lg:[body:has([data-mobile-buy-bar][data-hidden])_&]:opacity-0"
     >
       {/* WhatsApp mark, inlined so it inherits currentColor and costs no request. */}
       <svg

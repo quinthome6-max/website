@@ -11,6 +11,8 @@ import { diffusers } from "@/lib/data/diffusers";
 import type { FragranceOil } from "@/lib/types";
 import { shopifyHandle, sellableVariant, type ShopifyCommerce } from "@/lib/shopify/commerce";
 import { COMPLIMENTARY_OIL } from "@/lib/cart-gift";
+import { RatingLine } from "@/components/reviews/rating-line";
+import type { ReviewSummary } from "@/lib/reviews/store";
 
 /**
  * Oil PDP – bottle study on the left (sticky), and a single right column that
@@ -21,8 +23,11 @@ export function OilHero({
   oil,
   commerce,
   commerceMap,
+  reviewSummary,
 }: {
   oil: FragranceOil;
+  /** Approved reviews only; shown as stars under the name. */
+  reviewSummary: ReviewSummary;
   commerce?: ShopifyCommerce;
   /** Whole catalogue, so bundle partners can resolve their Shopify variant. */
   commerceMap?: Record<string, ShopifyCommerce>;
@@ -168,6 +173,14 @@ export function OilHero({
             >
               {oil.name}
             </h1>
+          </FadeUp>
+
+          {/* Stars just under the name: the average and count of approved
+               reviews, or an invitation to write the first one. */}
+          <FadeUp delay={0.09}>
+            <div className="mt-4">
+              <RatingLine summary={reviewSummary} />
+            </div>
           </FadeUp>
 
           <FadeUp delay={0.12}>

@@ -3,6 +3,7 @@ import type { ShopifyCommerce } from "@/lib/shopify/commerce";
 import { SITE, BRAND, abs } from "@/lib/seo";
 import { FREE_SHIPPING_FROM, SHIPPING_FLAT } from "@/lib/checkout-config";
 import { numericId } from "@/lib/shopify/admin";
+import { summarize, type PublicReview } from "@/lib/reviews/store";
 
 /**
  * JSON-LD for the storefront.
@@ -10,8 +11,9 @@ import { numericId } from "@/lib/shopify/admin";
  * Everything emitted here has to be true of the rendered page: Google's
  * structured-data policy treats markup that contradicts the visible content as
  * spam, and the penalty is manual. So price comes from the same Shopify lookup
- * the page renders, and nothing is invented — notably there is no
- * aggregateRating or review anywhere, because the site holds no review data.
+ * the page renders, and nothing is invented. Ratings come only from reviews
+ * staff have approved, which the same page shows in its reviews section; with
+ * none approved, no aggregateRating or review is emitted at all.
  */
 
 const ORG_ID = `${SITE}/#organization`;
@@ -68,7 +70,9 @@ function priceValidUntil(): string {
 export function productJsonLd(
   product: Product,
   commerce: ShopifyCommerce | undefined,
-  price: number
+  price: number,
+  /** Approved reviews, exactly as the page renders them. */
+  reviews: PublicReview[] = []
 ): Record<string, unknown> {
   const isOil = product.category === "oil";
   const isCandle = product.category === "candle";
@@ -157,6 +161,30 @@ export function productJsonLd(
     ...(diffuser ? { mpn: diffuser.model, sku: diffuser.model } : {}),
     offers,
     ...(additional.length ? { additionalProperty: additional } : {}),
+    ...ratingJsonLd(reviews),
+  };
+}
+
+/** aggregateRating plus the latest few reviews, only when there are some. */
+function ratingJsonLd(reviews: PublicReview[]): Record<string, unknown> {
+  if (!reviews.length) return {};
+  const { average, count } = summarize(reviews);
+  return {
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: average,
+      reviewCount: count,
+      bestRating: 5,
+      worstRating: 1,
+    },
+    review: reviews.slice(0, 5).map((r) => ({
+      "@type": "Review",
+      reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5, worstRating: 1 },
+      author: { "@type": "Person", name: r.name },
+      datePublished: r.createdAt.slice(0, 10),
+      ...(r.title ? { name: r.title } : {}),
+      reviewBody: r.body,
+    })),
   };
 }
 

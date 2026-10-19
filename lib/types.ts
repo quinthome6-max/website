@@ -76,6 +76,12 @@ export interface Diffuser {
   bestFor: string[];
   /** Catalogue "KEY FEATURES" bullet list, verbatim. */
   keyFeatures: string[];
+  /**
+   * Four or five at-a-glance pointers for the overview dropdown under the
+   * product name – the reasons to buy, in the order a shopper weighs them.
+   * Restated from keyFeatures/specs only; nothing here may be new.
+   */
+  highlights: string[];
   image: string;
   gallery: string[];
   /** Optional product video (vertical, muted autoplay loop) for the PDP. */

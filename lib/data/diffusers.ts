@@ -60,6 +60,13 @@ const diffusersByDefinition: Diffuser[] = [
     coverageLabel: "Cars and compact spaces",
     includesOil: false,
     bestFor: ["Cars", "Bathrooms", "Desks", "Travel"],
+    highlights: [
+      "Sits in a car cup holder and starts and stops with the engine",
+      "Machined aluminium body, just 50 g",
+      "Light, medium and strong intensity",
+      "Timer for 1, 2 or 4 hours",
+      "Waterless – fragrance oil only, no cartridge to replace",
+    ],
     keyFeatures: [
       "Waterless nebulising – fragrance oil only, no water and no heat",
       "Machined aluminium alloy body in matte black, 50 g and 137 mm tall",
@@ -71,6 +78,7 @@ const diffusersByDefinition: Diffuser[] = [
     image: "/images/diffusers/drift-m22/01.webp",
     gallery: [
       "/images/diffusers/drift-m22/01.webp",
+      "/images/diffusers/key-features/drift.webp",
       "/images/diffusers/drift-m22/02.webp",
       "/images/diffusers/drift-m22/03.webp",
       "/images/diffusers/drift-m22/04.webp",
@@ -102,6 +110,13 @@ const diffusersByDefinition: Diffuser[] = [
     coverageLabel: "161–250 sq ft",
     includesOil: true,
     bestFor: ["Bathrooms", "Kitchens", "Compact Spaces"],
+    highlights: [
+      "Plug and play – no assembly, no app",
+      "Rotatable plug fits any socket orientation",
+      "24-hour intelligent cyclic timer",
+      "Ultra-quiet, waterless mist",
+      "Covers 161–250 sq ft – bathrooms, kitchens, hallways",
+    ],
     keyFeatures: [
       "Plug & Play – no installation or assembly required",
       "Rotatable plug fits any wall socket orientation",
@@ -113,6 +128,7 @@ const diffusersByDefinition: Diffuser[] = [
     video: "https://res.cloudinary.com/dnv4kq8ml/video/upload/v1780760006/Video_Display_pjm1fk.mp4",
     gallery: [
       "/images/diffusers/plug-in-a815/01.webp",
+      "/images/diffusers/key-features/pebble.webp",
       "/images/diffusers/plug-in-a815/02.webp",
       "/images/diffusers/plug-in-a815/03.webp",
       "/images/diffusers/plug-in-a815/04.webp",
@@ -145,6 +161,13 @@ const diffusersByDefinition: Diffuser[] = [
     coverageLabel: "Up to 1,075 sq ft",
     includesOil: true,
     bestFor: ["Living Rooms", "Larger Rooms", "Open-Plan Spaces", "Brand Stores", "Cafes", "Offices"],
+    highlights: [
+      "Truly wireless – built-in 2200 mAh rechargeable battery",
+      "Solid aluminium column in brushed gold or matte black",
+      "Bluetooth app for intensity and schedules",
+      "Covers up to 1,075 sq ft from a 120 ml leak-proof bottle",
+      "Waterless cold-air diffusion – no water, no heat",
+    ],
     keyFeatures: [
       "Premium aluminum column construction in warm gold finish",
       "Built-in 2200 mAh rechargeable Li-ion battery – truly wireless",
@@ -156,6 +179,7 @@ const diffusersByDefinition: Diffuser[] = [
     image: "/images/diffusers/a326-gold/gold-v3-01.webp",
     gallery: [
       "/images/diffusers/a326-gold/gold-v3-01.webp",
+      "/images/diffusers/key-features/monolith.webp",
       "/images/diffusers/a326-gold/gold-v2-02.webp",
       "/images/diffusers/a326-gold/gold-v2-03.webp",
       "/images/diffusers/a326-gold/gold-v2-04.webp",
@@ -170,6 +194,7 @@ const diffusersByDefinition: Diffuser[] = [
         image: "/images/diffusers/a326-gold/gold-v3-01.webp",
         gallery: [
           "/images/diffusers/a326-gold/gold-v3-01.webp",
+          "/images/diffusers/key-features/monolith.webp",
           "/images/diffusers/a326-gold/gold-v2-02.webp",
           "/images/diffusers/a326-gold/gold-v2-03.webp",
           "/images/diffusers/a326-gold/gold-v2-04.webp",
@@ -193,6 +218,7 @@ const diffusersByDefinition: Diffuser[] = [
         image: "/images/diffusers/a326-black/black-v2-01.webp",
         gallery: [
           "/images/diffusers/a326-black/black-v2-01.webp",
+          "/images/diffusers/key-features/monolith.webp",
           "/images/diffusers/a326-black/black-v2-02.webp",
           "/images/diffusers/a326-black/black-v2-03.webp",
           "/images/diffusers/a326-black/black-v2-04.webp",
@@ -236,6 +262,13 @@ const diffusersByDefinition: Diffuser[] = [
     coverageLabel: "Up to 590 sq ft",
     includesOil: true,
     bestFor: ["Living Rooms", "Bedrooms", "Salons", "Brand Stores"],
+    highlights: [
+      "Soft fabric exterior – warm to the touch",
+      "Candle-like ambient glow for evenings",
+      "Knob control, or the Bluetooth app",
+      "Covers up to 590 sq ft from a 120 ml leak-proof bottle",
+      "Waterless cold-air diffusion – no water, no heat",
+    ],
     keyFeatures: [
       "Soft fabric exterior – warm, organic tactile finish",
       "Candle-like ambient light for evening ambience",
@@ -247,6 +280,7 @@ const diffusersByDefinition: Diffuser[] = [
     image: "/images/diffusers/fabric-a974/loom-v2-01.webp",
     gallery: [
       "/images/diffusers/fabric-a974/loom-v2-01.webp",
+      "/images/diffusers/key-features/loom.webp",
       "/images/diffusers/fabric-a974/loom-v2-02.webp",
       "/images/diffusers/fabric-a974/loom-v2-03.webp",
       "/images/diffusers/fabric-a974/loom-v2-04.webp",
@@ -279,6 +313,13 @@ const diffusersByDefinition: Diffuser[] = [
     coverageLabel: "Up to 540 sq ft",
     includesOil: true,
     bestFor: ["Living Rooms", "Bedrooms", "Study Rooms", "Offices"],
+    highlights: [
+      "Two independent 60 ml bottles – run one scent or layer both",
+      "Bluetooth app controls each mist outlet separately",
+      "Near-silent at ≤35 dB",
+      "Aluminium alloy body, USB powered",
+      "Covers up to 540 sq ft",
+    ],
     keyFeatures: [
       "Dual independent 60 ml mist outlets – run one or both simultaneously",
       "Ultra-quiet at ≤35 dB – barely a whisper in any room",
@@ -290,6 +331,7 @@ const diffusersByDefinition: Diffuser[] = [
     video: "https://res.cloudinary.com/dnv4kq8ml/video/upload/v1780759975/Video_Display_r7dj6z.mp4",
     gallery: [
       "/images/diffusers/dual-mist-at302/pillar-v2-01.webp",
+      "/images/diffusers/key-features/pillar.webp",
       "/images/diffusers/dual-mist-at302/pillar-v2-02.webp",
       "/images/diffusers/dual-mist-at302/pillar-v2-03b.webp",
       "/images/diffusers/dual-mist-at302/pillar-v2-04b.webp",
@@ -322,6 +364,13 @@ const diffusersByDefinition: Diffuser[] = [
     coverageLabel: "Up to 540 sq ft",
     includesOil: true,
     bestFor: ["Bedrooms", "Living Rooms", "Offices", "Bars"],
+    highlights: [
+      "LED clock that sets itself by network time",
+      "Soft, breathing ambient light",
+      "Glass-like acrylic (PMMA) body",
+      "Bluetooth app for fragrance intensity",
+      "Covers up to 540 sq ft from a 60 ml spill-proof bottle",
+    ],
     keyFeatures: [
       "Integrated LED clock with automatic network time sync",
       "Natural breathing ambient light – soft, rhythmic glow",
@@ -334,6 +383,7 @@ const diffusersByDefinition: Diffuser[] = [
     video: "https://res.cloudinary.com/dnv4kq8ml/video/upload/Video_Display_gggg5v.mp4",
     gallery: [
       "/images/diffusers/clock-at370/ember-v2-01.webp",
+      "/images/diffusers/key-features/ember.webp",
       "/images/diffusers/clock-at370/ember-v2-02.webp",
       "/images/diffusers/clock-at370/ember-v2-03.webp",
       "/images/diffusers/clock-at370/ember-v2-04.webp",

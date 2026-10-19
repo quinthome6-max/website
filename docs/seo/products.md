@@ -10,7 +10,7 @@ comes from Shopify and may differ (e.g. during a sale).
 **Columns**
 - **In sitemap:** listed in `sitemap.xml` (all products are, automatically).
 - **Product schema:** structured data Google reads for product results.
-- **Reviews / stars:** real customer reviews shown on the page and in the markup. Google's "Missing aggregateRating / review" warnings clear when this is ✅.
+- **Reviews / stars:** real customer reviews shown on the page and in the markup. Google's "Missing aggregateRating / review" warnings clear when this is ✅. Since 19 Oct every page can collect reviews (approved at /admin/reviews); a row turns ✅ once that product has an approved review.
 - **Merchant fields:** shipping, returns, price-valid-until and SKU in the markup (plan T10), needed for free Google Shopping listings. All ✅ since 17 Oct; the same data is in the feed `/feeds/products.xml`.
 - **Copy:** unique words on the page (audit: oils ~50, candles ~60; target 200+).
 

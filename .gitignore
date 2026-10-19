@@ -49,3 +49,6 @@ yarn-error.log*
 
 # Downloaded analytics data (may contain page URLs and traffic figures)
 /marketing/seo/data/
+
+# Local stand-in for Redis (reviews in development) – never committed
+/.data/

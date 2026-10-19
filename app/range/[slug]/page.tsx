@@ -23,6 +23,8 @@ import {
   pricePair,
 } from "@/lib/shopify/commerce";
 import { ScentFinder } from "@/components/sections/scent-finder";
+import { ReviewsSection } from "@/components/reviews/reviews-section";
+import { approvedReviews, summarize } from "@/lib/reviews/store";
 import type { FragranceOil } from "@/lib/types";
 
 type Params = { slug: string };
@@ -147,12 +149,16 @@ export default async function ProductPage({
   // advertise a figure the page does not show — which Google treats as spam.
   const price = priceOf(product, commerceMap);
 
+  // Approved reviews only – pending ones never reach the page.
+  const reviews = await approvedReviews(product.slug);
+  const reviewSummary = summarize(reviews);
+
   return (
     <article id="top" className="bg-[color:var(--color-white)]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: jsonLdScript(productJsonLd(product, commerce, price)),
+          __html: jsonLdScript(productJsonLd(product, commerce, price, reviews)),
         }}
       />
       <script
@@ -174,7 +180,15 @@ export default async function ProductPage({
         value={price}
         category="Diffuser"
       />
-      <DiffuserHero product={product} commerce={commerce} commerceMap={commerceMap} />
+      <DiffuserHero
+        product={product}
+        commerce={commerce}
+        commerceMap={commerceMap}
+        reviewSummary={reviewSummary}
+      />
+
+      {/* §  REVIEWS  –  just above the comparison */}
+      <ReviewsSection slug={product.slug} productName={product.name} reviews={reviews} />
 
       {/* §  COMPARE  –  this device against the rest of the range */}
       <DiffuserCompare highlightModel={product.model} />
@@ -288,12 +302,14 @@ async function OilProductPage({ oil }: { oil: FragranceOil }) {
   const commerceMap = await getCommerceMap();
   const price = priceOf(oil, commerceMap);
 
+  const reviews = await approvedReviews(oil.slug);
+
   return (
     <article id="top" className="bg-[color:var(--color-white)]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: jsonLdScript(productJsonLd(oil, commerce, price)),
+          __html: jsonLdScript(productJsonLd(oil, commerce, price, reviews)),
         }}
       />
       <script
@@ -316,7 +332,15 @@ async function OilProductPage({ oil }: { oil: FragranceOil }) {
         value={price}
         category="Fragrance Oil"
       />
-      <OilHero oil={oil} commerce={commerce} commerceMap={commerceMap} />
+      <OilHero
+        oil={oil}
+        commerce={commerce}
+        commerceMap={commerceMap}
+        reviewSummary={summarize(reviews)}
+      />
+
+      {/* §  REVIEWS */}
+      <ReviewsSection slug={oil.slug} productName={oil.name} reviews={reviews} />
 
       {/* §  FIND YOUR SCENT */}
       <ScentFinder />
