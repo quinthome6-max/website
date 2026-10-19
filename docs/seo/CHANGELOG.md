@@ -20,6 +20,12 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-19 — Key-features sheet moved to the last gallery slide
+- **What:** on each diffuser page the key-features image is now the last slide, after the Specs card, instead of slide 2. It is now a separate `featuresImage` field rather than an entry in `gallery`, so it no longer appears as an extra image in `/feeds/products.xml` or the image sitemap. Those carry product photos only, which is what Google Merchant expects for additional images.
+- **Why:** client's request (gallery order).
+- **Where:** `components/product/product-gallery.tsx` (new `after` slides), `components/product/diffuser-hero.tsx`, `lib/data/diffusers.ts`, `lib/types.ts`.
+- **Check:** all 6 diffusers show photos, then Specs, then Features (Monolith in both finishes).
+
 ## 2026-10-19 — Customer reviews on every product page; product-page CRO pass
 - **What:** customers can now write reviews on all 17 product pages. Each page shows stars + average + count under the product name, and a reviews section (average, star breakdown, review list, "Write a review") above the comparison block. Reviews are held for staff approval at `/admin/reviews` and only approved ones are shown. The Product markup now carries `aggregateRating` and up to 5 `review` entries, built from the same approved reviews the page renders. With none approved, nothing is emitted, so no product has stars in the markup yet. Same release: a 5-point overview dropdown under each diffuser's name; a trust strip under Add to bag (free shipping rule, 3-day dispatch, secure PayU checkout, warranty/exchange); a key-features image as gallery slide 2 on each diffuser; the included-oil picker moved into a popup; the Drift no longer says it ships with an oil.
 - **Why:** audit item "Missing aggregateRating / review" (Search Console product snippets). Stars can only be real: the site had no review data, so ratings were not invented.

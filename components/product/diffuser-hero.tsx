@@ -188,6 +188,8 @@ export function DiffuserHero({
               images={gallery}
               alt={`${product.name}${color ? ` – ${color.name}` : ""} – Quint Home`}
               cards={[{ key: "specs", thumbLabel: "Specs", content: specsCard }]}
+              // The key-features sheet closes the gallery, after the specs.
+              after={product.featuresImage ? [product.featuresImage] : []}
             />
           </FadeUp>
         </div>

@@ -84,6 +84,9 @@ export interface Diffuser {
   highlights: string[];
   image: string;
   gallery: string[];
+  /** The designed key-features sheet, shown as the last gallery slide,
+   *  after the specifications card. */
+  featuresImage?: string;
   /** Optional product video (vertical, muted autoplay loop) for the PDP. */
   video?: string;
   finish: string;
