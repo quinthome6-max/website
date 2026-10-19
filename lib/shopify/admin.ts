@@ -14,6 +14,7 @@
 // with less; if it will not take that either, a plainly-labelled placeholder
 // goes in its place for a person to finish. What never happens is nothing.
 
+import { ownOrderEmails } from "@/lib/email/config";
 import { txnStartedAt } from "@/lib/payu/client";
 
 const DOMAIN = process.env.SHOPIFY_STORE_DOMAIN;
@@ -298,6 +299,24 @@ export async function flagDuplicateOrders(txnid: string): Promise<number> {
   return live.length - 1;
 }
 
+/**
+ * Adds tags to an order, keeping the ones it has. Used to mark whether our
+ * order email went out, so the order list shows who still needs one.
+ */
+export async function addOrderTags(
+  orderId: number,
+  existing: string[],
+  add: string[],
+  remove: string[] = []
+): Promise<void> {
+  const tags = [...new Set([...existing.filter((t) => !remove.includes(t)), ...add])];
+  const res = await admin(`orders/${orderId}.json`, {
+    method: "PUT",
+    body: { order: { id: orderId, tags: tags.join(", ") } },
+  });
+  if (!res.ok) throw new Error(`Shopify orders/${orderId} tags ${res.status}`);
+}
+
 /* -------------------------------------------------------------------------- */
 /* Writing the order                                                          */
 /* -------------------------------------------------------------------------- */
@@ -453,7 +472,9 @@ function buildOrder(
     inventory_behaviour: shape.obeyStock
       ? "decrement_obeying_policy"
       : "decrement_ignoring_policy",
-    send_receipt: Boolean(email),
+    // Shopify's receipt, unless the store sends its own confirmation with the
+    // invoice attached (lib/email/order-email.ts, switched on by ORDER_EMAILS).
+    send_receipt: Boolean(email) && !ownOrderEmails,
     send_fulfillment_receipt: false,
     tags: [PAYU_TAG, txnTag(input.txnid), ...(attention.length ? [ATTENTION_TAG] : [])].join(", "),
     note: [paymentLine(input), ...attention.map((a) => `NEEDS ATTENTION — ${a}`)]

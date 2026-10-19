@@ -20,6 +20,16 @@ const nextConfig: NextConfig = {
     // during editing; a short TTL re-optimises promptly.
     minimumCacheTTL: 60,
   },
+  // The order email attaches the tax invoice as a PDF, printed by the headless
+  // Chromium in @sparticuz/chromium (lib/pdf.ts). Its browser ships as
+  // compressed files read at run time, which tracing can't see, so they are
+  // named here for every route that can send that email.
+  outputFileTracingIncludes: {
+    "/api/payu/callback": ["./node_modules/@sparticuz/chromium/bin/**/*"],
+    "/api/payu/webhook": ["./node_modules/@sparticuz/chromium/bin/**/*"],
+    "/api/admin/payu/recover": ["./node_modules/@sparticuz/chromium/bin/**/*"],
+    "/api/admin/order-email": ["./node_modules/@sparticuz/chromium/bin/**/*"],
+  },
   // pdf.quinthome.in serves the invoice back office. A rewrite rather than a
   // second deployment: one project, one set of environment variables, and no
   // chance of the two drifting apart.

@@ -57,6 +57,10 @@ export interface InvoiceCustomer {
 }
 
 export interface Invoice {
+  /** Shopify's id for the order, for writing back to it (e.g. tags). */
+  orderId: number;
+  /** Tags already on the order. */
+  tags: string[];
   orderName: string;
   orderNumber: number;
   invoiceNumber: string;
@@ -75,6 +79,8 @@ export interface Invoice {
   needsAttention: string[];
   /** Total given away, inclusive of tax. */
   discountTotal: number;
+  /** What Shopify recorded as charged for the order, after any discount code. */
+  totalPaid: number;
 }
 
 interface RawAddress {
@@ -95,6 +101,7 @@ interface RawAddress {
 interface RawOrder {
   id: number;
   name: string;
+  tags?: string;
   order_number: number;
   created_at: string;
   currency: string;
@@ -238,6 +245,8 @@ export function toInvoice(
   const mode = /mode\s+(\w+)/i.exec(order.note ?? "")?.[1] ?? "PayU";
 
   return {
+    orderId: order.id,
+    tags: (order.tags ?? "").split(",").map((t) => t.trim()).filter(Boolean),
     orderName: order.name,
     orderNumber: order.order_number,
     // Invoice number tracks the order number: unique and consecutive per
@@ -257,6 +266,7 @@ export function toInvoice(
     needsAttention,
     discountTotal:
       Math.round(lines.reduce((t, l) => t + l.discount, 0) * 100) / 100,
+    totalPaid: Number(order.total_price) || 0,
   };
 }
 

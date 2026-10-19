@@ -39,6 +39,9 @@ import {
   readSettleState,
 } from "@/lib/payu/pending";
 import { abandonedStoreConfigured, closeCheckout } from "@/lib/abandoned/store";
+import { after } from "next/server";
+import { ownOrderEmails } from "@/lib/email/config";
+import { sendOrderEmail } from "@/lib/email/order-email";
 import {
   ATTENTION_TAG,
   createAttentionOrder,
@@ -97,6 +100,23 @@ export type SettleResult =
   | { state: "failed"; reason: string };
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
+ * Sends our order confirmation once the response has gone, so the customer's
+ * confirmation page never waits on the invoice PDF. Outside a request (a
+ * script), it simply runs. Failures are logged and tagged on the order by
+ * sendOrderEmail; they never reach the payment.
+ */
+function queueOrderEmail(orderName: string): void {
+  const orderNumber = Number(orderName.replace(/\D/g, ""));
+  if (!orderNumber) return;
+  const run = () => sendOrderEmail(orderNumber).then(() => undefined);
+  try {
+    after(run);
+  } catch {
+    void run();
+  }
+}
 
 const inr = (n: number): string => `₹${n.toLocaleString("en-IN")}`;
 
@@ -527,6 +547,9 @@ async function settle(input: SettleInput): Promise<SettleResult> {
     }
 
     await finish(order.name, cart);
+    // Only here, where the order was just written: a repeat settle finds it
+    // existing and returns earlier, so each order is mailed once.
+    if (ownOrderEmails) queueOrderEmail(order.name);
     return {
       state: "ordered",
       order: order.name,

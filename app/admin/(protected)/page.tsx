@@ -2,6 +2,12 @@ import Link from "next/link";
 import { requireStaff } from "@/lib/admin/session";
 import { listInvoices, adminConfigured } from "@/lib/admin/orders";
 import { supplierGaps } from "@/lib/admin/supplier";
+import {
+  EMAIL_FAILED_TAG,
+  EMAILED_TAG,
+  INVOICE_HELD_TAG,
+  RESEND_API_KEY,
+} from "@/lib/email/config";
 
 export const dynamic = "force-dynamic";
 
@@ -13,9 +19,14 @@ const DATE = new Intl.DateTimeFormat("en-IN", {
 });
 
 /** Orders with their GST, newest first — the "all info in one place" view. */
-export default async function AdminHome() {
+export default async function AdminHome({
+  searchParams,
+}: {
+  searchParams: Promise<{ email?: string; order?: string }>;
+}) {
   await requireStaff();
   const gaps = supplierGaps();
+  const { email: emailOutcome, order: emailedOrder } = await searchParams;
 
   if (!adminConfigured) {
     return (
@@ -53,6 +64,23 @@ export default async function AdminHome() {
 
   return (
     <>
+      {emailOutcome && (
+        <Note
+          title={
+            emailOutcome === "sent"
+              ? `Order email sent for #${emailedOrder}`
+              : emailOutcome === "sent-no-invoice"
+                ? `Order email sent for #${emailedOrder}, without the invoice`
+                : `Order email for #${emailedOrder} was not sent`
+          }
+        >
+          {emailOutcome === "sent"
+            ? "The confirmation went out with the GST invoice attached."
+            : emailOutcome === "sent-no-invoice"
+              ? "The invoice needs a look first (see the order's flags), so it was left out."
+              : "Check that RESEND_API_KEY is set and quinthome.in is verified in Resend, then try again."}
+        </Note>
+      )}
       {gaps.length > 0 && (
         <Note title="Supplier details incomplete">
           Missing: {gaps.join(", ")}. Invoices will render, but should not be
@@ -134,6 +162,24 @@ export default async function AdminHome() {
                   >
                     Invoice →
                   </Link>
+                  {RESEND_API_KEY && (i.customer.email || i.billTo.email) && (
+                    <form action="/api/admin/order-email" method="post" className="mt-1.5">
+                      <input type="hidden" name="order" value={i.orderNumber} />
+                      <button className="text-[0.58rem] uppercase tracking-[0.2em] text-[color:var(--color-charcoal-soft)] underline-offset-4 hover:text-[color:var(--color-clay)] hover:underline">
+                        {i.tags.includes(EMAILED_TAG) ? "Email again" : "Email customer"}
+                      </button>
+                      {i.tags.includes(EMAIL_FAILED_TAG) && (
+                        <span className="ml-2 text-[0.56rem] uppercase tracking-[0.16em] text-[color:var(--color-clay)]">
+                          failed
+                        </span>
+                      )}
+                      {i.tags.includes(INVOICE_HELD_TAG) && (
+                        <span className="ml-2 text-[0.56rem] uppercase tracking-[0.16em] text-[color:var(--color-clay)]">
+                          no invoice
+                        </span>
+                      )}
+                    </form>
+                  )}
                 </td>
               </tr>
             ))}
