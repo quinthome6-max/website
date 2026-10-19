@@ -5,16 +5,20 @@
 // was refused. So the switch is proven, not assumed.
 //
 // The proof is one send to delivered@resend.dev, Resend's test inbox (no
-// person receives it). Its answer is kept for an hour, shared across server
-// instances through Redis when there is one, so at most a send an hour is
-// spent on it, and only when orders are coming in.
+// person receives it). A success is kept for an hour and a failure for ten
+// minutes, shared across server instances through Redis when there is one,
+// so very few sends are spent on it, and only when orders or checks come in.
 
 import { ORDER_EMAIL_FROM, ownOrderEmails } from "@/lib/email/config";
 import { sendEmail } from "@/lib/email/resend";
 import { redisConfigured, redisPipeline } from "@/lib/redis";
 
-const KEY = "qh:email:ready";
-const TTL_S = 60 * 60;
+// v2: the first deploy cached "not ready" for an hour from before the
+// domain verified; a new key lets the switch take effect at once.
+const KEY = "qh:email:ready:v2";
+/** A success is trusted for an hour; a failure is re-checked after ten minutes. */
+const OK_TTL_S = 60 * 60;
+const FAIL_TTL_S = 10 * 60;
 let local: { ok: boolean; until: number } | null = null;
 
 export async function orderEmailsReady(): Promise<boolean> {
@@ -52,7 +56,9 @@ export async function orderEmailsReady(): Promise<boolean> {
 
   local = { ok, until: now + 5 * 60_000 };
   if (redisConfigured) {
-    await redisPipeline([["SET", KEY, ok ? "1" : "0", "EX", TTL_S]]).catch(() => undefined);
+    await redisPipeline([["SET", KEY, ok ? "1" : "0", "EX", ok ? OK_TTL_S : FAIL_TTL_S]]).catch(
+      () => undefined
+    );
   }
   return ok;
 }
