@@ -9,6 +9,7 @@ import { shopifyAdminConfigured } from "@/lib/shopify/admin";
 import { GA_ID } from "@/lib/analytics/ga4";
 import { abandonedStoreConfigured, pingAbandonedStore, redisEnvNames } from "@/lib/abandoned/store";
 import { getToken, shiprocketConfigured } from "@/lib/shiprocket/client";
+import { RESEND_API_KEY, ownOrderEmails } from "@/lib/email/config";
 
 export const dynamic = "force-dynamic";
 
@@ -129,6 +130,12 @@ export async function GET() {
         bingMetaTag: Boolean(process.env.BING_SITE_VERIFICATION),
         clarity: true,
         metaPixel: true,
+      },
+      // Our order confirmation (lib/email/config.ts). switchedOn means
+      // Shopify's receipt is off and ours is sent instead. Booleans only.
+      orderEmails: {
+        resendKey: Boolean(RESEND_API_KEY),
+        switchedOn: ownOrderEmails,
       },
       // /admin/abandoned needs a Redis store (Upstash) on the Vercel project.
       abandonedCheckouts: {
