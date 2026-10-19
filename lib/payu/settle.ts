@@ -40,7 +40,6 @@ import {
 } from "@/lib/payu/pending";
 import { abandonedStoreConfigured, closeCheckout } from "@/lib/abandoned/store";
 import { after } from "next/server";
-import { ownOrderEmails } from "@/lib/email/config";
 import { sendOrderEmail } from "@/lib/email/order-email";
 import {
   ATTENTION_TAG,
@@ -549,7 +548,7 @@ async function settle(input: SettleInput): Promise<SettleResult> {
     await finish(order.name, cart);
     // Only here, where the order was just written: a repeat settle finds it
     // existing and returns earlier, so each order is mailed once.
-    if (ownOrderEmails) queueOrderEmail(order.name);
+    if (order.ownEmail) queueOrderEmail(order.name);
     return {
       state: "ordered",
       order: order.name,

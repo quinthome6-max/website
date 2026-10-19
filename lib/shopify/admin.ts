@@ -14,7 +14,7 @@
 // with less; if it will not take that either, a plainly-labelled placeholder
 // goes in its place for a person to finish. What never happens is nothing.
 
-import { ownOrderEmails } from "@/lib/email/config";
+import { orderEmailsReady } from "@/lib/email/ready";
 import { txnStartedAt } from "@/lib/payu/client";
 
 const DOMAIN = process.env.SHOPIFY_STORE_DOMAIN;
@@ -74,6 +74,8 @@ export interface CreateOrderInput {
 export interface CreatedOrder {
   id: number;
   name: string; // e.g. "#1001"
+  /** Written with Shopify's receipt off, so the store's own email must go. */
+  ownEmail: boolean;
   /**
    * Anything about the order that is not as the customer placed it, in plain
    * sentences. Empty for a clean order; the same text is in the order's note.
@@ -369,6 +371,8 @@ async function postOrder(
 
 /** Which parts of the order are being sent. Each can be dropped if refused. */
 interface Shape {
+  /** Shopify's receipt is suppressed because ours will be sent. */
+  ownEmail: boolean;
   /** A customer record, linking the order to the buyer's history. */
   customer: boolean;
   /** The phone on that record and on the order itself. */
@@ -472,9 +476,9 @@ function buildOrder(
     inventory_behaviour: shape.obeyStock
       ? "decrement_obeying_policy"
       : "decrement_ignoring_policy",
-    // Shopify's receipt, unless the store sends its own confirmation with the
-    // invoice attached (lib/email/order-email.ts, switched on by ORDER_EMAILS).
-    send_receipt: Boolean(email) && !ownOrderEmails,
+    // Shopify's receipt, unless the store's own confirmation (with the
+    // invoice attached) is switched on and proven able to send right now.
+    send_receipt: Boolean(email) && !shape.ownEmail,
     send_fulfillment_receipt: false,
     tags: [PAYU_TAG, txnTag(input.txnid), ...(attention.length ? [ATTENTION_TAG] : [])].join(", "),
     note: [paymentLine(input), ...attention.map((a) => `NEEDS ATTENTION — ${a}`)]
@@ -624,6 +628,9 @@ export async function createPaidOrder(
     );
   }
 
+  // Decided once, before the first attempt: either Shopify's receipt goes
+  // or ours will, never neither. A failed check leaves Shopify's on.
+  const ownEmail = await orderEmailsReady().catch(() => false);
   const shape: Shape = {
     customer: true,
     customerPhone: true,
@@ -631,6 +638,7 @@ export async function createPaidOrder(
     email: true,
     discount: true,
     obeyStock: true,
+    ownEmail,
   };
   const attention: string[] = [];
   let refusal = "";
@@ -638,7 +646,7 @@ export async function createPaidOrder(
   // One attempt as placed, plus one for each part that can be given up.
   for (let attempt = 0; attempt < 7; attempt++) {
     const result = await postOrder(buildOrder(input, shape, attention), input.txnid);
-    if (result.ok) return { ...result.order, attention };
+    if (result.ok) return { ...result.order, attention, ownEmail };
 
     // Not a verdict on the order: Shopify is down, or the token is wrong.
     // Sending less would not help, and would only strip a good order.
@@ -781,7 +789,8 @@ export async function createAttentionOrder(
       `Shopify Admin orders.json ${result.status}: ${result.body.slice(0, 500)}`
     );
   }
-  return { ...result.order, attention: [input.reason] };
+  // A placeholder is not the customer's order: no receipt from either side.
+  return { ...result.order, attention: [input.reason], ownEmail: false };
 }
 
 /**

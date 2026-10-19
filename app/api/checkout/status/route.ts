@@ -10,6 +10,7 @@ import { GA_ID } from "@/lib/analytics/ga4";
 import { abandonedStoreConfigured, pingAbandonedStore, redisEnvNames } from "@/lib/abandoned/store";
 import { getToken, shiprocketConfigured } from "@/lib/shiprocket/client";
 import { RESEND_API_KEY, ownOrderEmails } from "@/lib/email/config";
+import { orderEmailsReady } from "@/lib/email/ready";
 
 export const dynamic = "force-dynamic";
 
@@ -136,6 +137,9 @@ export async function GET() {
       orderEmails: {
         resendKey: Boolean(RESEND_API_KEY),
         switchedOn: ownOrderEmails,
+        // A real test send (to Resend's test inbox), cached for an hour.
+        // False means Shopify's receipt is still the one customers get.
+        readyToSend: await orderEmailsReady(),
       },
       // /admin/abandoned needs a Redis store (Upstash) on the Vercel project.
       abandonedCheckouts: {
