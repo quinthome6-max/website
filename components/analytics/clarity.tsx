@@ -7,13 +7,16 @@ const CLARITY_PROJECT_ID = "ybcekf8e6g";
  * Clarity — heatmaps and session replay, so we can see where people hesitate
  * rather than guess.
  *
- * afterInteractive rather than beforeInteractive: analytics should never sit in
- * front of the page rendering, and Clarity still attaches early enough to catch
- * the session. An id is required for Next to track an inline script.
+ * lazyOnload: it waits for the browser to be idle after the page has loaded.
+ * Clarity is replay and heatmaps, not attribution, so starting a moment later
+ * loses nothing that matters, and it no longer competes with the page for the
+ * phone's CPU while it loads (it cost the product pages several points of
+ * Lighthouse mobile score). An id is required for Next to track an inline
+ * script.
  */
 export function Clarity() {
   return (
-    <Script id="ms-clarity" strategy="afterInteractive">
+    <Script id="ms-clarity" strategy="lazyOnload">
       {`(function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
