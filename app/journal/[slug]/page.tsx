@@ -9,6 +9,7 @@ import { FadeUp } from "@/components/motion/fade-up";
 import { OG_LOCALE } from "@/lib/seo";
 import {
   articleJsonLd,
+  faqJsonLd,
   breadcrumbJsonLd,
   jsonLdScript,
 } from "@/lib/structured-data";
@@ -30,7 +31,13 @@ export async function generateMetadata({
   const url = `/journal/${post.slug}`;
   return {
     // The editorial headline runs long; search results would cut it off.
-    title: post.seoTitle ?? post.title,
+    // The site adds " · Quint Home" to titles; an article title that would
+    // run past 60 characters with it is used alone, as the SEO plan wrote
+    // them, so Google doesn't cut it short.
+    title:
+      (post.seoTitle ?? post.title).length + " · Quint Home".length <= 60
+        ? post.seoTitle ?? post.title
+        : { absolute: post.seoTitle ?? post.title },
     description: post.seoDescription ?? post.excerpt,
     alternates: { canonical: url },
     openGraph: {
@@ -82,6 +89,37 @@ function anchorFor(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+/** **bold** spans within a run of plain text (used for FAQ questions). */
+function withBold(text: string, key: string | number): ReactNode[] {
+  return text.split(/\*\*([^*]+)\*\*/g).map((part, i) =>
+    i % 2 === 1 ? (
+      <strong key={`${key}-b${i}`} className="font-medium text-[color:var(--color-charcoal)]">
+        {part}
+      </strong>
+    ) : (
+      part
+    )
+  );
+}
+
+/**
+ * Questions and answers from a closing "## Questions" section: each question
+ * is a paragraph that is bold throughout, followed by its answer paragraph.
+ * Emitted as FAQPage markup, which answer engines read.
+ */
+function faqFrom(body: string[]): { q: string; a: string }[] {
+  const start = body.findIndex((b) => /^##\s+(Questions|FAQ)/i.test(b));
+  if (start < 0) return [];
+  const out: { q: string; a: string }[] = [];
+  const plain = (t: string) => t.replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/\*\*/g, "");
+  for (let i = start + 1; i < body.length - 1; i++) {
+    if (body[i].startsWith("## ")) break;
+    const q = /^\*\*([^*]+)\*\*$/.exec(body[i].trim());
+    if (q && !body[i + 1].startsWith("## ")) out.push({ q: q[1].trim(), a: plain(body[i + 1]) });
+  }
+  return out;
+}
+
 /**
  * Inline [label](/path) links. Only paths on this site are honoured: anything
  * not beginning with "/" is left as text, so a stray URL pasted into the copy
@@ -93,7 +131,7 @@ function withLinks(text: string): ReactNode[] {
   let last = 0;
   let m: RegExpExecArray | null;
   while ((m = re.exec(text))) {
-    if (m.index > last) out.push(text.slice(last, m.index));
+    if (m.index > last) out.push(...withBold(text.slice(last, m.index), m.index));
     out.push(
       <Link
         key={m.index}
@@ -105,7 +143,7 @@ function withLinks(text: string): ReactNode[] {
     );
     last = m.index + m[0].length;
   }
-  if (last < text.length) out.push(text.slice(last));
+  if (last < text.length) out.push(...withBold(text.slice(last), "end"));
   return out;
 }
 
@@ -117,6 +155,7 @@ export default async function JournalPostPage({
   const { slug } = await params;
   const post = getJournalPost(slug);
   if (!post) notFound();
+  const faq = faqFrom(post.body);
 
   // Newest others first, so every older entry links forward to fresh writing.
   const others = journalNewestFirst().filter((p) => p.slug !== slug).slice(0, 2);
@@ -131,6 +170,12 @@ export default async function JournalPostPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdScript(articleJsonLd(post)) }}
       />
+      {faq.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdScript(faqJsonLd(faq)) }}
+        />
+      )}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

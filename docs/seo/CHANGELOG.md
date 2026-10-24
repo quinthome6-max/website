@@ -20,6 +20,20 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-24 — Four articles, breadcrumbs, oil list on the quiz page (plan Weeks 1–2, T16, T18)
+- **Articles (journal now 6):**
+  - Rewritten: "Waterless vs Ultrasonic Diffuser: Which Is Better?" (`what-is-a-waterless-diffuser`, 1,539 words, was ~250).
+  - New: "How to Make Your Home Smell Like a Luxury Hotel" (1,492 words).
+  - New: "Diwali Scents for the Pooja Room and Living Room" (1,402 words).
+  - Updated: the Diwali gift guide (1,510 words). It adds the three soy candles, the Drift as sold without an oil or app, and order timing for Diwali on 8 Nov (Dhanteras 6 Nov), with no promised dates.
+  - Each answers the question in its first two sentences, uses question H2s, links 2–4 products plus a category page and a related article, and closes with "Questions". All facts come from lib/data, the FAQ and /shipping. The unsupported "1 to 3 percent" figure from the old waterless post is gone.
+- **Article pages:** `**bold**` now renders. A closing "## Questions" block is emitted as FAQPage markup (6, 6, 3 and 4 questions). The " · Quint Home" suffix is added only where the title stays within 60 characters. Each article has its own `seoDescription` (≤155).
+- **Breadcrumbs (T16):** every product page shows a linked trail, Home › The Range › {Category} › {Product}, and its BreadcrumbList now includes the category page.
+- **Find Your Scent (T18):** all eight oils listed as links under the quiz, server-rendered.
+- **Copy fixes:** The Palace / The Forest / The Study room suggestions on /range/scented-candles now match lib/data/candles.ts. The FAQ's Pebble answer says "24-hour cyclic timer" (8 h on, 16 off), not "8-hour".
+- **Where:** `lib/data/journal.ts`, `app/journal/[slug]/page.tsx`, `components/layout/breadcrumbs.tsx`, the three product components, `app/range/[slug]/page.tsx`, `app/find-your-scent/page.tsx`, `lib/data/category-pages.ts`, `app/faq/page.tsx`.
+- **Check:** local build: all five article pages 200, no literal asterisks, FAQPage present, no broken images, phone width; sitemap 37 URLs. Next: IndexNow and Search Console indexing requests for the two new articles. Watch: the gift guide's price bands assume today's markdowns.
+
 ## 2026-10-24 — Titles and descriptions from the plan's rewrite sheet (plan T13)
 - **What:** every page in the sitemap now has a title of 60 characters or fewer and a description of 155 or fewer. Home, /range, /about, /journal, /businesses, /faq, /find-your-scent and /contact take the section 07 wording. /businesses says "We reply within 48 hours" (what the page promises) instead of "Proposal in 48 hours"; /faq keeps its description until the FAQ is expanded.
 - **Product templates:** diffusers read "The Monolith Waterless Diffuser, 1,075 sq ft" (coverage as the page shows it, so the Ember and Pillar say 540, not the raw 538), the Drift "Waterless Car Diffuser". Oils read "{Name} Fragrance Oil for Diffusers, 50 ml"; the Hotel Credential oils "{Name} Hotel Fragrance Oil, 50 ml". Candles read "{Name} Soy Candle, {Notes}". Descriptions carry the live Shopify price.

@@ -12,6 +12,7 @@ import { candles, getCandle } from "@/lib/data/candles";
 import { CandleProductPage } from "@/components/product/candle-page";
 import { PriceTag } from "@/components/product/price-tag";
 import { FadeUp } from "@/components/motion/fade-up";
+import { CATEGORY_CRUMB } from "@/components/layout/breadcrumbs";
 import { DiffuserHero } from "@/components/product/diffuser-hero";
 import { DiffuserCompare } from "@/components/sections/diffuser-compare";
 import { OilHero } from "@/components/product/oil-hero";
@@ -177,6 +178,7 @@ export default async function ProductPage({
             breadcrumbJsonLd([
               { name: "Home", path: "/" },
               { name: "The Range", path: "/range" },
+              { name: CATEGORY_CRUMB.diffuser.label, path: CATEGORY_CRUMB.diffuser.href },
               { name: product.name, path: `/range/${product.slug}` },
             ])
           ),
@@ -328,6 +330,7 @@ async function OilProductPage({ oil }: { oil: FragranceOil }) {
             breadcrumbJsonLd([
               { name: "Home", path: "/" },
               { name: "The Range", path: "/range" },
+              { name: CATEGORY_CRUMB.oil.label, path: CATEGORY_CRUMB.oil.href },
               { name: oil.name, path: `/range/${oil.slug}` },
             ])
           ),

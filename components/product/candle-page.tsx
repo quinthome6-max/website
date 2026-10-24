@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { AddToBag } from "@/components/product/add-to-bag";
 import { ProductGallery } from "@/components/product/product-gallery";
 import { CandleCompare } from "@/components/product/candle-compare";
@@ -6,6 +5,7 @@ import { CandleScenes } from "@/components/product/candle-scenes";
 import { TrackView } from "@/components/analytics/track-view";
 import { pixelId } from "@/lib/analytics/pixel";
 import { FadeUp } from "@/components/motion/fade-up";
+import { Breadcrumbs, CATEGORY_CRUMB } from "@/components/layout/breadcrumbs";
 import { CANDLE_CARE, CANDLE_MAKE } from "@/lib/data/candles";
 import { getCommerceByName } from "@/lib/shopify/commerce";
 import { sellableVariant, variantPricePair } from "@/lib/shopify/commerce";
@@ -57,21 +57,21 @@ export async function CandleProductPage({ candle }: { candle: Candle }) {
             breadcrumbJsonLd([
               { name: "Home", path: "/" },
               { name: "The Range", path: "/range" },
+              { name: CATEGORY_CRUMB.candle.label, path: CATEGORY_CRUMB.candle.href },
               { name: candle.name, path: `/range/${candle.slug}` },
             ])
           ),
         }}
       />
       <section className="mx-auto max-w-[var(--container-page)] px-6 pt-6 md:px-10 md:pt-10">
-        <nav className="text-[0.58rem] uppercase tracking-[0.28em] text-[color:var(--color-charcoal-soft)]">
-          <Link href="/range" className="hover:text-[color:var(--color-clay)]">
-            The Range
-          </Link>
-          <span className="mx-2">·</span>
-          <Link href="/range/scented-candles" className="hover:text-[color:var(--color-clay)]">
-            Candles
-          </Link>
-        </nav>
+        <Breadcrumbs
+          trail={[
+            { label: "Home", href: "/" },
+            { label: "The Range", href: "/range" },
+            CATEGORY_CRUMB.candle,
+            { label: candle.name },
+          ]}
+        />
 
         <div className="mt-8 grid gap-10 md:mt-12 lg:grid-cols-[minmax(0,32rem)_minmax(0,40rem)] lg:justify-center lg:gap-16">
           {/* ── Image ── */}

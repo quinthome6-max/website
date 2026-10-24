@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { FadeUp } from "@/components/motion/fade-up";
+import { Breadcrumbs, CATEGORY_CRUMB } from "@/components/layout/breadcrumbs";
 import { Monogram } from "@/components/brand/logo";
 import { ProductGallery } from "@/components/product/product-gallery";
 import { AddToBag } from "@/components/product/add-to-bag";
@@ -128,13 +128,15 @@ export function OilHero({
         {/* ===== Bottle study – sticky on the left ===== */}
         <div className="min-w-0 lg:sticky lg:top-28 lg:self-start">
           <FadeUp>
-            <div className="mb-6 flex items-center gap-4 text-[0.6rem] uppercase tracking-[0.42em] text-[color:var(--color-charcoal-soft)]">
-              <Link href="/range" className="hover:text-[color:var(--color-clay)]">
-                Shop
-              </Link>
-              <span className="h-px w-6 bg-[color:var(--color-rule)]" />
-              <span>Fragrance Oils</span>
-            </div>
+            <Breadcrumbs
+              className="mb-6"
+              trail={[
+                { label: "Home", href: "/" },
+                { label: "The Range", href: "/range" },
+                CATEGORY_CRUMB.oil,
+                { label: oil.name },
+              ]}
+            />
           </FadeUp>
           <FadeUp delay={0.05}>
             <ProductGallery

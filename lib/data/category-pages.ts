@@ -182,7 +182,7 @@ export const categoryPages: CategoryPage[] = [
       {
         h2: "Three scents, three rooms",
         paras: [
-          "The Forest is bergamot and vetiver, a green, wooded calm that suits a living room by day. The Palace is violet and amber, quietly ceremonial, for evenings and the dining table. The Study is oud and wood, smoky, deep and unhurried: the one for a reading corner or a bedroom at night.",
+          "The Forest is bergamot and vetiver, a green, wooded calm for a living room or a study. The Palace is violet and amber, quietly ceremonial, for an entrance or a bedroom. The Study is oud and wood, smoky, deep and unhurried: the one for an evening in with the door closed.",
           "Each candle comes in its own sleeve, which makes it an easy gift. All three are ₹1,699.",
         ],
       },
