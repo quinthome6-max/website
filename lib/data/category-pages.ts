@@ -41,7 +41,7 @@ export const categoryPages: CategoryPage[] = [
     label: "Waterless Diffusers",
     title: "Waterless Aroma Diffusers for Home & Office",
     description:
-      "Waterless aroma diffusers that run on pure fragrance oil, never water. Six models from ₹3,999, from car-sized to 1,075 sq ft rooms. App control on most.",
+      "Waterless aroma diffusers that run on pure fragrance oil, never water. Six models from ₹3,999, from car-sized to 1,075 sq ft rooms. App control on three.",
     h1: "Waterless aroma diffusers",
     h1Accent: "for every room, and the car.",
     intro:
@@ -63,7 +63,7 @@ export const categoryPages: CategoryPage[] = [
           head: ["Space", "Diffuser", "Why"],
           rows: [
             ["Large living room or open-plan space, up to 1,075 sq ft", "The Monolith", "The widest coverage, a 120 ml bottle and a 2200 mAh battery, so it needs no socket"],
-            ["Living room or bedroom, up to 590 sq ft", "The Loom", "Soft fabric exterior, candle-like glow, knob or app control, 120 ml bottle"],
+            ["Living room or bedroom, up to 590 sq ft", "The Loom", "Soft fabric exterior, candle-like glow, simple knob control, 120 ml bottle"],
             ["Bedroom, study or office, up to 540 sq ft", "The Pillar", "Two 60 ml bottles you can run apart or together, at 35 dB or less"],
             ["Bedside, desk or bar cart, up to 540 sq ft", "The Ember", "An LED clock that sets itself, with a breathing amber light"],
             ["Bathroom, kitchen or hallway, 161–250 sq ft", "The Pebble", "Plugs straight into the wall, no app, 24-hour cyclic timer"],
@@ -75,7 +75,7 @@ export const categoryPages: CategoryPage[] = [
         h2: "What comes in the box",
         paras: [
           "Every room diffuser ships with a 50 ml fragrance oil of your choice, free. The Drift, our car diffuser, is sold on its own. A 50 ml bottle lasts about 45–60 days, depending on the model and how strong you set it, and refills start at ₹899.",
-          "All models except the Pebble and the Drift work with the Quint Home companion app, which sets schedules and intensity from your phone. The app talks to the diffuser directly: no Wi-Fi, account or cloud is needed.",
+          "The Monolith, Pillar and Ember work with the Quint Home companion app, which sets schedules and intensity from your phone. The app talks to the diffuser directly: no Wi-Fi, account or cloud is needed.",
         ],
       },
     ],
@@ -90,7 +90,7 @@ export const categoryPages: CategoryPage[] = [
       },
       {
         q: "Which diffusers work with the app?",
-        a: "The Monolith, Loom, Pillar and Ember. The Pebble runs on its own 24-hour cyclic timer, and the Drift on two buttons; neither needs an app.",
+        a: "The Monolith, Pillar and Ember. The Loom is set by hand at its knob, the Pebble runs on its own 24-hour cyclic timer and the Drift on two buttons; none of them needs an app.",
       },
       {
         q: "Can I use other brands' oils?",

@@ -20,6 +20,19 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-24 — The Loom: Bluetooth and app control removed
+- **What:** The Loom was listed as Bluetooth and app-controlled. It is set by hand at its knob only (client correction). Removed from:
+  - the product data: the Bluetooth setting, description, overview bullets, key features and the "Connectivity" spec. Its meta description no longer says "with app scheduling", and its Product markup now reads "No app".
+  - the key-features image, remade as `key-features/loom-v2.webp` ("Simple knob control").
+  - /range/waterless-diffusers: the room table, the box copy and the FAQ. The meta description now says "App control on three" (was "on most").
+  - /faq: two answers.
+  - three articles: the waterless article, the Diwali gift guide and the hotel-scent article.
+  - the comparison table on every diffuser page ("Knob (no app)", was "App + knob").
+  - llms.txt, the print catalogue copy, and the Loom Meta ad image and copy (in "PPC Creatives").
+- **Why:** an untrue feature claim on the page, in search results and in ads.
+- **Where:** `lib/data/diffusers.ts`, `category-pages.ts`, `journal.ts`, `app/faq/page.tsx`, `app/llms.txt/route.ts`, `marketing/catalogue/copy.json`.
+- **Check:** /range/loom shows no Bluetooth or app. The Shopify product description for the Loom (Admin) and any live Meta ad using the old image still need checking by hand. The printed catalogue PDF needs re-exporting from the updated copy.
+
 ## 2026-10-24 — Site QA sweep: accessibility and legibility fixes
 - **What:** A full check of the live site after the week's changes.
   - Crawl of all 37 sitemap pages: no broken links or assets (1,615 checked).

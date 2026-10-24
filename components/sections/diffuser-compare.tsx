@@ -31,7 +31,7 @@ const FACTS: Record<string, Fact> = {
   },
   A974: {
     power: "USB-corded",
-    control: "App + knob",
+    control: "Knob (no app)",
     clock: "—",
     light: "Candle-like glow",
     material: "PP + fabric",

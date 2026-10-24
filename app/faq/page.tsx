@@ -27,7 +27,7 @@ const groups = [
       },
       {
         q: "What does it take to set up?",
-        a: "For all models except the Pebble and the Drift, the process is simple: Fill the oil reservoir, pair with the Quint Home companion app once, set a schedule, and the device runs on its own from that point. No daily interaction is needed, unless you want to change any settings.\n\nThe Drift, the car diffuser, has no app either: two buttons set its intensity and run time.\n\nThe Pebble is a plug-in model and needs no app at all – it runs on a built-in 24-hour intelligent cyclic timer. Once switched on, it runs automatically for 8 hours, then enters sleep mode for 16 hours before restarting on its own. This 24-hour cycle repeats every day. The plug-in diffuser is designed to operate intelligently with minimal intervention.\n\nAfter 16 days of continuous operation, the diffuser enters Auto Shut-Off Mode as a safety feature. Simply press the power button to restart the cycle.\n\nIf you wish to restart the diffuser or change the fragrance intensity at any time, press the power button and select your preferred intensity. The diffuser will begin a fresh cycle, running for 8 hours, sleeping for 16 hours, and continuing this pattern until the next automatic shut-off after 16 days.",
+        a: "For the Monolith, the Pillar and the Ember, the process is simple: Fill the oil reservoir, pair with the Quint Home companion app once, set a schedule, and the device runs on its own from that point. No daily interaction is needed, unless you want to change any settings.\n\nThe Loom has no app: fill it, switch it on and set the intensity at its knob.\n\nThe Drift, the car diffuser, has no app either: two buttons set its intensity and run time.\n\nThe Pebble is a plug-in model and needs no app at all – it runs on a built-in 24-hour intelligent cyclic timer. Once switched on, it runs automatically for 8 hours, then enters sleep mode for 16 hours before restarting on its own. This 24-hour cycle repeats every day. The plug-in diffuser is designed to operate intelligently with minimal intervention.\n\nAfter 16 days of continuous operation, the diffuser enters Auto Shut-Off Mode as a safety feature. Simply press the power button to restart the cycle.\n\nIf you wish to restart the diffuser or change the fragrance intensity at any time, press the power button and select your preferred intensity. The diffuser will begin a fresh cycle, running for 8 hours, sleeping for 16 hours, and continuing this pattern until the next automatic shut-off after 16 days.",
       },
     ],
   },
@@ -55,7 +55,7 @@ const groups = [
     items: [
       {
         q: "How do I control it?",
-        a: "Through the Quint Home companion app for iOS and Android. Pair once, then set your schedules and intensity. Every model except the Pebble (plug-in) and the Drift (car) is app-controllable. The Pebble runs on a built-in 24-hour cyclic timer, and the Drift on its own two buttons; neither needs an app.",
+        a: "Through the Quint Home companion app for iOS and Android. Pair once, then set your schedules and intensity. The Monolith, Pillar and Ember are app-controllable. The Loom is set by hand at its knob, the Pebble (plug-in) runs on a built-in 24-hour cyclic timer, and the Drift (car) on its own two buttons; none of them needs an app.",
       },
       {
         q: "Does it need Wi-Fi to work?",

@@ -61,7 +61,7 @@ ${diffusers
       [
         inr(priceOf(d, commerce)),
         d.coverageLabel,
-        d.bluetooth ? "app-controlled over Bluetooth" : "no app, manual timer",
+        d.bluetooth ? "app-controlled over Bluetooth" : "no app, on-device controls",
         d.finish,
         d.tagline,
       ].join(" · ")
