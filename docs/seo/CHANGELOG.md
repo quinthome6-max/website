@@ -20,6 +20,38 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-24 — H1s with search phrases, favicon fix, shop and site-name markup (plan §07, T19)
+- **Found (brand search for "quint home"):**
+  - **Favicon:** blank white circle. The icon was a white mark on a transparent ground, which disappears on Google's white circle.
+  - **Site name:** shown as "quinthome.in".
+  - **Old title and description:** Google showed "Quint Home — Waterless Diffusers & Fragrance Oils, Mumbai", from before T13. It hasn't re-crawled since.
+  - **Sitelinks:** Contact, About, Shipping, Terms and "Scent your space." (the /businesses H1). Not yet the category pages, which went live this week.
+  - **Business Profile panel:** "E-commerce service", no phone, no reviews. Its description lists reed diffusers and wardrobe products the site doesn't sell.
+- **Favicon:** the same monogram in white on a solid verdant (#293329) square: `app/favicon.ico` (16/32/48), `app/icon.png` (512) and a new `app/apple-icon.png` (180). Source tile in `public/images/brand/favicon-tile-512.png`.
+- **H1s:** every page still has exactly one, and each now carries the search phrase from the plan. The brand line stays as the large type.
+  - **Home:** the hidden H1 is gone. The first line under the video is now the H1: "Waterless diffusers that elevate your home. Fragrance oils that stay with you." (was "Objects… / Fragrances…", an H2).
+  - **/range, /journal, /businesses, /faq, /contact:** the small label above the headline is now part of the H1. Each has a search phrase, e.g. "Scent marketing for hotels, offices & retail" + "Scent your space."
+  - **/about:** "Quintessence" plus a screen-reader-only ": the story of Quint Home".
+  - **/find-your-scent:** a visible H1, "Find your fragrance oil".
+  - **Products:** the H1 is the name plus its kind, e.g. "The Monolith, Waterless aroma diffuser", "Terrain, Fragrance oil for diffusers · 50 ml", "The Forest… Bergamot & Vetiver soy candle". On Hotel Credential oils the badge moved beside the stars.
+- **H2s:**
+  - **Home:** "A waterless diffuser for every room", "A library of fragrance oils, made the way perfumers do", "Set your diffuser once…".
+  - **Duplicate fixed:** the homepage's "It started in Udaipur." (same as /about) is now "It started in a hotel in Udaipur."
+  - **Product pages:** the section labels are now H2s: Overview / The notes on oil pages, About the… / Key features on diffuser pages, and "The other soy candles" on candle pages.
+  - **/faq:** groups renamed "The Diffusers", "The Fragrance Oils", "The App & Controls", and each question is an H3.
+  - **/businesses:** "Commercial Diffusers", "Bulk Diffusers & Oils".
+- **Homepage links:** "Waterless Diffusers", "Fragrance Oils" and "Soy Candles" now go to the three category pages. The old "Reed Diffusers & Candles" link is gone, since reed diffusers aren't sold.
+- **Markup:**
+  - **Organization:** now `OnlineStore`, with legalName Rusera Lifestyle, an ImageObject logo, a customer-service contactPoint, an address (Mumbai, Maharashtra, 400019, IN; no street, as the registered address is a home) and the return policy.
+  - **WebSite:** gains alternateName "QuintHome" and "Quint Home India", and inLanguage en-IN.
+  - **Product:** up to 5 images (was 1).
+- **Accessibility:** a small-text terracotta (`--color-clay-text` #b55423) for the candle notes label and the discount pills (was 4.4:1). The FAQ list was an invalid `<dl>`.
+- **Where:** app/page.tsx, layout.tsx, range, about, journal, businesses, faq, contact, find-your-scent pages; components/sections (smart-home, diffuser-showcase, scent-library, how-to-use, founder-teaser); components/product (diffuser-hero, oil-hero, candle-page, candle-compare, price-tag, add-to-bag); lib/structured-data.ts; app/globals.css.
+- **Check:**
+  - Lighthouse on the production build: accessibility 100 and SEO 100 on /, /range, /businesses, /faq, /journal, /find-your-scent, /range/monolith, /range/loom, /range/grand-lobby and /range/the-forest.
+  - Watch the brand result in Google over 1–3 weeks for the new favicon, "Quint Home" as site name, the new title and description, and category sitelinks.
+  - Request indexing of the homepage in Search Console to speed it up.
+
 ## 2026-10-24 — The Loom: Bluetooth and app control removed
 - **What:** The Loom was listed as Bluetooth and app-controlled. It is set by hand at its knob only (client correction). Removed from:
   - the product data: the Bluetooth setting, description, overview bullets, key features and the "Connectivity" spec. Its meta description no longer says "with app scheduling", and its Product markup now reads "No app".

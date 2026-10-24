@@ -85,23 +85,27 @@ export async function CandleProductPage({ candle }: { candle: Candle }) {
           {/* ── Detail ── */}
           <FadeUp delay={0.08}>
             <div className="md:pt-4">
-              <p className="text-[0.6rem] uppercase tracking-[0.32em] text-[color:var(--color-clay)]">
-                {candle.notesLine}
-              </p>
-              <h1
-                className="mt-4 text-balance"
-                style={{
-                  fontFamily: "var(--font-serif)",
-                  fontSize: "var(--text-3xl)",
-                  lineHeight: 1.06,
-                  letterSpacing: "-0.018em",
-                  fontWeight: 400,
-                }}
-              >
-                {candle.name}.{" "}
-                <em className="text-[color:var(--color-aerial-deep)]">
-                  {candle.tagline}
-                </em>
+              {/* One H1 for the name and the kind of product. Reversed so the
+                  notes still show as the small label above the name. */}
+              <h1 className="flex flex-col-reverse">
+                <span
+                  className="mt-4 block text-balance"
+                  style={{
+                    fontFamily: "var(--font-serif)",
+                    fontSize: "var(--text-3xl)",
+                    lineHeight: 1.06,
+                    letterSpacing: "-0.018em",
+                    fontWeight: 400,
+                  }}
+                >
+                  {candle.name}.{" "}
+                  <em className="text-[color:var(--color-aerial-deep)]">
+                    {candle.tagline}
+                  </em>
+                </span>{" "}
+                <span className="block font-sans text-[0.6rem] uppercase leading-[1.65] tracking-[0.32em] text-[color:var(--color-clay-text)]">
+                  {candle.notesLine} soy candle
+                </span>
               </h1>
 
               {/* Stars just under the name */}

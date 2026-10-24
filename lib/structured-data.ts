@@ -148,7 +148,8 @@ export function productJsonLd(
     "@id": `${url}#product`,
     name: product.name,
     description: product.description.split("\n\n")[0],
-    image: [abs(product.image)],
+    // Several photos, so Google can pick a crop for each result layout.
+    image: [...new Set([product.image, ...("gallery" in product ? product.gallery : [])])].slice(0, 5).map(abs),
     url,
     category: isOil
       ? "Home Fragrance Oil"

@@ -18,17 +18,19 @@ export default function JournalPage() {
     <div className="mx-auto max-w-[var(--container-page)] px-6 py-[var(--spacing-section)] md:px-10">
       <FadeUp>
         <div className="border-b border-[color:var(--color-rule)] pb-10">
-          <p className="font-eyebrow"><Monogram className="mr-1.5 inline-block h-[0.9em] w-[0.9em] align-[-0.12em]" />The Journal</p>
-          <h1
-            className="mt-7 max-w-[18ch]"
-            style={{
+          <h1>
+            <span className="block font-sans leading-[1.65] font-eyebrow">
+              <Monogram className="mr-1.5 inline-block h-[0.9em] w-[0.9em] align-[-0.12em]" />The Journal: home fragrance &amp; diffuser guides
+            </span>
+            <span className="sr-only">. </span>
+            <span className="block mt-7 max-w-[18ch]" style={{
               fontFamily: "var(--font-serif)",
               fontSize: "var(--text-5xl)",
               lineHeight: 0.98,
               letterSpacing: "-0.02em",
-            }}
-          >
-            Writing on scent, the device, and the home.
+            }}>
+              Writing on scent, the device, and the home.
+            </span>
           </h1>
         </div>
       </FadeUp>

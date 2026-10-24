@@ -67,7 +67,7 @@ export function HowToUse() {
           chapterTitle="How it works"
           headline={
             <>
-              Set it once,
+              Set your diffuser once,
               <br />
               <em className="not-italic text-[color:var(--color-aerial-deep)]">
                 then forget about it.

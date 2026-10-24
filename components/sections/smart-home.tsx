@@ -39,8 +39,10 @@ export function SmartHome() {
           </div>
         </FadeUp>
 
+        {/* The home page's H1. The hero above is a silent video, so this is
+            the first headline a visitor or a search engine reads. */}
         <FadeUp delay={0.1}>
-          <h2
+          <h1
             className="mx-auto mt-12 max-w-[34ch]"
             style={{
               fontFamily: "var(--font-serif)",
@@ -51,38 +53,38 @@ export function SmartHome() {
               color: "var(--color-charcoal)",
             }}
           >
-            Objects that elevate your home.
+            Waterless diffusers that elevate your home.{" "}
             <br />
             <em className="not-italic text-[color:var(--color-aerial-deep)]">
-              Fragrances that stay
+              Fragrance oils that stay{" "}
               <br />
               with you.
             </em>
-          </h2>
+          </h1>
         </FadeUp>
 
         <FadeUp delay={0.25}>
           <div className="mt-16 border-t border-[color:var(--color-charcoal)]/10 pt-12">
             <div className="mx-auto flex flex-col items-center gap-2.5 text-[0.86rem] uppercase tracking-[0.2em] text-[color:var(--color-charcoal-soft)] sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-6 sm:gap-y-3">
               <Link
-                href="/range#diffusers"
+                href="/range/waterless-diffusers"
                 className="transition-colors duration-300 hover:text-[color:var(--color-charcoal)]"
               >
                 Waterless Diffusers
               </Link>
               <span className="hidden text-[color:var(--color-charcoal-soft)]/35 sm:inline">·</span>
               <Link
-                href="/range"
-                className="transition-colors duration-300 hover:text-[color:var(--color-charcoal)]"
-              >
-                Reed Diffusers &amp; Candles
-              </Link>
-              <span className="hidden text-[color:var(--color-charcoal-soft)]/35 sm:inline">·</span>
-              <Link
-                href="/range#oils"
+                href="/range/fragrance-oils"
                 className="transition-colors duration-300 hover:text-[color:var(--color-charcoal)]"
               >
                 Fragrance Oils
+              </Link>
+              <span className="hidden text-[color:var(--color-charcoal-soft)]/35 sm:inline">·</span>
+              <Link
+                href="/range/scented-candles"
+                className="transition-colors duration-300 hover:text-[color:var(--color-charcoal)]"
+              >
+                Soy Candles
               </Link>
             </div>
           </div>

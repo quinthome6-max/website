@@ -17,6 +17,7 @@
   --color-verdant: #293329;         /* deepest sage – inverted bg / shadow */
   --color-clay: #c15a27;            /* terracotta – primary CTA */
   --color-clay-deep: #6a2e0c;       /* rammed earth – CTA hover */
+  --color-clay-text: #b55423;       /* clay for small text: 4.9:1 on white, 4.6:1 under ivory */
   --color-charcoal: #3a3532;        /* body text + logo */
   --color-charcoal-soft: #6a625e;   /* secondary text */
   --color-rule: #e6dfd2;            /* hairline dividers on white */

@@ -13,9 +13,13 @@ export const metadata: Metadata = {
 export default function FindYourScentPage() {
   return (
     <article className="bg-[color:var(--color-white)] pt-6 md:pt-10">
-      {/* The quiz renders step headings only, so the page carried no h1.
-          Hidden rather than shown, since the first step is its own headline. */}
-      <h1 className="sr-only">Find your home fragrance oil</h1>
+      {/* The quiz's own headline is an H2 (it is shared with the oil pages),
+          so the page's H1 sits above it. */}
+      <div className="mx-auto max-w-[var(--container-page)] px-6 pb-6 md:px-10 md:pb-10">
+        <h1 className="font-sans text-[0.62rem] uppercase leading-[1.65] tracking-[0.42em] text-[color:var(--color-charcoal-soft)]">
+          Find your fragrance oil
+        </h1>
+      </div>
       <ScentFinder />
 
       {/* All eight oils as plain links (plan T18). The quiz only reveals a

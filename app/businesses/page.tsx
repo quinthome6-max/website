@@ -13,12 +13,12 @@ export const metadata: Metadata = {
 const offerings = [
   {
     no: "01",
-    title: "Commercial Machines",
+    title: "Commercial Diffusers",
     body: "Designed for continuous use, from compact entryways to full-floor coverage.",
   },
   {
     no: "02",
-    title: "Bulk Orders",
+    title: "Bulk Diffusers & Oils",
     body: "Preferential pricing on devices and oils for multi-site and multi-location rollouts.",
   },
   {
@@ -35,25 +35,23 @@ export default function BusinessesPage() {
       <section className="border-b border-[color:var(--color-stardust)]/10 bg-[color:var(--color-verdant)] pb-[var(--spacing-section)] pt-16 text-[color:var(--color-stardust)] md:pt-24">
         <div className="mx-auto w-[100%] max-w-[var(--container-page)] px-6 md:px-10">
           <FadeUp>
-            <p className="text-[0.62rem] uppercase tracking-[0.42em] text-[color:var(--color-stardust)]/70">
-              For Businesses
-            </p>
-          </FadeUp>
-          <FadeUp delay={0.06}>
-            <h1
-              className="mt-6 max-w-[14ch] text-balance text-[color:var(--color-white)]"
-              style={{
+            <h1>
+              <span className="block font-sans leading-[1.65] text-[0.62rem] uppercase tracking-[0.42em] text-[color:var(--color-stardust)]/70">
+                Scent marketing for hotels, offices &amp; retail
+              </span>
+              <span className="sr-only">. </span>
+              <span className="block mt-6 max-w-[14ch] text-balance text-[color:var(--color-white)]" style={{
                 fontFamily: "var(--font-serif)",
                 fontSize: "var(--text-6xl)",
                 lineHeight: 0.95,
                 letterSpacing: "-0.026em",
                 fontWeight: 400,
-              }}
-            >
-              Scent your{" "}
-              <em className="not-italic text-[color:var(--color-aerial)]">
-                space.
-              </em>
+              }}>
+                Scent your{" "}
+                <em className="not-italic text-[color:var(--color-aerial)]">
+                  space.
+                </em>
+              </span>
             </h1>
           </FadeUp>
           <FadeUp delay={0.12}>

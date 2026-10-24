@@ -19,23 +19,23 @@ export default function ContactPage() {
         <div className="mx-auto max-w-[var(--container-page)] px-6 md:px-10">
           <div className="grid items-end gap-10 pb-12 md:grid-cols-12 md:gap-16">
             <FadeUp delay={0.05} className="md:col-span-7">
-              <p className="text-[0.62rem] uppercase tracking-[0.42em] text-[color:var(--color-charcoal-soft)]">
-                Contact
-              </p>
-              <h1
-                className="mt-7 max-w-[18ch] text-balance"
-                style={{
+              <h1>
+                <span className="block font-sans leading-[1.65] text-[0.62rem] uppercase tracking-[0.42em] text-[color:var(--color-charcoal-soft)]">
+                  Contact Quint Home
+                </span>
+                <span className="sr-only">. </span>
+                <span className="block mt-7 max-w-[18ch] text-balance" style={{
                   fontFamily: "var(--font-serif)",
                   fontSize: "var(--text-5xl)",
                   lineHeight: 0.96,
                   letterSpacing: "-0.024em",
                   fontWeight: 400,
-                }}
-              >
-                Get in touch{" "}
-                <em className="text-[color:var(--color-aerial-deep)]">
-                  with us.
-                </em>
+                }}>
+                  Get in touch{" "}
+                  <em className="text-[color:var(--color-aerial-deep)]">
+                    with us.
+                  </em>
+                </span>
               </h1>
             </FadeUp>
 

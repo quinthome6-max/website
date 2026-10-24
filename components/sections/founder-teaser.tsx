@@ -68,7 +68,7 @@ export function FounderTeaser() {
                   fontWeight: 400,
                 }}
               >
-                It started in Udaipur.
+                It started in a hotel in Udaipur.
               </h2>
             </FadeUp>
 

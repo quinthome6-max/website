@@ -76,6 +76,7 @@ export default function AboutPage() {
               >
                 Quint
                 <span className="text-[color:var(--color-clay)]">essence</span>
+                <span className="sr-only">: the story of Quint Home</span>
               </h1>
             </FadeUp>
             <FadeUp delay={0.12} className="min-w-0 md:col-span-3">

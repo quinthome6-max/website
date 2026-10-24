@@ -53,7 +53,7 @@ export function PriceTag({
             {formatINR(listPrice!)}
           </span>
           {badge && (
-            <span className="rounded-full bg-[color:var(--color-clay)] px-2 py-0.5 text-[0.58rem] uppercase leading-[1.6] tracking-[0.24em] text-[color:var(--color-ivory)]">
+            <span className="rounded-full bg-[color:var(--color-clay-text)] px-2 py-0.5 text-[0.58rem] uppercase leading-[1.6] tracking-[0.24em] text-[color:var(--color-ivory)]">
               −{off}%
             </span>
           )}

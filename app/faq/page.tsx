@@ -15,7 +15,7 @@ import { faqJsonLd, breadcrumbJsonLd, jsonLdScript } from "@/lib/structured-data
 const groups = [
   {
     chapter: "One",
-    label: "The Object",
+    label: "The Diffusers",
     items: [
       {
         q: "How is this different from a regular diffuser?",
@@ -33,7 +33,7 @@ const groups = [
   },
   {
     chapter: "Two",
-    label: "The Oils",
+    label: "The Fragrance Oils",
     items: [
       {
         q: "How long does a 50 ml oil last?",
@@ -51,7 +51,7 @@ const groups = [
   },
   {
     chapter: "Three",
-    label: "App & Control",
+    label: "The App & Controls",
     items: [
       {
         q: "How do I control it?",
@@ -99,23 +99,23 @@ export default function FAQPage() {
         <div className="mx-auto max-w-[var(--container-page)] px-6 md:px-10">
           <div className="grid items-end gap-10 pb-12 md:grid-cols-12 md:gap-16">
             <FadeUp delay={0.05} className="md:col-span-7">
-              <p className="text-[0.62rem] uppercase tracking-[0.42em] text-[color:var(--color-charcoal-soft)]">
-                Frequently Asked Questions
-              </p>
-              <h1
-                className="mt-7 max-w-[18ch] text-balance"
-                style={{
+              <h1>
+                <span className="block font-sans leading-[1.65] text-[0.62rem] uppercase tracking-[0.42em] text-[color:var(--color-charcoal-soft)]">
+                  Diffuser &amp; fragrance oil FAQs
+                </span>
+                <span className="sr-only">. </span>
+                <span className="block mt-7 max-w-[18ch] text-balance" style={{
                   fontFamily: "var(--font-serif)",
                   fontSize: "var(--text-5xl)",
                   lineHeight: 0.96,
                   letterSpacing: "-0.024em",
                   fontWeight: 400,
-                }}
-              >
-                Your questions,{" "}
-                <em className="text-[color:var(--color-aerial-deep)]">
-                  answered.
-                </em>
+                }}>
+                  Your questions,{" "}
+                  <em className="text-[color:var(--color-aerial-deep)]">
+                    answered.
+                  </em>
+                </span>
               </h1>
             </FadeUp>
 
@@ -157,12 +157,12 @@ export default function FAQPage() {
                 </FadeUp>
 
                 <div className="md:col-span-8">
-                  <dl className="grid gap-px overflow-hidden border-y border-[color:var(--color-rule)] bg-[color:var(--color-rule)]">
+                  <div className="grid gap-px overflow-hidden border-y border-[color:var(--color-rule)] bg-[color:var(--color-rule)]">
                     {group.items.map((item, i) => (
                       <FadeUp key={i} delay={i * 0.04} as="div" className="bg-[color:var(--color-white)]">
                         <details className="group">
                           <summary className="flex cursor-pointer items-baseline justify-between gap-6 py-7 list-none hover:text-[color:var(--color-clay)] transition-colors duration-300">
-                            <span
+                            <h3
                               className="max-w-[48ch] text-[var(--text-base)]"
                               style={{
                                 fontFamily: "var(--font-serif)",
@@ -173,7 +173,7 @@ export default function FAQPage() {
                               }}
                             >
                               {item.q}
-                            </span>
+                            </h3>
                             <span className="shrink-0 text-[0.78rem] text-[color:var(--color-charcoal-soft)] transition-transform duration-500 group-open:rotate-45">
                               +
                             </span>
@@ -186,7 +186,7 @@ export default function FAQPage() {
                         </details>
                       </FadeUp>
                     ))}
-                  </dl>
+                  </div>
                 </div>
               </div>
             ))}

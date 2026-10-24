@@ -18,7 +18,7 @@ export async function ScentLibrary() {
           chapterTitle="Signature scents"
           headline={
             <>
-              A scent library,
+              A library of fragrance oils,
               <br />
               <em className="not-italic text-[color:var(--color-aerial-deep)]">
                 made the way perfumers do.

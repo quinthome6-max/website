@@ -22,9 +22,9 @@ export async function CandleCompare({ current }: { current?: string }) {
     <section className="border-t border-[color:var(--color-rule)] py-[var(--spacing-section-sm)]">
       <div className="mx-auto max-w-[var(--container-page)] px-6 md:px-10">
         <FadeUp>
-          <p className="text-[0.6rem] uppercase tracking-[0.32em] text-[color:var(--color-charcoal-soft)]">
-            The other candles
-          </p>
+          <h2 className="font-sans text-[0.6rem] uppercase leading-[1.65] tracking-[0.32em] text-[color:var(--color-charcoal-soft)]">
+            The other soy candles
+          </h2>
         </FadeUp>
 
         <div className="mt-6 grid gap-x-8 gap-y-10 sm:grid-cols-2 md:gap-x-10">

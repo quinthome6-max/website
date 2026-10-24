@@ -29,15 +29,7 @@ export default function Home() {
   if (teaser) return <ComingSoon />;
 
   return (
-    <>
-      {/* The hero is a silent video with no text headline, so the page had no
-          h1 at all. Visually hidden keeps the design untouched while giving
-          crawlers and screen readers the heading every page needs. */}
-      <h1 className="sr-only">
-        Waterless electronic diffusers and IFRA-compliant fragrance oils, made
-        in Mumbai
-      </h1>
-      <HomeSections />
-    </>
+    // The page's H1 is the first line under the hero video, in SmartHome.
+    <HomeSections />
   );
 }

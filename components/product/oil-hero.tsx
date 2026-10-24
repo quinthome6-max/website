@@ -152,36 +152,39 @@ export function OilHero({
         {/* ===== Right column – buy box, overview, notes, specs ===== */}
         <aside className="min-w-0">
           {/* --- Buy box --- */}
+          {/* One H1 for the name and the kind of product ("Terrain,
+              fragrance oil for diffusers"). Reversed so the kind still shows
+              as the small label above the name. */}
           <FadeUp>
-            <p className="flex items-center gap-3 text-[0.62rem] uppercase tracking-[0.42em] text-[color:var(--color-charcoal-soft)]">
-              Fragrance Oil · {oil.volumeML} ml
-              {oil.tier === "hotel-credential" && (
-                <span className="rounded-full border border-current px-2 py-0.5 text-[0.5rem] tracking-[0.28em]">
-                  Hotel Credential
-                </span>
-              )}
-            </p>
-          </FadeUp>
-
-          <FadeUp delay={0.06}>
-            <h1
-              className="mt-6 text-balance"
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "var(--text-5xl)",
-                lineHeight: 1.0,
-                letterSpacing: "-0.024em",
-                fontWeight: 400,
-              }}
-            >
-              {oil.name}
+            <h1 className="flex flex-col-reverse">
+              <span
+                className="mt-6 block text-balance"
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontSize: "var(--text-5xl)",
+                  lineHeight: 1.0,
+                  letterSpacing: "-0.024em",
+                  fontWeight: 400,
+                }}
+              >
+                {oil.name}
+              </span>
+              <span className="sr-only">, </span>
+              <span className="block font-sans text-[0.62rem] uppercase leading-[1.65] tracking-[0.42em] text-[color:var(--color-charcoal-soft)]">
+                Fragrance oil for diffusers · {oil.volumeML} ml
+              </span>
             </h1>
           </FadeUp>
 
           {/* Stars just under the name: the average and count of approved
                reviews, or an invitation to write the first one. */}
           <FadeUp delay={0.09}>
-            <div className="mt-4">
+            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+              {oil.tier === "hotel-credential" && (
+                <span className="rounded-full border border-current px-2 py-0.5 text-[0.5rem] uppercase tracking-[0.28em] text-[color:var(--color-charcoal-soft)]">
+                  Hotel Credential
+                </span>
+              )}
               <RatingLine summary={reviewSummary} />
             </div>
           </FadeUp>
@@ -254,7 +257,7 @@ export function OilHero({
           {/* --- Overview --- */}
           <FadeUp delay={0.06}>
             <div className="mt-14 border-t border-[color:var(--color-rule)] pt-10">
-              <p className={sectionLabel}>Overview</p>
+              <h2 className={`${sectionLabel} font-sans leading-[1.65]`}>Overview</h2>
               <div className="mt-6 space-y-5">
                 {descriptionParagraphs.map((para, i) => (
                   <p
@@ -283,7 +286,7 @@ export function OilHero({
           {/* --- The notes --- */}
           <FadeUp delay={0.06}>
             <div className="mt-12 border-t border-[color:var(--color-rule)] pt-10">
-              <p className={sectionLabel}>The notes</p>
+              <h2 className={`${sectionLabel} font-sans leading-[1.65]`}>The notes</h2>
               <dl className="mt-6 border-t border-[color:var(--color-rule)]">
                 {NOTES.map(([label, arr]) => (
                   <div

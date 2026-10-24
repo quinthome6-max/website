@@ -202,22 +202,27 @@ export function DiffuserHero({
         {/* ===== Right column – buy box, overview, key features, then configurators ===== */}
         <aside className="min-w-0">
           {/* --- Buy box --- */}
+          {/* One H1 for the name and the kind of product ("The Monolith,
+              waterless aroma diffuser"). Reversed so the kind still shows as
+              the small label above the name. */}
           <FadeUp>
-            <p className={sectionLabel}>Diffuser</p>
-          </FadeUp>
-
-          <FadeUp delay={0.06}>
-            <h1
-              className="mt-6 text-balance"
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "var(--text-5xl)",
-                lineHeight: 1.0,
-                letterSpacing: "-0.024em",
-                fontWeight: 400,
-              }}
-            >
-              {product.name}
+            <h1 className="flex flex-col-reverse">
+              <span
+                className="mt-6 block text-balance"
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontSize: "var(--text-5xl)",
+                  lineHeight: 1.0,
+                  letterSpacing: "-0.024em",
+                  fontWeight: 400,
+                }}
+              >
+                {product.name}
+              </span>
+              <span className="sr-only">, </span>
+              <span className={cn(sectionLabel, "block font-sans leading-[1.65]")}>
+                {product.coverageSqFt ? "Waterless aroma diffuser" : "Waterless car diffuser"}
+              </span>
             </h1>
           </FadeUp>
 
@@ -384,7 +389,7 @@ export function DiffuserHero({
           {/* --- Description – the long-form story, after the configurators --- */}
           <FadeUp delay={0.06}>
             <div className="mt-14 border-t border-[color:var(--color-rule)] pt-10">
-              <p className={sectionLabel}>About the {product.name.replace(/^The /, "")}</p>
+              <h2 className={cn(sectionLabel, "font-sans leading-[1.65]")}>About the {product.name.replace(/^The /, "")}</h2>
               <div className="mt-6 space-y-5">
                 {descriptionParagraphs.map((para, i) => (
                   <p
@@ -413,7 +418,7 @@ export function DiffuserHero({
           {/* --- Key features – moved up --- */}
           <FadeUp delay={0.06}>
             <div className="mt-12 border-t border-[color:var(--color-rule)] pt-10">
-              <p className={sectionLabel}>Key features</p>
+              <h2 className={cn(sectionLabel, "font-sans leading-[1.65]")}>Key features</h2>
               <ul className="mt-6 grid gap-4">
                 {keyFeatures.map((feature, i) => {
                   const dash = feature.indexOf(" – ");

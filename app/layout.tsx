@@ -77,22 +77,59 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@graph": [
                 {
-                  "@type": "Organization",
+                  // OnlineStore is Google's type for a shop that sells online
+                  // only. City and PIN only: the registered address is a home.
+                  "@type": "OnlineStore",
                   "@id": "https://www.quinthome.in/#organization",
                   name: "Quint Home",
+                  legalName: "Rusera Lifestyle",
                   url: "https://www.quinthome.in",
-                  logo: "https://www.quinthome.in/icon.png",
+                  logo: {
+                    "@type": "ImageObject",
+                    url: "https://www.quinthome.in/icon.png",
+                    width: 512,
+                    height: 512,
+                  },
+                  image: "https://www.quinthome.in/images/og/quint-home.jpg",
                   email: "hello@quinthome.in",
                   telephone: "+91 98196 16668",
+                  contactPoint: {
+                    "@type": "ContactPoint",
+                    contactType: "customer service",
+                    telephone: "+91 98196 16668",
+                    email: "hello@quinthome.in",
+                    areaServed: "IN",
+                  },
+                  address: {
+                    "@type": "PostalAddress",
+                    addressLocality: "Mumbai",
+                    addressRegion: "Maharashtra",
+                    postalCode: "400019",
+                    addressCountry: "IN",
+                  },
                   description:
-                    "Hotel-grade home fragrance from Mumbai. Waterless electronic diffusers and IFRA-compliant fragrance oils.",
+                    "Hotel-grade home fragrance from Mumbai: waterless aroma diffusers, IFRA-compliant fragrance oils and hand-poured soy candles.",
+                  // Same policy as each product's offer (see /shipping).
+                  hasMerchantReturnPolicy: {
+                    "@type": "MerchantReturnPolicy",
+                    applicableCountry: "IN",
+                    returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    merchantReturnDays: 3,
+                    returnMethod: "https://schema.org/ReturnByMail",
+                    refundType: "https://schema.org/ExchangeRefund",
+                    merchantReturnLink: "https://www.quinthome.in/shipping",
+                  },
                   sameAs: ["https://www.instagram.com/shopquinthome/"],
                 },
                 {
+                  // name + alternateName decide the site name Google shows
+                  // above the result ("Quint Home" rather than "quinthome.in").
                   "@type": "WebSite",
                   "@id": "https://www.quinthome.in/#website",
                   url: "https://www.quinthome.in",
                   name: "Quint Home",
+                  alternateName: ["QuintHome", "Quint Home India"],
+                  inLanguage: "en-IN",
                   publisher: { "@id": "https://www.quinthome.in/#organization" },
                 },
               ],

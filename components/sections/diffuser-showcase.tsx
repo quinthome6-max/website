@@ -34,7 +34,7 @@ export async function DiffuserShowcase() {
                   fontWeight: 400,
                 }}
               >
-                There&rsquo;s one{" "}
+                A waterless diffuser{" "}
                 <em className="text-[color:var(--color-aerial-deep)]">
                   for every room.
                 </em>

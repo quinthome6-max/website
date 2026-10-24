@@ -146,7 +146,7 @@ export function AddToBag({
               <span>
                 <span className="flex items-center gap-3 text-[0.95rem]">
                   Subscribe &amp; save
-                  <span className="rounded-full bg-[color:var(--color-clay)] px-2 py-0.5 text-[0.58rem] uppercase tracking-[0.24em] text-[color:var(--color-ivory)]">
+                  <span className="rounded-full bg-[color:var(--color-clay-text)] px-2 py-0.5 text-[0.58rem] uppercase tracking-[0.24em] text-[color:var(--color-ivory)]">
                     −15%
                   </span>
                 </span>
