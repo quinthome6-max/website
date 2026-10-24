@@ -14,6 +14,7 @@
 // with less; if it will not take that either, a plainly-labelled placeholder
 // goes in its place for a person to finish. What never happens is nothing.
 
+import { clarityRecordingNote } from "@/lib/analytics/clarity-ref";
 import { orderEmailsReady } from "@/lib/email/ready";
 import { txnStartedAt } from "@/lib/payu/client";
 
@@ -65,6 +66,8 @@ export interface CreateOrderInput {
    * as costing more than was paid.
    */
   discount?: { amount: number; code: string | null };
+  /** The buyer's Clarity recording ("visitor.session" or "none"), if known. */
+  clarity?: string;
   /** PayU transaction id (ours) and PayU's own id, for reconciliation. */
   txnid: string;
   mihpayid?: string;
@@ -484,6 +487,10 @@ function buildOrder(
     note: [paymentLine(input), ...attention.map((a) => `NEEDS ATTENTION — ${a}`)]
       .join("\n")
       .slice(0, 4900),
+    // Staff-only "Additional details" on the order: the buyer's recording.
+    ...(input.clarity
+      ? { note_attributes: [{ name: "Clarity recording", value: clarityRecordingNote(input.clarity) }] }
+      : {}),
   };
 
   if (discount) {

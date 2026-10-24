@@ -10,6 +10,7 @@ import { Monogram } from "@/components/brand/logo";
 import { FREE_SHIPPING_FROM } from "@/lib/checkout-config";
 import { deliveryEstimate, deliveryEstimateFromTransit } from "@/lib/delivery";
 import { saveCheckoutProgress } from "@/app/actions/checkout-progress";
+import { claritySessionRef } from "@/lib/analytics/clarity-ref";
 import type { CheckoutPrefill } from "@/lib/checkout-prefill";
 
 const inputClass =
@@ -319,9 +320,13 @@ export function CheckoutForm({
         onSubmit={(e) => {
           if (saveTimer.current) clearTimeout(saveTimer.current);
           rememberOnSubmit(e.currentTarget);
+          // Which Clarity recording this order belongs to (see clarity-ref).
+          const clarity = e.currentTarget.elements.namedItem("clarity");
+          if (clarity instanceof HTMLInputElement) clarity.value = claritySessionRef(document.cookie);
         }}
         className="grid gap-12 pt-10 md:grid-cols-12 md:gap-16"
       >
+        <input type="hidden" name="clarity" defaultValue="" />
         <div className="md:col-span-7">
           <FadeUp>
             {welcome && (

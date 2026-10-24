@@ -1,7 +1,5 @@
 import Script from "next/script";
-
-/** Microsoft Clarity project for quinthome.in. */
-const CLARITY_PROJECT_ID = "ybcekf8e6g";
+import { CLARITY_PROJECT_ID } from "@/lib/analytics/clarity-ref";
 
 /**
  * Clarity — heatmaps and session replay, so we can see where people hesitate

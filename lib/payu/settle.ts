@@ -526,6 +526,7 @@ async function settle(input: SettleInput): Promise<SettleResult> {
           ),
           code: cart.discountCode,
         },
+        clarity: pending?.clarity,
         ...payment,
       });
     } catch (e) {

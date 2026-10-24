@@ -26,10 +26,13 @@ import type { OrderCustomer } from "@/lib/shopify/admin";
 
 const CUSTOMER_KEY = "_qh_customer";
 const TXNID_KEY = "_qh_txnid";
+const CLARITY_KEY = "_qh_clarity";
 
 export interface PendingOrder {
   txnid: string;
   customer: OrderCustomer;
+  /** The buyer's Clarity recording, "visitor.session" or "none" (clarity-ref). */
+  clarity?: string;
 }
 
 /** Records who the bag is for, immediately before the payment page. */
@@ -40,6 +43,7 @@ export async function writePendingOrder(
   await cartAttributesSet(cartId, {
     [TXNID_KEY]: pending.txnid,
     [CUSTOMER_KEY]: JSON.stringify(pending.customer),
+    ...(pending.clarity ? { [CLARITY_KEY]: pending.clarity } : {}),
   });
 }
 
@@ -52,7 +56,11 @@ export function readPendingOrder(
   try {
     const customer = JSON.parse(raw) as OrderCustomer;
     if (!customer || typeof customer.firstName !== "string") return null;
-    return { txnid: attributes[TXNID_KEY] ?? "", customer };
+    return {
+      txnid: attributes[TXNID_KEY] ?? "",
+      customer,
+      ...(attributes[CLARITY_KEY] ? { clarity: attributes[CLARITY_KEY] } : {}),
+    };
   } catch {
     return null;
   }

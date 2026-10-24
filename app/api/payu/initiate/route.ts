@@ -23,6 +23,7 @@ import {
   payuConfigured,
 } from "@/lib/payu/client";
 import { reopenCart, writePendingOrder } from "@/lib/payu/pending";
+import { cleanClarityRef } from "@/lib/analytics/clarity-ref";
 import { shippingFor } from "@/lib/checkout-config";
 import { isPinCode, isPlausibleEmail, normalisePhone } from "@/lib/checkout-contact";
 import { getCommerceMap } from "@/lib/shopify/commerce";
@@ -123,6 +124,7 @@ export async function POST(request: NextRequest) {
     await reopenCart(cart.id, record.note);
     await writePendingOrder(cart.id, {
       txnid,
+      clarity: cleanClarityRef(field(form, "clarity")),
       customer: {
         email,
         phone: phone.e164,
