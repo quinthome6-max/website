@@ -13,6 +13,7 @@
  */
 
 import { gaEvent } from "@/lib/analytics/ga4";
+import { clarityEvent, clarityKeep, clarityTag } from "@/lib/analytics/clarity";
 
 export const META_PIXEL_ID = "1843486567026202";
 
@@ -174,6 +175,7 @@ export function addToCart(p: {
   value: number;
   name?: string;
 }): void {
+  clarityEvent("add_to_cart");
   gaEvent("add_to_cart", {
     value: p.value,
     items: p.contents.map((c, i) => ({
@@ -197,6 +199,8 @@ export function initiateCheckout(p: {
   contents: PixelContent[];
   value: number;
 }): void {
+  clarityEvent("begin_checkout");
+  clarityKeep("checkout");
   gaEvent("begin_checkout", {
     value: p.value,
     items: p.contents.map((c) => ({ item_id: c.id, price: c.item_price, quantity: c.quantity })),
@@ -216,6 +220,10 @@ export function purchase(p: {
   value: number;
   orderId: string;
 }): void {
+  // Find this order's recording in Clarity: Custom tags → order.
+  clarityTag("order", p.orderId);
+  clarityEvent("purchase");
+  clarityKeep("purchase");
   gaEvent("purchase", {
     transaction_id: p.orderId,
     value: p.value,

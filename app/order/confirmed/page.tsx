@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { FadeUp } from "@/components/motion/fade-up";
 import { Monogram } from "@/components/brand/logo";
 import { TrackPurchase } from "@/components/analytics/track-purchase";
+import { ClarityOrder } from "@/components/analytics/clarity-order";
 
 export const metadata: Metadata = {
   title: "Order confirmed",
@@ -25,6 +26,7 @@ export default async function OrderConfirmedPage({
 
   return (
     <div className="mx-auto flex max-w-[var(--container-content)] flex-col items-center px-6 py-[var(--spacing-section)] text-center md:px-10">
+      {ref && <ClarityOrder orderRef={ref} />}
       {ref && value && (
         <TrackPurchase
           orderId={ref}
