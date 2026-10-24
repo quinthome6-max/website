@@ -52,3 +52,6 @@ yarn-error.log*
 
 # Local stand-in for Redis (reviews in development) – never committed
 /.data/
+
+# Clarity exports (raw visitor data)
+marketing/analytics/clarity-data/
