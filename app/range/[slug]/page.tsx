@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { productJsonLd, breadcrumbJsonLd, jsonLdScript } from "@/lib/structured-data";
 import { TrackView } from "@/components/analytics/track-view";
 import { pixelId } from "@/lib/analytics/pixel";
-import { priceOf } from "@/lib/seo";
+import { priceOf, OG_LOCALE } from "@/lib/seo";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -56,6 +56,7 @@ export async function generateMetadata({
         description,
         url: `/range/${slug}`,
         type: "website",
+        locale: OG_LOCALE,
         images: [{ url: candle.image, alt: candle.name }],
       },
       twitter: {
@@ -109,6 +110,7 @@ export async function generateMetadata({
       description,
       url: `/range/${slug}`,
       type: "website",
+      locale: OG_LOCALE,
       images: [{ url: product.image, alt: product.name }],
     },
     twitter: {

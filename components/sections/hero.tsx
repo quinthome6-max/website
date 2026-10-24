@@ -25,12 +25,33 @@ type Slide =
       /** Only show this slide on desktop/tablet (hidden on phones). */
       desktopOnly?: boolean;
     }
-  | { type: "video"; src: string; hideHeader?: boolean; desktopOnly?: boolean };
+  | {
+      type: "video";
+      /** Desktop / tablet file. */
+      src: string;
+      /** Phone file, cut to the 4:5 crop the phone hero shows, so it is a
+       *  fraction of the size with the same framing. */
+      srcMobile?: string;
+      /** First frame as a still, shown at once while the video loads, so the
+       *  hero is never blank and the first paint is a small image. */
+      poster?: string;
+      posterMobile?: string;
+      hideHeader?: boolean;
+      desktopOnly?: boolean;
+    };
 
 const slides: Slide[] = [
   // Both views open on the diffuser cutaway, then the couple; everything else
   // follows. The Peace poster is portrait, so it runs on phones only.
-  { type: "video", src: "/videos/hero-3.mp4" },
+  // 3.6 MB on desktop and 1.4 MB on phones, instead of one 4.7 MB file for
+  // both (audit #5 / plan T5: the mobile homepage's main content took 12.6 s).
+  {
+    type: "video",
+    src: "/videos/hero-3-desktop.mp4",
+    srcMobile: "/videos/hero-3-mobile.mp4",
+    poster: "/images/hero-3-poster.webp",
+    posterMobile: "/images/hero-3-poster-mobile.webp",
+  },
   {
     type: "image",
     src: "/images/hero-lounge.webp",
@@ -228,17 +249,37 @@ export function Hero() {
               />
             )
           ) : (
-            <video
-              ref={(el) => {
-                videoRefs.current[i] = el;
-              }}
-              src={s.src}
-              muted={!soundOn}
-              playsInline
-              preload="auto"
-              onEnded={() => setIndex((p) => (p + 1) % activeSlides.length)}
-              className="absolute inset-0 h-full w-[100%] object-cover"
-            />
+            <>
+              {s.poster && (
+                <picture>
+                  {s.posterMobile && (
+                    <source media="(max-width: 767px)" srcSet={s.posterMobile} />
+                  )}
+                  {/* A plain <img> in a <picture>: next/image can't art-direct a phone crop. */}
+                  <img
+                    src={s.poster}
+                    alt=""
+                    fetchPriority={i === 0 ? "high" : "auto"}
+                    decoding="async"
+                    className="absolute inset-0 h-full w-[100%] object-cover"
+                  />
+                </picture>
+              )}
+              <video
+                ref={(el) => {
+                  videoRefs.current[i] = el;
+                }}
+                muted={!soundOn}
+                playsInline
+                preload={i === 0 ? "auto" : "metadata"}
+                onEnded={() => setIndex((p) => (p + 1) % activeSlides.length)}
+                className="absolute inset-0 h-full w-[100%] object-cover"
+              >
+                {/* The first source whose media matches is the one played. */}
+                {s.srcMobile && <source media="(max-width: 767px)" src={s.srcMobile} type="video/mp4" />}
+                <source src={s.src} type="video/mp4" />
+              </video>
+            </>
           )}
         </div>
       ))}

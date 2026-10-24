@@ -16,6 +16,19 @@ export const BRAND = "Quint Home";
 export const SUMMARY =
   "Hotel-grade home fragrance from Mumbai: waterless electronic diffusers and IFRA-compliant fragrance oils at 70–90% concentration, designed to be displayed rather than hidden away.";
 
+/** Default share image (WhatsApp, Facebook, LinkedIn), 1200×630, for pages
+ *  without one of their own (plan T12). Product and journal pages use their
+ *  own photograph instead. */
+export const DEFAULT_OG_IMAGE = {
+  url: "/images/og/quint-home.jpg",
+  width: 1200,
+  height: 630,
+  alt: "The Quint Home range on a walnut sideboard",
+};
+
+/** Open Graph locale for every page: English, India. */
+export const OG_LOCALE = "en_IN";
+
 /** Absolute URL for a site-relative path. */
 export function abs(path: string): string {
   return `${SITE}${path}`;

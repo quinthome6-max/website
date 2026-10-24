@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { journal, getJournalPost, journalNewestFirst } from "@/lib/data/journal";
 import { FadeUp } from "@/components/motion/fade-up";
+import { OG_LOCALE } from "@/lib/seo";
 import {
   articleJsonLd,
   breadcrumbJsonLd,
@@ -34,6 +35,7 @@ export async function generateMetadata({
     alternates: { canonical: url },
     openGraph: {
       type: "article",
+      locale: OG_LOCALE,
       title: post.title,
       description: post.excerpt,
       url,

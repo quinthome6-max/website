@@ -20,6 +20,13 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-24 — Homepage video, caching, AVIF and share images (plan T5, T7, T12)
+- **Hero video (T5):** one 4.7 MB file for every device is now two: a 3.6 MB desktop file and a 1.4 MB phone file cut to the 4:5 crop phones already showed (same framing). A still of the first frame shows at once under each (`fetchpriority=high`), so the hero is never blank and the first paint is a 20–50 KB image. Three unused videos removed (`hero-3.mp4`, `hero-5.mp4`, `hero-deep.mp4`, 15.8 MB).
+- **Caching (T7):** `/images/*` and `/videos/*` cached 30 days (`max-age=2592000, stale-while-revalidate=604800`) instead of `max-age=0`; optimised images cached 31 days and served as AVIF first, WebP second. **Rule from now on:** replace a photo under a new file name (the `-v2` convention), never overwrite one.
+- **Share images (T12):** a 1200×630 default (`/images/og/quint-home.jpg`) on every page without its own, and `og:locale en_IN` everywhere. Product and journal pages keep their own photographs. Still open: product share images are WebP, which some WhatsApp versions won't preview; og:url is set only on product, journal and category pages.
+- **Where:** `components/sections/hero.tsx`, `public/videos/`, `public/images/hero-3-poster*.webp`, `next.config.ts`, `lib/seo.ts`, `app/layout.tsx`, `app/range/[slug]/page.tsx`, `app/journal/[slug]/page.tsx`, `components/sections/category-page.tsx`.
+- **Check:** local build: cache headers present, `/_next/image` returns `image/avif`; phones request only `hero-3-mobile.mp4`, desktops only `hero-3-desktop.mp4`, both play with the still shown first; og:image on /journal, /faq, /businesses, /about. Lighthouse on the live homepage after deploy.
+
 ## 2026-10-24 — Three category pages live (plan T9)
 - **What:** `/range/waterless-diffusers`, `/range/fragrance-oils` and `/range/scented-candles`. Each has the plan's title, description and H1 (section 07), a visible breadcrumb, every product in the category with its live price (sold-out last), 370–560 words of guide copy under question-style H2s, an FAQ, and ItemList + BreadcrumbList + FAQPage markup. The diffuser page has a room-size table; the candle page pairs each candle with the oil that shares its notes. The header Range menu, the footer and the product pages' "All scents" / candle links now point to these pages instead of `/range#…` anchors or `/range?category=oils`. They're added to the sitemap (32 → 35 URLs) and to llms.txt.
 - **Also:** the FAQ's "Under 18 dB" claim is replaced. No spec supports it; the Pillar is rated at 35 dB or less, and the answer now says so.

@@ -16,9 +16,14 @@ const nextConfig: NextConfig = {
     // Allow a crisper quality for hero/editorial imagery (Next 16 requires
     // whitelisting any quality value used via the `quality` prop).
     qualities: [75, 90],
-    // Next 16 defaults this to 4h, which makes swapped-in images look stale
-    // during editing; a short TTL re-optimises promptly.
-    minimumCacheTTL: 60,
+    // AVIF first (smaller than WebP at the same quality), WebP for browsers
+    // that don't take AVIF. Plan T7.
+    formats: ["image/avif", "image/webp"],
+    // 31 days (plan T7, audit #17). It was 60 s so a swapped image showed at
+    // once during editing; with a long cache, replace a photo under a NEW file
+    // name (the -v2 / -v3 convention already used in public/images) rather
+    // than overwriting the old one.
+    minimumCacheTTL: 2678400,
   },
   // The order email attaches the tax invoice as a PDF, printed by the headless
   // Chromium in @sparticuz/chromium (lib/pdf.ts). Its browser ships as
@@ -53,6 +58,13 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "no-store, max-age=0, must-revalidate" },
           { key: "X-Content-Type-Options", value: "nosniff" },
         ],
+      },
+      // Browsers re-downloaded every image and video on each visit
+      // (max-age=0). 30 days, then a week of serving the old copy while it
+      // refreshes. Same rule as above: a changed file needs a new name.
+      {
+        source: "/:dir(images|videos)/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=604800" }],
       },
     ];
   },

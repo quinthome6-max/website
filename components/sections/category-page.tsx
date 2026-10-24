@@ -9,7 +9,7 @@ import { candles } from "@/lib/data/candles";
 import { getCategoryPage, type CategorySlug } from "@/lib/data/category-pages";
 import { getCommerceMap, pricePair, shopifyHandle } from "@/lib/shopify/commerce";
 import { breadcrumbJsonLd, faqJsonLd, jsonLdScript } from "@/lib/structured-data";
-import { SITE, abs } from "@/lib/seo";
+import { SITE, abs, DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/seo";
 
 /**
  * A category landing page: /range/waterless-diffusers, /range/fragrance-oils
@@ -24,7 +24,14 @@ export function categoryMetadata(slug: CategorySlug): Metadata {
     title: c.title,
     description: c.description,
     alternates: { canonical: path },
-    openGraph: { title: `${c.title} · Quint Home`, description: c.description, url: path, type: "website" },
+    openGraph: {
+      title: `${c.title} · Quint Home`,
+      description: c.description,
+      url: path,
+      type: "website",
+      locale: OG_LOCALE,
+      images: [DEFAULT_OG_IMAGE],
+    },
   };
 }
 

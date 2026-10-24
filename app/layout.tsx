@@ -15,6 +15,7 @@ import { CartProvider } from "@/components/cart/cart-provider";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { payuConfigured } from "@/lib/payu/client";
 import { shopifyAdminConfigured } from "@/lib/shopify/admin";
+import { DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: {
@@ -38,8 +39,13 @@ export const metadata: Metadata = {
   // No site-wide canonical: a default here is inherited by every page that
   // does not set its own, which told Google the policy pages, the bag and
   // every 404 were the homepage. Each indexable page sets its own.
+  // Inherited by every page that doesn't set openGraph itself. A page that
+  // does replaces the whole object (Next merges metadata shallowly), so pages
+  // with their own openGraph spread DEFAULT_OG_IMAGE / OG_LOCALE in as well.
   openGraph: {
     type: "website",
+    locale: OG_LOCALE,
+    images: [DEFAULT_OG_IMAGE],
     title: "Quint Home",
     description:
       "Hotel-grade home fragrance from Mumbai. Designed for the considered Indian home.",
