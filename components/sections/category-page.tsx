@@ -154,8 +154,13 @@ export async function CategoryPage({ slug }: { slug: CategorySlug }) {
       </section>
 
       {/* Products */}
-      <section className="pt-[var(--spacing-section-sm)] pb-[var(--spacing-section)]">
+      <section aria-labelledby="category-products" className="pt-[var(--spacing-section-sm)] pb-[var(--spacing-section)]">
         <div className="mx-auto max-w-[var(--container-page)] px-6 md:px-10">
+          {/* The product names are h3s, so the grid needs an h2 above them
+              for the outline to read in order. Seen by screen readers only. */}
+          <h2 id="category-products" className="sr-only">
+            Shop all {cards.length} {c.label.toLowerCase()}
+          </h2>
           <ul className="grid gap-y-14 sm:grid-cols-2 sm:gap-x-6 md:grid-cols-3 md:gap-x-8 lg:gap-x-10">
             {cards.map((p, i) => (
               <li key={p.slug}>
@@ -286,7 +291,7 @@ export async function CategoryPage({ slug }: { slug: CategorySlug }) {
               <li key={r.href}>
                 <Link
                   href={r.href}
-                  className="group inline-flex items-center gap-2 border-b border-[color:var(--color-charcoal)] pb-1 text-[0.74rem] uppercase tracking-[0.24em] hover:border-[color:var(--color-clay)] hover:text-[color:var(--color-clay)]"
+                  className="group inline-flex items-center gap-2 border-b border-[color:var(--color-charcoal)] pb-1 text-[0.75rem] uppercase tracking-[0.24em] hover:border-[color:var(--color-clay)] hover:text-[color:var(--color-clay)]"
                 >
                   {r.label}
                   <span className="transition-transform duration-500 group-hover:translate-x-1">→</span>

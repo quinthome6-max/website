@@ -207,7 +207,7 @@ export function OilPicker({
                 </div>
               ))}
             </dl>
-            <p className="mt-3 text-[0.74rem] leading-[1.5] text-[color:var(--color-charcoal-soft)]">
+            <p className="mt-3 text-[0.75rem] leading-[1.5] text-[color:var(--color-charcoal-soft)]">
               Hotel Credential oils carry a ₹200 supplement. Swap scents or add
               more anytime.
             </p>

@@ -216,7 +216,7 @@ export function ScentFinder() {
                         >
                           {m.label}
                         </span>
-                        <span className="mt-1 block text-[0.74rem] text-[color:var(--color-charcoal-soft)]">
+                        <span className="mt-1 block text-[0.75rem] text-[color:var(--color-charcoal-soft)]">
                           {m.sub}
                         </span>
                       </span>
@@ -265,7 +265,7 @@ export function ScentFinder() {
                         >
                           {a.label}
                         </span>
-                        <span className="mt-1 block text-[0.74rem] text-[color:var(--color-charcoal-soft)]">
+                        <span className="mt-1 block text-[0.75rem] text-[color:var(--color-charcoal-soft)]">
                           {a.sub}
                         </span>
                       </span>

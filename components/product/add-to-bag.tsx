@@ -182,7 +182,7 @@ export function AddToBag({
             add(variantId, 1, attributes);
           }
         }}
-        className="group relative mt-2 inline-flex h-14 items-center justify-center gap-3 overflow-hidden bg-[color:var(--color-charcoal)] px-8 text-[0.74rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)] disabled:cursor-not-allowed disabled:opacity-50"
+        className="group relative mt-2 inline-flex h-14 items-center justify-center gap-3 overflow-hidden bg-[color:var(--color-charcoal)] px-8 text-[0.75rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)] disabled:cursor-not-allowed disabled:opacity-50"
       >
         <span className="relative z-10">
           {soldOut ? "Sold out" : pending ? "Adding…" : "Add to bag"}

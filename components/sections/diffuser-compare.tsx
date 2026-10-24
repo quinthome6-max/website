@@ -132,7 +132,7 @@ export async function DiffuserCompare({
         </FadeUp>
 
         {/* Phones can't fit every column — swipe horizontally, labels pinned. */}
-        <p className="mb-4 text-[0.58rem] uppercase tracking-[0.3em] text-[color:var(--color-charcoal-soft)]/70 md:hidden">
+        <p className="mb-4 text-[0.66rem] uppercase tracking-[0.3em] text-[color:var(--color-charcoal-soft)] md:hidden">
           Swipe to compare →
         </p>
 

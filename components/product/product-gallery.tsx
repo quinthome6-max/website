@@ -82,10 +82,10 @@ export function ProductGallery({ images, alt, cards = [], after = [] }: Props) {
                 onFocus={select}
                 onClick={select}
                 className={cn(
-                  "relative flex aspect-[4/5] w-14 shrink-0 items-center justify-center overflow-hidden border bg-[color:var(--color-stardust-soft)] px-1 text-center text-[0.42rem] uppercase leading-tight tracking-[0.12em] transition-all duration-500",
+                  "relative flex aspect-[4/5] w-14 shrink-0 items-center justify-center overflow-hidden border bg-[color:var(--color-stardust-soft)] px-1 text-center text-[0.56rem] uppercase leading-tight tracking-[0.12em] transition-all duration-500",
                   on
                     ? "border-[color:var(--color-charcoal)] text-[color:var(--color-charcoal)]"
-                    : "border-transparent text-[color:var(--color-charcoal-soft)] opacity-60 hover:opacity-100"
+                    : "border-transparent text-[color:var(--color-charcoal-soft)] hover:border-[color:var(--color-rule)] hover:text-[color:var(--color-charcoal)]"
                 )}
                 aria-label={`View ${slide.card.thumbLabel} (${i + 1} of ${total})`}
               >

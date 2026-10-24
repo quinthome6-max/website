@@ -20,6 +20,21 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-24 — Site QA sweep: accessibility and legibility fixes
+- **What:** A full check of the live site after the week's changes.
+  - Crawl of all 37 sitemap pages: no broken links or assets (1,615 checked).
+  - Phone-width check of every page: no layout breaks or console errors.
+  - Shopping flow: add to bag, bag, checkout all work.
+  - Lighthouse found and these were fixed:
+    - **Closed bag drawer** was hidden from screen readers but its buttons could still be reached by keyboard (`aria-hidden-focus`, every page). It is now `inert` when closed.
+    - **Low contrast:** the "Specs" gallery thumbnail (2.35:1, 6.7 px) and "Swipe to compare" (3.1:1). Both now in full secondary grey at a readable size.
+    - **Heading order:** category pages went H1 → H3 (product names); a screen-reader-only H2 now heads the grid. The footer newsletter heading was an H3 straight after the page H1 on short pages such as /checkout; it is now an H2.
+    - **Legible text (SEO):** oil pages had 59.7% of text at 12 px or more, just under Lighthouse's 60% bar. The most common small size, 11.84 px, is now 12 px (21 places, no visible change), and the oil spec labels went from 7.4 px to 8.6 px, matching the diffuser pages.
+  - **Bag wording:** said "Shipping & taxes calculated at checkout" though prices include GST. Now "Prices include GST. Shipping is free over ₹5,000, otherwise ₹99." The full bag page no longer says taxes are added at checkout.
+- **Why:** not a plan ticket; found in this sweep. Lighthouse accessibility and legibility feed Google's page-experience signals, and the old bag wording could make shoppers expect a higher total.
+- **Where:** `components/cart/cart-drawer.tsx`, `cart-view.tsx`, `product/product-gallery.tsx`, `product/oil-hero.tsx`, `sections/diffuser-compare.tsx`, `sections/category-page.tsx`, `layout/footer.tsx`, `app/range/page.tsx`.
+- **Check:** Lighthouse on the production build: accessibility 100 on /, /range/terrain, /range/monolith, /range/waterless-diffusers, /range/fragrance-oils and /checkout (was 93–96); SEO 100 except /checkout at 63, which is noindex on purpose. Best practices stays at 79 because Meta Pixel and Clarity set third-party cookies; that clears only with a consent banner (T23).
+
 ## 2026-10-24 — Four articles, breadcrumbs, oil list on the quiz page (plan Weeks 1–2, T16, T18)
 - **Articles (journal now 6):**
   - Rewritten: "Waterless vs Ultrasonic Diffuser: Which Is Better?" (`what-is-a-waterless-diffuser`, 1,539 words, was ~250).

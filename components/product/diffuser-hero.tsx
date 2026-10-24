@@ -160,7 +160,7 @@ export function DiffuserHero({
             <dt className="pt-0.5 text-[0.54rem] uppercase tracking-[0.18em] text-[color:var(--color-charcoal-soft)]">
               {s.label}
             </dt>
-            <dd className="text-[0.74rem] leading-snug text-[color:var(--color-charcoal)]">
+            <dd className="text-[0.75rem] leading-snug text-[color:var(--color-charcoal)]">
               {s.value}
             </dd>
           </div>

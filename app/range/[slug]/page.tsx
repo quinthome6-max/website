@@ -423,7 +423,7 @@ async function OilProductPage({ oil }: { oil: FragranceOil }) {
                       listClassName="text-[0.72rem]"
                     />
                   </div>
-                  <p className="mt-2 text-[0.74rem] leading-[1.4] text-[color:var(--color-charcoal-soft)]">
+                  <p className="mt-2 text-[0.75rem] leading-[1.4] text-[color:var(--color-charcoal-soft)]">
                     {d.coverageLabel}
                   </p>
                 </Link>

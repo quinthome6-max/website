@@ -42,7 +42,7 @@ export function Footer() {
         <div className="grid gap-12 border-b border-[color:var(--color-rule)] pb-16 md:grid-cols-[1.2fr_1fr] md:gap-20">
           <div>
             <p className="font-eyebrow mb-6">The Newsletter</p>
-            <h3
+            <h2
               className="max-w-[18ch] text-balance"
               style={{
                 fontFamily: "var(--font-serif)",
@@ -52,7 +52,7 @@ export function Footer() {
               }}
             >
               The next breath. Quint Home, into your inbox.
-            </h3>
+            </h2>
             <NewsletterForm />
           </div>
 

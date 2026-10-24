@@ -270,7 +270,7 @@ export default async function ShopPage() {
                       <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4 text-[0.54rem] uppercase tracking-[0.3em] text-[color:var(--color-stardust)] md:p-5">
                         <span className="tabular-nums">№{index}</span>
                         {o.tier === "hotel-credential" && (
-                          <span className="border border-current px-1.5 py-0.5 text-[0.46rem]">
+                          <span className="border border-current px-1.5 py-0.5 text-[0.5rem]">
                             Hotel Credential
                           </span>
                         )}

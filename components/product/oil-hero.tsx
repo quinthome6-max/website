@@ -103,12 +103,12 @@ export function OilHero({
         {techSpecs.map((s) => (
           <div
             key={s.label}
-            className="grid grid-cols-[6rem_1fr] gap-3 border-b border-[color:var(--color-rule)] py-1.5"
+            className="grid grid-cols-[6.5rem_1fr] gap-3 border-b border-[color:var(--color-rule)] py-1.5"
           >
-            <dt className="pt-0.5 text-[0.46rem] uppercase tracking-[0.18em] text-[color:var(--color-charcoal-soft)]">
+            <dt className="pt-0.5 text-[0.54rem] uppercase tracking-[0.18em] text-[color:var(--color-charcoal-soft)]">
               {s.label}
             </dt>
-            <dd className="text-[0.74rem] leading-snug text-[color:var(--color-charcoal)]">
+            <dd className="text-[0.75rem] leading-snug text-[color:var(--color-charcoal)]">
               {s.value}
             </dd>
           </div>

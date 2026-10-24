@@ -123,7 +123,7 @@ function Row({ review: r, pending = false }: { review: Review; pending?: boolean
   return (
     <li className="grid gap-4 border-b border-[color:var(--color-rule)] py-5 md:grid-cols-[1fr_auto]">
       <div className="min-w-0">
-        <p className="text-[0.74rem] text-[color:var(--color-charcoal-soft)]">
+        <p className="text-[0.75rem] text-[color:var(--color-charcoal-soft)]">
           <Link href={`/range/${r.slug}#reviews`} className="underline-offset-4 hover:underline">
             {productName(r.slug) ?? r.slug}
           </Link>
@@ -138,7 +138,7 @@ function Row({ review: r, pending = false }: { review: Review; pending?: boolean
           {r.title && <span className="ml-3 font-[family-name:var(--font-serif)]">{r.title}</span>}
         </p>
         <p className="mt-2 max-w-[75ch] whitespace-pre-line text-[0.88rem] leading-[1.6]">{r.body}</p>
-        <p className="mt-2 text-[0.74rem] text-[color:var(--color-charcoal-soft)]">
+        <p className="mt-2 text-[0.75rem] text-[color:var(--color-charcoal-soft)]">
           {r.name}
           {r.city ? ` · ${r.city}` : ""} · <a href={`mailto:${r.email}`} className="underline-offset-4 hover:underline">{r.email}</a>
         </p>

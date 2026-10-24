@@ -66,7 +66,7 @@ export function CartView({ notice = null }: { notice?: string | null }) {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
             <Link
               href="/range#diffusers"
-              className="group inline-flex items-center gap-3 bg-[color:var(--color-charcoal)] px-8 py-4 text-[0.74rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)]"
+              className="group inline-flex items-center gap-3 bg-[color:var(--color-charcoal)] px-8 py-4 text-[0.75rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)]"
             >
               Shop diffusers
               <span className="transition-transform duration-500 group-hover:translate-x-1">
@@ -361,7 +361,7 @@ export function CartView({ notice = null }: { notice?: string | null }) {
             {headlessCheckout ? (
               <Link
                 href="/checkout"
-                className="group mt-7 flex items-center justify-center gap-3 bg-[color:var(--color-charcoal)] px-8 py-4 text-[0.74rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)]"
+                className="group mt-7 flex items-center justify-center gap-3 bg-[color:var(--color-charcoal)] px-8 py-4 text-[0.75rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)]"
               >
                 Proceed to checkout
                 <span className="transition-transform duration-500 group-hover:translate-x-1">
@@ -372,7 +372,7 @@ export function CartView({ notice = null }: { notice?: string | null }) {
               <a
                 href={cart?.checkoutUrl ?? "#"}
                 aria-disabled={!cart?.checkoutUrl}
-                className="group mt-7 flex items-center justify-center gap-3 bg-[color:var(--color-charcoal)] px-8 py-4 text-[0.74rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)]"
+                className="group mt-7 flex items-center justify-center gap-3 bg-[color:var(--color-charcoal)] px-8 py-4 text-[0.75rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)]"
               >
                 Proceed to checkout
                 <span className="transition-transform duration-500 group-hover:translate-x-1">
@@ -382,8 +382,8 @@ export function CartView({ notice = null }: { notice?: string | null }) {
             )}
 
             <p className="mt-5 text-[0.75rem] leading-[1.65] text-[color:var(--color-charcoal-soft)]">
-              Taxes are calculated at checkout. A tracking link is emailed to
-              you once your order ships.
+              Prices include GST. A tracking link is emailed to you once your
+              order ships.
             </p>
 
             <p className="mt-5 border-t border-[color:var(--color-rule)] pt-5 text-[0.75rem] leading-[1.65] text-[color:var(--color-charcoal-soft)]">

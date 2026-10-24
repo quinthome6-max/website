@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCart } from "./cart-provider";
 import { formatINR } from "@/lib/utils";
+import { FREE_SHIPPING_FROM, SHIPPING_FLAT } from "@/lib/checkout-config";
 import {
   cartHasRealGiftLine,
   giftDisplayTitle,
@@ -21,6 +22,9 @@ export function CartDrawer() {
   return (
     <div
       aria-hidden={!open}
+      // Closed, the drawer is only slid off-screen; inert takes its buttons
+      // and links out of the tab order too, not just out of screen readers.
+      inert={!open}
       data-site-chrome
       className={`fixed inset-0 z-[100] ${open ? "" : "pointer-events-none"}`}
     >
@@ -189,7 +193,9 @@ export function CartDrawer() {
                 </span>
               </div>
               <p className="mt-1.5 text-[0.7rem] leading-[1.5] text-[color:var(--color-charcoal-soft)]">
-                Shipping &amp; taxes calculated at checkout.
+                Prices include GST. Shipping is free over{" "}
+                {formatINR(FREE_SHIPPING_FROM)}, otherwise{" "}
+                {formatINR(SHIPPING_FLAT)}.
               </p>
               {/* Our own checkout once payments are wired up, otherwise the
                   Shopify-hosted one. */}
@@ -197,7 +203,7 @@ export function CartDrawer() {
                 <Link
                   href="/checkout"
                   onClick={() => setOpen(false)}
-                  className="group mt-4 flex items-center justify-center gap-3 bg-[color:var(--color-charcoal)] px-8 py-4 text-[0.74rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)]"
+                  className="group mt-4 flex items-center justify-center gap-3 bg-[color:var(--color-charcoal)] px-8 py-4 text-[0.75rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)]"
                 >
                   Checkout
                   <span className="transition-transform duration-500 group-hover:translate-x-1">
@@ -207,7 +213,7 @@ export function CartDrawer() {
               ) : (
                 <a
                   href={cart?.checkoutUrl ?? "#"}
-                  className="group mt-4 flex items-center justify-center gap-3 bg-[color:var(--color-charcoal)] px-8 py-4 text-[0.74rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)]"
+                  className="group mt-4 flex items-center justify-center gap-3 bg-[color:var(--color-charcoal)] px-8 py-4 text-[0.75rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)]"
                 >
                   Checkout
                   <span className="transition-transform duration-500 group-hover:translate-x-1">

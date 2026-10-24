@@ -258,7 +258,7 @@ export function CheckoutForm({
           </h1>
           <Link
             href="/range"
-            className="group mt-10 inline-flex items-center gap-3 bg-[color:var(--color-charcoal)] px-8 py-4 text-[0.74rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)]"
+            className="group mt-10 inline-flex items-center gap-3 bg-[color:var(--color-charcoal)] px-8 py-4 text-[0.75rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)]"
           >
             Shop the range
             <span className="transition-transform duration-500 group-hover:translate-x-1">
@@ -563,7 +563,7 @@ export function CheckoutForm({
 
             <button
               type="submit"
-              className="group mt-7 flex w-[100%] items-center justify-center gap-3 bg-[color:var(--color-charcoal)] px-8 py-4 text-[0.74rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)]"
+              className="group mt-7 flex w-[100%] items-center justify-center gap-3 bg-[color:var(--color-charcoal)] px-8 py-4 text-[0.75rem] uppercase tracking-[0.32em] text-[color:var(--color-ivory)] transition-colors duration-500 hover:bg-[color:var(--color-clay-deep)]"
             >
               Pay {formatINR(total)}
               <span className="transition-transform duration-500 group-hover:translate-x-1">

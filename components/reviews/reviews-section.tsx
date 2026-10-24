@@ -138,7 +138,7 @@ function ReviewCard({ review }: { review: PublicReview }) {
         <Stars value={review.rating} className="text-[0.9rem]" />
         <time
           dateTime={review.createdAt}
-          className="text-[0.74rem] text-[color:var(--color-charcoal-soft)]"
+          className="text-[0.75rem] text-[color:var(--color-charcoal-soft)]"
         >
           {date(review.createdAt)}
         </time>
@@ -151,7 +151,7 @@ function ReviewCard({ review }: { review: PublicReview }) {
       <p className="mt-2 whitespace-pre-line text-[0.92rem] leading-[1.65] text-[color:var(--color-charcoal)]">
         {review.body}
       </p>
-      <p className="mt-3 text-[0.74rem] uppercase tracking-[0.16em] text-[color:var(--color-charcoal-soft)]">
+      <p className="mt-3 text-[0.75rem] uppercase tracking-[0.16em] text-[color:var(--color-charcoal-soft)]">
         {review.name}
         {review.city ? ` · ${review.city}` : ""}
       </p>
