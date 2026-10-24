@@ -20,6 +20,13 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-24 — Plan status review (end of Week 1)
+- **Done (7 of 26 tickets):** T1 canonicals, T10 product schema, T11 product feed, T21 llms files (candles), plus most of T2 (GA4 + shop events), T3 (Search Console) and T6 (Clarity after load, 20 Oct; Meta Pixel kept as is for ad optimisation). /refunds is permanent (half of T15). Off-plan but on the brief: real customer reviews with aggregateRating markup (brief item #9), placeholder testimonials no longer shown.
+- **Found live, still wrong:** the /businesses "Submit enquiry" button does nothing (`type="button"`, no handler), so business enquiries are lost (audit #4, T4, critical). "Subscribe & Save" is still promised on /range and the oil pages, although subscriptions are off (T8). Candles are not linked from the homepage (T8). Product titles run past 60 characters, e.g. the Monolith at 66 (T13).
+- **Not started:** T4, T5 (hero still `preload="auto"`, 4.7 MB, no poster), T7 (images and videos `max-age=0`, WebP only), T9 category pages, T12 share images (none on /journal, /faq, /businesses), T14, T16–T20, T22–T26. ISR runs in iad1 (Washington), not Mumbai (T25); http://quinthome.in takes 2 hops.
+- **Content and off-page:** 0 of 16 articles; no email platform chosen, so the 27 Oct Diwali email is at risk; Bing Webmaster Tools, Merchant Center submission and Business Profile not confirmed.
+- **KPI check:** homepage mobile Lighthouse 30 → 63 (target 70+); product pages 75 → 67–78 after the Clarity change; sitemap 32 URLs (target 50+).
+
 ## 2026-10-19 — Key-features sheet moved to the last gallery slide
 - **What:** on each diffuser page the key-features image is now the last slide, after the Specs card, instead of slide 2. It is now a separate `featuresImage` field rather than an entry in `gallery`, so it no longer appears as an extra image in `/feeds/products.xml` or the image sitemap. Those carry product photos only, which is what Google Merchant expects for additional images.
 - **Why:** client's request (gallery order).
