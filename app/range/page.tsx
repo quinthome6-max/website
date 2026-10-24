@@ -12,9 +12,9 @@ import { DiffuserCompare } from "@/components/sections/diffuser-compare";
 import { getCommerceMap, shopifyHandle, pricePair } from "@/lib/shopify/commerce";
 
 export const metadata: Metadata = {
-  title: "Diffusers & Fragrance Oils — The Full Range",
+  title: "Aroma Diffusers, Fragrance Oils & Soy Candles",
   description:
-    "Waterless electronic diffusers, IFRA-compliant 50 ml fragrance oils and hand-poured soy candles. Coverage up to 1,075 sq ft, app control on most models, shipped across India.",
+    "Shop 6 waterless diffusers, 8 IFRA-compliant fragrance oils and 3 hand-poured soy candles. Coverage up to 1,075 sq ft. Shipped across India.",
   alternates: { canonical: "/range" },
 };
 

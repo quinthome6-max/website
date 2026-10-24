@@ -4,9 +4,9 @@ import { FadeUp } from "@/components/motion/fade-up";
 import { EnquiryForm } from "@/components/business/enquiry-form";
 
 export const metadata: Metadata = {
-  title: "Scenting for Hotels, Retail & Offices",
+  title: "Scent Marketing & Commercial Diffusers",
   description:
-    "Commercial diffusers, bulk fragrance oil and bespoke scent development for hotels, restaurants, retail and workspaces across India.",
+    "Commercial aroma diffusers, bulk fragrance oil and signature scents for hotels, offices and retail across India. We reply within 48 hours.",
   alternates: { canonical: "/businesses" },
 };
 

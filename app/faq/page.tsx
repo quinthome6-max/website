@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { FadeUp } from "@/components/motion/fade-up";
 
 export const metadata: Metadata = {
-  title: "FAQ — Waterless Diffusers & Fragrance Oils",
+  title: "Diffuser & Fragrance Oil FAQs",
   description:
     "How long an oil lasts, what coverage each diffuser gives, how waterless diffusion differs from ultrasonic, and how shipping and returns work.",
   alternates: { canonical: "/faq" },

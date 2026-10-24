@@ -9,10 +9,10 @@ import { HomeSections } from "@/components/home/home-sections";
  */
 export const metadata: Metadata = {
   title: {
-    absolute: "Quint Home — Waterless Diffusers & Fragrance Oils, Mumbai",
+    absolute: "Quint Home | Waterless Aroma Diffusers & Fragrance Oils",
   },
   description:
-    "Hotel-grade home fragrance from Mumbai. Waterless electronic diffusers and IFRA-compliant fragrance oils at 70–90% concentration, designed to be displayed. Free shipping over ₹5,000.",
+    "Hotel-grade home fragrance from Mumbai: waterless aroma diffusers, IFRA-compliant fragrance oils and soy candles. Free shipping across India over ₹5,000.",
   alternates: { canonical: "/" },
 };
 

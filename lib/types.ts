@@ -156,6 +156,9 @@ export interface JournalPost {
   /** Shorter title for the browser tab and search results, where the
    *  editorial headline would be truncated. Falls back to `title`. */
   seoTitle?: string;
+  /** Search-result description, 155 characters or fewer. Falls back to the
+   *  excerpt, which is written for the page and usually runs longer. */
+  seoDescription?: string;
   /** Set when the piece is revised, so search engines see it as fresh. */
   updatedAt?: string;
   /** Topics the piece covers, emitted in its Article markup. */

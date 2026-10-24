@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { ScentFinder } from "@/components/sections/scent-finder";
 
 export const metadata: Metadata = {
-  title: "Find Your Scent — Home Fragrance Oil Quiz",
+  title: "Find Your Scent: Fragrance Oil Quiz",
   description:
-    "Answer two quick questions and we'll match you to one of eight IFRA-compliant Quint Home fragrance oils. 50 ml, 70–90% concentration, made in Mumbai.",
+    "Answer two quick questions and we'll match you to one of eight hotel-grade fragrance oils for your diffuser. 50 ml, 70–90% concentration.",
   alternates: { canonical: "/find-your-scent" },
 };
 

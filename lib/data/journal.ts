@@ -4,6 +4,9 @@ export const journal: JournalPost[] = [
   {
     slug: "a-lake-palace-in-udaipur",
     title: "Why your home deserves scent that was actually designed",
+    seoTitle: "Why Your Home Deserves Scent That Was Designed",
+    seoDescription:
+      "Why Quint Home exists: scent blended like a perfume, held at full strength and diffused without water, for homes planned as carefully as their furniture.",
     eyebrow: "Founder Letter",
     excerpt:
       "We spend years choosing the lighting, the furniture, the paint. Then we leave the air to chance, or to a plug-in that smells like a chemical version of a flower. That gap is the reason Quint Home exists.",
@@ -36,6 +39,9 @@ export const journal: JournalPost[] = [
   {
     slug: "the-architecture-of-scent",
     title: "Top, heart, base: how to read a Quint Home scent profile",
+    seoTitle: "Top, Heart and Base Notes, Explained",
+    seoDescription:
+      "How to read a fragrance's top, heart and base notes, and what each tells you about how a room will smell at minute one, hour three and the next morning.",
     eyebrow: "Notes",
     excerpt:
       "Every Quint Home oil is built like a perfume, with three layers that arrive and fade at different speeds. Once you know how to read them, choosing a scent gets a lot easier.",

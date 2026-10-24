@@ -6,9 +6,9 @@ import { FadeUp } from "@/components/motion/fade-up";
 import { MonogramDivider } from "@/components/brand/monogram-divider";
 
 export const metadata: Metadata = {
-  title: "About — Hotel-Grade Home Fragrance from Mumbai",
+  title: "About Us: Hotel-Grade Home Fragrance, Mumbai",
   description:
-    "Why we build waterless diffusers and blend oils at 70–90% concentration instead of diluting them in water. The story behind Quint Home.",
+    "How a hotel corridor in Udaipur became Quint Home: waterless diffusers and fragrance oils at 70–90% concentration, designed and blended in Mumbai.",
   alternates: { canonical: "/about" },
 };
 

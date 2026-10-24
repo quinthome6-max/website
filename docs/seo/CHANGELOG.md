@@ -20,6 +20,14 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-24 — Titles and descriptions from the plan's rewrite sheet (plan T13)
+- **What:** every page in the sitemap now has a title of 60 characters or fewer and a description of 155 or fewer. Home, /range, /about, /journal, /businesses, /faq, /find-your-scent and /contact take the section 07 wording. /businesses says "We reply within 48 hours" (what the page promises) instead of "Proposal in 48 hours"; /faq keeps its description until the FAQ is expanded.
+- **Product templates:** diffusers read "The Monolith Waterless Diffuser, 1,075 sq ft" (coverage as the page shows it, so the Ember and Pillar say 540, not the raw 538), the Drift "Waterless Car Diffuser". Oils read "{Name} Fragrance Oil for Diffusers, 50 ml"; the Hotel Credential oils "{Name} Hotel Fragrance Oil, 50 ml". Candles read "{Name} Soy Candle, {Notes}". Descriptions carry the live Shopify price.
+- **Journal:** new `seoDescription` field (falls back to the excerpt), set on the two articles not being rewritten; "Top, Heart and Base Notes, Explained" and "Why Your Home Deserves Scent That Was Designed" as their search titles.
+- **Not changed:** H1s. The plan's H1 wording changes visible design (e.g. the homepage hero), so it waits for the client's approval.
+- **Where:** `app/range/[slug]/page.tsx`, the eight page files, `app/journal/[slug]/page.tsx`, `lib/data/journal.ts`, `lib/types.ts`.
+- **Check:** local build, all 35 sitemap pages measured: no title over 60, no description over 155 apart from the two articles being rewritten today.
+
 ## 2026-10-24 — Homepage video, caching, AVIF and share images (plan T5, T7, T12)
 - **Hero video (T5):** one 4.7 MB file for every device is now two: a 3.6 MB desktop file and a 1.4 MB phone file cut to the 4:5 crop phones already showed (same framing). A still of the first frame shows at once under each (`fetchpriority=high`), so the hero is never blank and the first paint is a 20–50 KB image. Three unused videos removed (`hero-3.mp4`, `hero-5.mp4`, `hero-deep.mp4`, 15.8 MB).
 - **Caching (T7):** `/images/*` and `/videos/*` cached 30 days (`max-age=2592000, stale-while-revalidate=604800`) instead of `max-age=0`; optimised images cached 31 days and served as AVIF first, WebP second. **Rule from now on:** replace a photo under a new file name (the `-v2` convention), never overwrite one.

@@ -31,13 +31,13 @@ export async function generateMetadata({
   return {
     // The editorial headline runs long; search results would cut it off.
     title: post.seoTitle ?? post.title,
-    description: post.excerpt,
+    description: post.seoDescription ?? post.excerpt,
     alternates: { canonical: url },
     openGraph: {
       type: "article",
       locale: OG_LOCALE,
       title: post.title,
-      description: post.excerpt,
+      description: post.seoDescription ?? post.excerpt,
       url,
       publishedTime: post.publishedAt,
       ...(post.updatedAt ? { modifiedTime: post.updatedAt } : {}),
@@ -46,7 +46,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: post.title,
-      description: post.excerpt,
+      description: post.seoDescription ?? post.excerpt,
       images: [post.cover],
     },
     ...(post.keywords?.length ? { keywords: post.keywords } : {}),

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { FadeUp } from "@/components/motion/fade-up";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact Us: WhatsApp, Email & Orders",
   description:
     "Questions about a diffuser, an oil or an order? Reach Quint Home on WhatsApp or at hello@quinthome.in. Based in Mumbai, shipping across India.",
   alternates: { canonical: "/contact" },

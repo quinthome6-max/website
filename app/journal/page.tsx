@@ -7,9 +7,9 @@ import { FadeUp } from "@/components/motion/fade-up";
 
 /** Without this the page inherited the layout's bare "Quint Home" title. */
 export const metadata: Metadata = {
-  title: "Journal — Writing on Scent, Diffusers and the Home",
+  title: "Home Fragrance Guides & Diffuser Tips",
   description:
-    "How waterless diffusion works, how to read a scent profile, and why we build home fragrance the way we do. Written by the founders of Quint Home.",
+    "Guides to waterless diffusers, scent notes and hotel-style home fragrance, written by the Quint Home team in Mumbai.",
   alternates: { canonical: "/journal" },
 };
 

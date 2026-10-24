@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { productJsonLd, breadcrumbJsonLd, jsonLdScript } from "@/lib/structured-data";
 import { TrackView } from "@/components/analytics/track-view";
 import { pixelId } from "@/lib/analytics/pixel";
-import { priceOf, OG_LOCALE } from "@/lib/seo";
+import { priceOf, inr, OG_LOCALE } from "@/lib/seo";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -43,10 +43,14 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  // Titles and descriptions follow the SEO plan's templates (section 07,
+  // ticket T13): the name, then what it is, under 60 characters before the
+  // " · Quint Home" suffix; the live price in the description.
+  const commerceMap = await getCommerceMap();
   const candle = getCandle(slug);
   if (candle) {
-    const title = `${candle.name} — ${candle.notesLine} Soy Candle, ${candle.volumeML} ml`;
-    const description = `${candle.tagline} A ${candle.volumeML} ml hand-poured 100% soy wax candle scented with ${candle.notesLine.toLowerCase()}, burning up to ${candle.burnHours} hours.`;
+    const title = `${candle.name} Soy Candle, ${candle.notesLine}`;
+    const description = `${candle.tagline.replace(/\.$/, "")}: ${candle.notesLine.toLowerCase()} in a ${candle.volumeML} ml hand-poured soy wax candle. Up to ${candle.burnHours} hours of burn. ${inr(priceOf(candle, commerceMap))}, shipped across India.`;
     return {
       title,
       description,
@@ -74,31 +78,34 @@ export async function generateMetadata({
   const kind = isOil ? "Fragrance Oil" : "Diffuser";
 
   /**
-   * Titles led with the product name alone, which searchers never type — a
-   * name like "The Loom" or "Blanc Ritual" carries no category signal at all.
-   * The descriptor after the name is what makes the page findable for the
-   * phrases people actually use, and it is built from the catalogue so it
-   * cannot drift from what the page shows.
+   * The name alone ("The Loom", "Blanc Ritual") carries no category signal,
+   * so the title adds what the product is, in the words people search with.
+   * Everything comes from the catalogue, so it can't drift from the page.
    */
-  const descriptor = isOil
-    ? `IFRA Fragrance Oil, ${"volumeML" in product ? product.volumeML : 50} ml`
-    : "bluetooth" in product && product.bluetooth
-      ? `Waterless Diffuser, ${product.coverageLabel}`
-      : // The cordless models don't plug into a wall, so they can't inherit the
-        // plug-in wording the Pebble uses.
-        product.slug === "drift"
-        ? "Waterless Car & Bathroom Diffuser"
-        : "Waterless Plug-In Diffuser";
-
-  const title = `${product.name} — ${descriptor}`;
-
-  const description = isOil
-    ? `${product.tagline} A ${"volumeML" in product ? product.volumeML : 50} ml IFRA-compliant fragrance oil at 70–90% concentration, for any Quint Home waterless diffuser.`
-    : `${product.tagline} A waterless electronic diffuser covering ${"coverageLabel" in product ? product.coverageLabel : "your space"}${
-        "includesOil" in product && product.includesOil
-          ? ", with the fragrance oil of your choice included."
-          : "."
-      }`;
+  const price = inr(priceOf(product, commerceMap));
+  let title: string;
+  let description: string;
+  if (product.category === "oil") {
+    title =
+      product.tier === "hotel-credential"
+        ? `${product.name} Hotel Fragrance Oil, ${product.volumeML} ml`
+        : `${product.name} Fragrance Oil for Diffusers, ${product.volumeML} ml`;
+    description = `${product.tagline} ${product.volumeML} ml IFRA fragrance oil at 70–90% strength for waterless diffusers. ${price}.`;
+  } else {
+    // The figure the page itself shows ("Up to 540 sq ft"), not the raw spec
+    // (538), so title and page agree. The Drift publishes none: it is the
+    // car diffuser.
+    const shown = product.coverageLabel.match(/([\d,]+)\s*sq ft/);
+    const reach = product.coverageSqFt && shown ? `${shown[1]} sq ft` : null;
+    title = reach
+      ? `${product.name} Waterless Diffuser, ${reach}`
+      : `${product.name} Waterless Car Diffuser`;
+    description = reach
+      ? `Waterless aroma diffuser for rooms up to ${reach}. Runs on pure fragrance oil, no water${
+          product.bluetooth ? ", with app scheduling" : ""
+        }.${product.includesOil ? " Free 50 ml oil included." : ""} ${price}.`
+      : `Waterless car and bathroom diffuser in machined aluminium. Runs on pure fragrance oil, no water, and starts and stops with the car. ${price}.`;
+  }
 
   const ogTitle = `${product.name} — Quint Home ${kind}`;
   return {
