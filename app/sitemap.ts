@@ -27,6 +27,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const pages: MetadataRoute.Sitemap = [
     { url: SITE, changeFrequency: "weekly", priority: 1.0 },
     { url: `${SITE}/range`, changeFrequency: "weekly", priority: 0.9 },
+    // Category landing pages (plan T9).
+    { url: `${SITE}/range/waterless-diffusers`, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${SITE}/range/fragrance-oils`, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${SITE}/range/scented-candles`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE}/find-your-scent`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE}/about`, changeFrequency: "monthly", priority: 0.6 },
     { url: `${SITE}/journal`, changeFrequency: "weekly", priority: 0.6 },

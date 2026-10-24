@@ -68,7 +68,7 @@ export async function CandleProductPage({ candle }: { candle: Candle }) {
             The Range
           </Link>
           <span className="mx-2">·</span>
-          <Link href="/range#candles" className="hover:text-[color:var(--color-clay)]">
+          <Link href="/range/scented-candles" className="hover:text-[color:var(--color-clay)]">
             Candles
           </Link>
         </nav>

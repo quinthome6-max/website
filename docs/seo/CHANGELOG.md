@@ -20,6 +20,13 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-24 — Three category pages live (plan T9)
+- **What:** `/range/waterless-diffusers`, `/range/fragrance-oils` and `/range/scented-candles`. Each has the plan's title, description and H1 (section 07), a visible breadcrumb, every product in the category with its live price (sold-out last), 370–560 words of guide copy under question-style H2s, an FAQ, and ItemList + BreadcrumbList + FAQPage markup. The diffuser page has a room-size table; the candle page pairs each candle with the oil that shares its notes. The header Range menu, the footer and the product pages' "All scents" / candle links now point to these pages instead of `/range#…` anchors or `/range?category=oils`. They're added to the sitemap (32 → 35 URLs) and to llms.txt.
+- **Also:** the FAQ's "Under 18 dB" claim is replaced. No spec supports it; the Pillar is rated at 35 dB or less, and the answer now says so.
+- **Why:** audit #6 / plan T9: nothing on the site could rank for "waterless diffuser", "fragrance oil for diffuser" or "soy candles". Also T8: no false claims.
+- **Where:** `lib/data/category-pages.ts` (copy, from lib/data facts only), `components/sections/category-page.tsx`, `app/range/{waterless-diffusers,fragrance-oils,scented-candles}/page.tsx`, header, footer, sitemap, llms.txt, `app/faq/page.tsx`.
+- **Check:** local build: titles 56/52/43 characters, descriptions 152/144/131, canonical self, 6/8/3 products, no JS errors, no sideways scroll on a phone. Next: request indexing for the three URLs in Search Console and push them through IndexNow.
+
 ## 2026-10-24 — Business enquiry form works; false subscription claims removed
 - **What:** the /businesses form now sends. Each enquiry is emailed to hello@quinthome.in (`ENQUIRY_TO` overrides), with Reply-To set to the enquirer, and a copy is kept in Redis (`qh:enq`, newest 500). A sent enquiry fires GA4 `generate_lead` and Meta `Lead`. There's a honeypot, a 3-second timing check and 5 per hour per address. Type of space is now a list. The three invented client testimonials on /businesses are removed. "Subscribe and save 15% on refills" (/range) and "Subscribe & Save on refills" (oil pages) are replaced with the real offer: the free first 50 ml, 45–60 days a bottle, refills from ₹899.
 - **Why:** audit #4 (critical) / plan T4: every enquiry was being lost. Audit #8 / #9 / plan T8: placeholder testimonials and a subscription that was never built.

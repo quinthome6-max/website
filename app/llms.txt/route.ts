@@ -129,6 +129,9 @@ ${[
 
 ${[
   ["/range", "The full range", "Every diffuser, oil and candle on one page"],
+  ["/range/waterless-diffusers", "Waterless diffusers", "All six diffusers, how waterless diffusion works, and which suits which room"],
+  ["/range/fragrance-oils", "Fragrance oils", "All eight 50 ml oils, how to choose one, and the Hotel Credential scents"],
+  ["/range/scented-candles", "Scented candles", "The three soy wax candles and the oils that pair with them"],
   ["/find-your-scent", "Find your scent", "Guided quiz that recommends an oil"],
   ["/about", "About", "Why the brand exists and how the oils are built"],
   ["/businesses", "For businesses", "Hotels, retail and office installations"],

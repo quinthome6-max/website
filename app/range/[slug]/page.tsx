@@ -217,7 +217,7 @@ export default async function ProductPage({
                 </em>
               </h2>
               <Link
-                href="/range?category=oils"
+                href="/range/fragrance-oils"
                 className="text-[0.72rem] uppercase tracking-[0.32em] underline-offset-4 hover:text-[color:var(--color-clay)] hover:underline"
               >
                 All scents →

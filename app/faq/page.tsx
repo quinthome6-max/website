@@ -23,7 +23,7 @@ const groups = [
       },
       {
         q: "Is it actually silent?",
-        a: "Under 18 dB – quieter than a refrigerator hum. There is no fan, no gurgling water, and no clicking. Safe for bedrooms, studies, and offices.",
+        a: "Near-silent. There is no fan, no gurgling water and no clicking, which is why they suit bedrooms, studies and offices. The Pillar, for example, is rated at 35 dB or less.",
       },
       {
         q: "What does it take to set up?",
