@@ -431,13 +431,15 @@ export default async function ShopPage() {
       </section>
 
       {/* ====================================================
-          § CLOSING – Pair & Save
+          § CLOSING – Pair & Refill. It promised a 15% refill subscription,
+          which was never built (audit #9, plan T8); now it states the real
+          offer: the free first oil, how long a bottle lasts, refill prices.
           ==================================================== */}
       <section className="py-[var(--spacing-section)]">
         <div className="mx-auto max-w-[var(--container-content)] px-6 text-center md:px-10">
           <FadeUp>
             <p className="mx-auto w-fit text-[0.62rem] uppercase tracking-[0.42em] text-[color:var(--color-charcoal-soft)]">
-              <Monogram className="mr-1.5 inline-block h-[0.9em] w-[0.9em] align-[-0.12em]" />Pair & Subscribe
+              <Monogram className="mr-1.5 inline-block h-[0.9em] w-[0.9em] align-[-0.12em]" />Pair & Refill
             </p>
           </FadeUp>
           <FadeUp delay={0.08}>
@@ -453,14 +455,15 @@ export default async function ShopPage() {
             >
               One diffuser, one oil.{" "}
               <em className="text-[color:var(--color-aerial-deep)]">
-                Subscribe and save 15% on refills.
+                Your first 50 ml is on us.
               </em>
             </h2>
           </FadeUp>
           <FadeUp delay={0.16}>
             <p className="mx-auto mt-7 max-w-[52ch] text-[var(--text-base)] leading-[1.85] text-[color:var(--color-charcoal-soft)]">
-              Start a diffuser with the oil you want and set a refill cadence
-              you can pause or change anytime.
+              Every room diffuser ships with a 50 ml fragrance oil of your
+              choice. A bottle lasts about 45–60 days, depending on the model
+              and setting, and refills start at ₹899.
             </p>
           </FadeUp>
           <FadeUp delay={0.24}>

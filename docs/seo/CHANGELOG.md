@@ -20,6 +20,12 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-24 — Business enquiry form works; false subscription claims removed
+- **What:** the /businesses form now sends. Each enquiry is emailed to hello@quinthome.in (`ENQUIRY_TO` overrides), with Reply-To set to the enquirer, and a copy is kept in Redis (`qh:enq`, newest 500). A sent enquiry fires GA4 `generate_lead` and Meta `Lead`. There's a honeypot, a 3-second timing check and 5 per hour per address. Type of space is now a list. The three invented client testimonials on /businesses are removed. "Subscribe and save 15% on refills" (/range) and "Subscribe & Save on refills" (oil pages) are replaced with the real offer: the free first 50 ml, 45–60 days a bottle, refills from ₹899.
+- **Why:** audit #4 (critical) / plan T4: every enquiry was being lost. Audit #8 / #9 / plan T8: placeholder testimonials and a subscription that was never built.
+- **Where:** `app/actions/enquiry.ts`, `components/business/enquiry-form.tsx`, `app/businesses/page.tsx`, `app/range/page.tsx`, `components/product/oil-hero.tsx`.
+- **Check:** on a local build: a bad email is refused with a message, a send reaches Resend's test inbox and shows the thank-you, `generate_lead` is queued, no JS errors. Not yet done: tagging the enquirer in Shopify (the rest of T4).
+
 ## 2026-10-24 — Plan status review (end of Week 1)
 - **Done (7 of 26 tickets):** T1 canonicals, T10 product schema, T11 product feed, T21 llms files (candles), plus most of T2 (GA4 + shop events), T3 (Search Console) and T6 (Clarity after load, 20 Oct; Meta Pixel kept as is for ad optimisation). /refunds is permanent (half of T15). Off-plan but on the brief: real customer reviews with aggregateRating markup (brief item #9), placeholder testimonials no longer shown.
 - **Found live, still wrong:** the /businesses "Submit enquiry" button does nothing (`type="button"`, no handler), so business enquiries are lost (audit #4, T4, critical). "Subscribe & Save" is still promised on /range and the oil pages, although subscriptions are off (T8). Candles are not linked from the homepage (T8). Product titles run past 60 characters, e.g. the Monolith at 66 (T13).

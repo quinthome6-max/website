@@ -17,7 +17,8 @@ import type { ReviewSummary } from "@/lib/reviews/store";
 /**
  * Oil PDP – bottle study on the left (sticky), and a single right column that
  * carries the buy box, then the overview, the notes and the specifications.
- * Mirrors the diffuser PDP layout. Oils keep the subscribe & save option.
+ * Mirrors the diffuser PDP layout. (No subscription: it was never built, so
+ * the page no longer offers one.)
  */
 export function OilHero({
   oil,
@@ -243,7 +244,7 @@ export function OilHero({
               </li>
               <li className="flex items-baseline gap-3">
                 <span className="text-[color:var(--color-clay)]">–</span>
-                Subscribe &amp; Save on refills – pause anytime.
+                Free with every room diffuser: your first 50 ml.
               </li>
             </ul>
           </FadeUp>
