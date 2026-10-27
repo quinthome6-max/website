@@ -29,7 +29,7 @@ export default async function InvoicePage({
       <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
         <div>
           <Link
-            href="/admin"
+            href="/admin/orders"
             className="text-[0.62rem] uppercase tracking-[0.28em] text-[color:var(--color-charcoal-soft)] underline-offset-4 hover:underline"
           >
             ← All orders

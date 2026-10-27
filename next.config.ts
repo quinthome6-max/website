@@ -34,6 +34,8 @@ const nextConfig: NextConfig = {
     "/api/payu/webhook": ["./node_modules/@sparticuz/chromium/bin/**/*"],
     "/api/admin/payu/recover": ["./node_modules/@sparticuz/chromium/bin/**/*"],
     "/api/admin/order-email": ["./node_modules/@sparticuz/chromium/bin/**/*"],
+    // Quotations, printed to PDF the same way (lib/admin/quotes).
+    "/api/admin/quote-pdf": ["./node_modules/@sparticuz/chromium/bin/**/*"],
   },
   // pdf.quinthome.in serves the invoice back office. A rewrite rather than a
   // second deployment: one project, one set of environment variables, and no

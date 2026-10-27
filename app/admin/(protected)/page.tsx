@@ -1,221 +1,197 @@
 import Link from "next/link";
-import { requireStaff } from "@/lib/admin/session";
-import { listInvoices, adminConfigured } from "@/lib/admin/orders";
-import { supplierGaps } from "@/lib/admin/supplier";
+import { Suspense } from "react";
+import { redirect } from "next/navigation";
+import { currentViewer } from "@/lib/admin/session";
+import { adminConfigured, listInvoices } from "@/lib/admin/orders";
+import { listQuotes, quotesAvailable } from "@/lib/admin/quotes/store";
+import { calcQuote, formatINR } from "@/lib/admin/quotes/calc";
+import { QUOTE_STATUSES } from "@/lib/admin/quotes/types";
+import { listCheckouts } from "@/lib/abandoned/store";
+import { reviewsForAdmin } from "@/lib/reviews/store";
+import { Box, btn, Figure, PageHeader, StatusBadge, Tile } from "@/components/admin/ui";
 import {
-  EMAIL_FAILED_TAG,
-  EMAILED_TAG,
-  INVOICE_HELD_TAG,
-  RESEND_API_KEY,
-} from "@/lib/email/config";
+  IconCard,
+  IconCart,
+  IconGift,
+  IconPlus,
+  IconQuote,
+  IconReceipt,
+  IconStar,
+} from "@/components/admin/icons";
 
 export const dynamic = "force-dynamic";
 
-const money = (n: number) =>
-  `₹${n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const rupees = (n: number) => formatINR(n, 0);
+const DAY = new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", timeZone: "Asia/Kolkata" });
 
-const DATE = new Intl.DateTimeFormat("en-IN", {
-  day: "2-digit", month: "short", year: "numeric", timeZone: "Asia/Kolkata",
-});
+function greeting(): string {
+  const h = Number(new Intl.DateTimeFormat("en-IN", { hour: "numeric", hour12: false, timeZone: "Asia/Kolkata" }).format(new Date()));
+  return h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
+}
 
-/** Orders with their GST, newest first — the "all info in one place" view. */
-export default async function AdminHome({
-  searchParams,
-}: {
-  searchParams: Promise<{ email?: string; order?: string }>;
-}) {
-  await requireStaff();
-  const gaps = supplierGaps();
-  const { email: emailOutcome, order: emailedOrder } = await searchParams;
+/** The back office's front page: one box per section, with its live numbers. */
+export default async function Dashboard() {
+  const viewer = await currentViewer();
+  if (!viewer) redirect("/admin/login");
+  if (viewer.role !== "staff") redirect("/admin/abandoned");
 
-  if (!adminConfigured) {
-    return (
-      <Note title="Shopify Admin API not configured">
-        Set <code>SHOPIFY_ADMIN_TOKEN</code> in Vercel, then redeploy. Visit{" "}
-        <code>/api/shopify/install</code> to mint one.
-      </Note>
-    );
-  }
-
-  let invoices;
-  try {
-    invoices = await listInvoices(100);
-  } catch (e) {
-    return (
-      <Note title="Could not read orders from Shopify">
-        {e instanceof Error ? e.message : String(e)}
-      </Note>
-    );
-  }
-
-  // Totals across everything shown, so the figure to reconcile against is on
-  // screen rather than something to add up by hand.
-  const t = invoices.reduce(
-    (a, i) => ({
-      taxable: a.taxable + i.totals.taxable,
-      cgst: a.cgst + i.totals.cgst,
-      sgst: a.sgst + i.totals.sgst,
-      igst: a.igst + i.totals.igst,
-      gross: a.gross + i.totals.gross,
-    }),
-    { taxable: 0, cgst: 0, sgst: 0, igst: 0, gross: 0 }
-  );
-  const attention = invoices.filter((i) => i.needsAttention.length > 0);
+  const today = new Intl.DateTimeFormat("en-IN", {
+    weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Kolkata",
+  }).format(new Date());
 
   return (
     <>
-      {emailOutcome && (
-        <Note
-          title={
-            emailOutcome === "sent"
-              ? `Order email sent for #${emailedOrder}`
-              : emailOutcome === "sent-no-invoice"
-                ? `Order email sent for #${emailedOrder}, without the invoice`
-                : `Order email for #${emailedOrder} was not sent`
-          }
-        >
-          {emailOutcome === "sent"
-            ? "The confirmation went out with the GST invoice attached."
-            : emailOutcome === "sent-no-invoice"
-              ? "The invoice needs a look first (see the order's flags), so it was left out."
-              : "Check that RESEND_API_KEY is set and quinthome.in is verified in Resend, then try again."}
-        </Note>
-      )}
-      {gaps.length > 0 && (
-        <Note title="Supplier details incomplete">
-          Missing: {gaps.join(", ")}. Invoices will render, but should not be
-          issued until this is filled in (<code>lib/admin/supplier.ts</code>).
-        </Note>
-      )}
-      {attention.length > 0 && (
-        <Note title={`${attention.length} order${attention.length > 1 ? "s" : ""} need attention`}>
-          A line could not be classified to an HSN code:{" "}
-          {attention.map((i) => i.orderName).join(", ")}.
-        </Note>
-      )}
+      <PageHeader
+        eyebrow={today}
+        title={`${greeting()}.`}
+        description="Everything in the back office, one box per section. Open a box to work in it."
+        actions={
+          <>
+            <Link href="/admin/quotes/new" className={btn.primary}>
+              <IconPlus /> New quotation
+            </Link>
+            <Link href="/admin/orders" className={btn.secondary}>
+              View orders
+            </Link>
+          </>
+        }
+      />
 
-      <div className="grid gap-px overflow-hidden border border-[color:var(--color-rule)] bg-[color:var(--color-rule)] sm:grid-cols-2 lg:grid-cols-5">
-        <Stat label="Paid orders" value={String(invoices.length)} />
-        <Stat label="Taxable value" value={money(t.taxable)} />
-        <Stat label="CGST" value={money(t.cgst)} />
-        <Stat label="SGST" value={money(t.sgst)} />
-        <Stat label={t.igst > 0 ? "IGST" : "Total collected"} value={money(t.igst > 0 ? t.igst : t.gross)} />
+      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        <Tile href="/admin/orders" icon={<IconReceipt />} title="Orders & GST" blurb="Paid orders, their GST split and tax invoices." cta="Open orders">
+          <Suspense fallback={<Loading n={2} />}><OrderFigures /></Suspense>
+        </Tile>
+        <Tile href="/admin/quotes" icon={<IconQuote />} title="Quotations" blurb="Bulk and business quotes, saved and sent as PDFs." cta="Open quotations">
+          <Suspense fallback={<Loading n={2} />}><QuoteFigures /></Suspense>
+        </Tile>
+        <Tile href="/admin/abandoned" icon={<IconCart />} title="Abandoned checkouts" blurb="Shoppers who reached checkout and did not pay." cta="Follow up">
+          <Suspense fallback={<Loading n={2} />}><AbandonedFigures /></Suspense>
+        </Tile>
+        <Tile href="/admin/reviews" icon={<IconStar />} title="Reviews" blurb="Approve customer reviews before they go live." cta="Moderate">
+          <Suspense fallback={<Loading n={2} />}><ReviewFigures /></Suspense>
+        </Tile>
+        <Tile href="/admin/payments" icon={<IconCard />} title="Payments" blurb="Look up a PayU payment and recover an order for it." cta="Open payments" />
+        <Tile href="/admin/gift-stock" icon={<IconGift />} title="Gift stock" blurb="Stock of the complimentary 50 ml oils sent with diffusers." cta="Open gift stock" />
       </div>
 
-      <div className="mt-8 overflow-x-auto">
-        <table className="w-[100%] min-w-[52rem] border-collapse text-[0.85rem]">
-          <thead>
-            <tr className="border-b border-[color:var(--color-charcoal)] text-left">
-              {["Invoice", "Date", "Customer", "Place of supply", "Taxable", "GST", "Total", ""].map(
-                (h, i) => (
-                  <th
-                    key={h || i}
-                    className={`py-3 pr-4 text-[0.58rem] uppercase tracking-[0.22em] text-[color:var(--color-charcoal-soft)] ${
-                      i >= 4 && i <= 6 ? "text-right" : ""
-                    }`}
-                  >
-                    {h}
-                  </th>
-                )
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {invoices.map((i) => (
-              <tr key={i.orderName} className="border-b border-[color:var(--color-rule)]">
-                <td className="py-3 pr-4 tabular-nums">
-                  {i.invoiceNumber}
-                  {i.needsAttention.length > 0 && (
-                    <span className="ml-2 rounded-full bg-[color:var(--color-clay)] px-2 py-0.5 text-[0.52rem] uppercase tracking-[0.18em] text-[color:var(--color-ivory)]">
-                      check
-                    </span>
-                  )}
-                </td>
-                <td className="py-3 pr-4 whitespace-nowrap text-[color:var(--color-charcoal-soft)]">
-                  {DATE.format(new Date(i.createdAt))}
-                </td>
-                <td className="py-3 pr-4">
-                  {i.customer.name}
-                  {i.customer.gstin && (
-                    <span className="ml-2 text-[0.62rem] uppercase tracking-[0.14em] text-[color:var(--color-charcoal-soft)]">
-                      B2B
-                    </span>
-                  )}
-                </td>
-                <td className="py-3 pr-4 text-[color:var(--color-charcoal-soft)]">
-                  {i.placeOfSupply}
-                  <span className="ml-2 text-[0.62rem] uppercase tracking-[0.14em]">
-                    {i.interState ? "IGST" : "CGST+SGST"}
-                  </span>
-                </td>
-                <td className="py-3 pr-4 text-right tabular-nums">{money(i.totals.taxable)}</td>
-                <td className="py-3 pr-4 text-right tabular-nums">
-                  {money(i.totals.cgst + i.totals.sgst + i.totals.igst)}
-                </td>
-                <td className="py-3 pr-4 text-right tabular-nums font-medium">
-                  {money(i.totals.gross)}
-                </td>
-                <td className="py-3 text-right whitespace-nowrap">
-                  <Link
-                    href={`/admin/invoice/${i.orderNumber}`}
-                    className="text-[0.62rem] uppercase tracking-[0.22em] underline-offset-4 hover:text-[color:var(--color-clay)] hover:underline"
-                  >
-                    Invoice →
-                  </Link>
-                  {RESEND_API_KEY && (i.customer.email || i.billTo.email) && (
-                    <form action="/api/admin/order-email" method="post" className="mt-1.5">
-                      <input type="hidden" name="order" value={i.orderNumber} />
-                      <button className="text-[0.58rem] uppercase tracking-[0.2em] text-[color:var(--color-charcoal-soft)] underline-offset-4 hover:text-[color:var(--color-clay)] hover:underline">
-                        {i.tags.includes(EMAILED_TAG) ? "Email again" : "Email customer"}
-                      </button>
-                      {i.tags.includes(EMAIL_FAILED_TAG) && (
-                        <span className="ml-2 text-[0.56rem] uppercase tracking-[0.16em] text-[color:var(--color-clay)]">
-                          failed
-                        </span>
-                      )}
-                      {i.tags.includes(INVOICE_HELD_TAG) && (
-                        <span className="ml-2 text-[0.56rem] uppercase tracking-[0.16em] text-[color:var(--color-clay)]">
-                          no invoice
-                        </span>
-                      )}
-                    </form>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {invoices.length === 0 && (
-        <p className="mt-8 text-[0.85rem] text-[color:var(--color-charcoal-soft)]">
-          No paid orders yet.
-        </p>
-      )}
+      <Box
+        className="mt-8"
+        title="Recent quotations"
+        padded={false}
+        action={<Link href="/admin/quotes" className={btn.quiet}>All quotations →</Link>}
+      >
+        <Suspense fallback={<p className="px-5 py-6 text-[0.8rem] text-[color:var(--color-charcoal-soft)]">Loading…</p>}>
+          <RecentQuotes />
+        </Suspense>
+      </Box>
     </>
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Loading({ n }: { n: number }) {
   return (
-    <div className="bg-[color:var(--color-white)] p-5">
-      <p className="text-[0.56rem] uppercase tracking-[0.28em] text-[color:var(--color-charcoal-soft)]">
-        {label}
-      </p>
-      <p className="mt-2 tabular-nums" style={{ fontFamily: "var(--font-serif)", fontSize: "1.35rem" }}>
-        {value}
-      </p>
-    </div>
+    <>
+      {Array.from({ length: n }, (_, i) => (
+        <div key={i} className="w-24">
+          <div className="h-2.5 w-16 animate-pulse bg-[color:var(--color-rule)]" />
+          <div className="mt-2.5 h-6 w-20 animate-pulse bg-[color:var(--color-rule-soft)]" />
+        </div>
+      ))}
+    </>
   );
 }
 
-function Note({ title, children }: { title: string; children: React.ReactNode }) {
+const Unavailable = ({ what }: { what: string }) => (
+  <p className="text-[0.76rem] text-[color:var(--color-charcoal-soft)]">Could not load {what} just now.</p>
+);
+
+/** Runs a loader, turning a failure into null so the box can say so. */
+async function attempt<T>(load: () => Promise<T>): Promise<T | null> {
+  try {
+    return await load();
+  } catch {
+    return null;
+  }
+}
+
+async function OrderFigures() {
+  if (!adminConfigured) return <Unavailable what="orders (Shopify Admin is not connected)" />;
+  const invoices = await attempt(() => listInvoices(100));
+  if (!invoices) return <Unavailable what="orders" />;
+  const collected = invoices.reduce((t, i) => t + i.totals.gross, 0);
+  const latest = invoices[0];
   return (
-    <div className="mb-6 border-l-2 border-[color:var(--color-clay)] bg-[color:var(--color-stardust-soft)] p-4">
-      <p className="text-[0.8rem] font-medium">{title}</p>
-      <p className="mt-1 text-[0.78rem] leading-[1.6] text-[color:var(--color-charcoal-soft)]">
-        {children}
-      </p>
-    </div>
+    <>
+      <Figure label="Paid orders" value={invoices.length} hint={latest ? `Latest ${DAY.format(new Date(latest.createdAt))}` : undefined} />
+      <Figure label="Collected" value={rupees(collected)} />
+    </>
+  );
+}
+
+async function QuoteFigures() {
+  if (!quotesAvailable) return <Unavailable what="quotations" />;
+  const quotes = await attempt(listQuotes);
+  if (!quotes) return <Unavailable what="quotations" />;
+  const open = quotes.filter((q) => q.status === "draft" || q.status === "sent");
+  const openValue = open.reduce((t, q) => t + calcQuote(q).grandTotal, 0);
+  const won = quotes.filter((q) => q.status === "accepted").reduce((t, q) => t + calcQuote(q).grandTotal, 0);
+  return (
+    <>
+      <Figure label="Open" value={open.length} hint={rupees(openValue)} />
+      <Figure label="Accepted" value={rupees(won)} />
+    </>
+  );
+}
+
+async function AbandonedFigures() {
+  const rows = await attempt(() => listCheckouts(100));
+  if (!rows) return <Unavailable what="abandoned checkouts" />;
+  const todo = rows.filter((r) => !r.recovered && !r.contacted && !r.paidAs);
+  return (
+    <>
+      <Figure label="To follow up" value={todo.length} tone={todo.length ? "warn" : undefined} hint={todo.length ? rupees(todo.reduce((t, r) => t + r.total, 0)) : "All caught up"} />
+      <Figure label="Recovered" value={rows.filter((r) => r.recovered || r.paidAs).length} />
+    </>
+  );
+}
+
+async function ReviewFigures() {
+  const reviews = await attempt(reviewsForAdmin);
+  if (!reviews) return <Unavailable what="reviews" />;
+  return (
+    <>
+      <Figure label="Waiting" value={reviews.pending.length} tone={reviews.pending.length ? "warn" : undefined} />
+      <Figure label="Live" value={reviews.approved.length} />
+    </>
+  );
+}
+
+async function RecentQuotes() {
+  if (!quotesAvailable) return <p className="px-5 py-6 text-[0.8rem]">Quotations need the shop&rsquo;s Redis database.</p>;
+  const all = await attempt(listQuotes);
+  if (!all) return <p className="px-5 py-6 text-[0.8rem] text-[color:var(--color-charcoal-soft)]">Could not load quotations just now.</p>;
+  const quotes = all.slice(0, 6);
+  if (quotes.length === 0) {
+    return (
+      <div className="flex flex-wrap items-center justify-between gap-4 px-5 py-6">
+        <p className="text-[0.85rem] text-[color:var(--color-charcoal-soft)]">No quotations yet. Make the first one for a business enquiry.</p>
+        <Link href="/admin/quotes/new" className={btn.secondary}><IconPlus /> New quotation</Link>
+      </div>
+    );
+  }
+  const label = (s: string) => QUOTE_STATUSES.find((x) => x.value === s)?.label ?? s;
+  return (
+    <ul className="divide-y divide-[color:var(--color-rule-soft)]">
+      {quotes.map((q) => (
+        <li key={q.id}>
+          <Link href={`/admin/quotes/${q.id}`} className="grid grid-cols-[1fr_auto] items-center gap-x-6 gap-y-1 px-5 py-3.5 transition-colors hover:bg-[color:var(--color-ivory)] sm:grid-cols-[9rem_1fr_auto_6rem]">
+            <span className="text-[0.78rem] tabular-nums text-[color:var(--color-charcoal-soft)]">{q.number}</span>
+            <span className="truncate text-[0.9rem]">{q.client.company || q.client.contactName}</span>
+            <span className="tabular-nums text-[0.9rem]">{rupees(calcQuote(q).grandTotal)}</span>
+            <span className="justify-self-end"><StatusBadge status={q.status} label={label(q.status)} /></span>
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }

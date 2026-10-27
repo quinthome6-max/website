@@ -18,13 +18,13 @@ export async function POST(request: Request): Promise<NextResponse> {
   const form = await request.formData();
   const order = Number(form.get("order"));
   if (!Number.isInteger(order) || order <= 0) {
-    return NextResponse.redirect(new URL("/admin", request.url), 303);
+    return NextResponse.redirect(new URL("/admin/orders", request.url), 303);
   }
 
   const result = await sendOrderEmail(order, { resend: true });
   const outcome = !result.sent ? "failed" : result.invoiceAttached ? "sent" : "sent-no-invoice";
   return NextResponse.redirect(
-    new URL(`/admin?email=${outcome}&order=${order}`, request.url),
+    new URL(`/admin/orders?email=${outcome}&order=${order}`, request.url),
     303
   );
 }
