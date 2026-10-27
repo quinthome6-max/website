@@ -4,15 +4,16 @@ import type { Product } from "@/lib/types";
  * HSN classification and GST rates.
  *
  * Supplied by the business (confirmed against its GST advice), not inferred
- * here. Both categories sit at 18%, which intra-state splits into CGST 9% +
- * SGST 9% and inter-state charges as IGST 18% — that split is handled in
+ * here. Intra-state supply splits the rate into equal CGST and SGST halves,
+ * inter-state charges it all as IGST; that split is handled in
  * lib/admin/gst.ts, which only needs the combined rate.
  *
- *   84248990  Aroma diffusers  (mechanical appliances for spraying liquids)
- *   33029090  Fragrance oils   (mixtures of odoriferous substances)
+ *   84248990  Aroma diffusers  18%  (mechanical appliances for spraying liquids)
+ *   33029090  Fragrance oils   18%  (mixtures of odoriferous substances)
+ *   340600    Soy candles       5%  (confirmed by the business, 27 Oct 2026)
  *
- * If a future product is neither a diffuser nor an oil — a candle, a gift set,
- * a refill kit — it needs its own classification before it can be invoiced.
+ * A future product that is none of these (a gift set, a refill kit) needs its
+ * own classification before it can be invoiced.
  * classify() throws rather than guessing, so that surfaces as a loud failure at
  * invoice time instead of a wrong code on a filed return.
  */
@@ -35,10 +36,17 @@ export const OIL_HSN: HsnClass = {
   category: "Fragrance oil",
 };
 
+export const CANDLE_HSN: HsnClass = {
+  hsn: "340600",
+  ratePercent: 5,
+  category: "Scented candle",
+};
+
 /** The classification for a catalogue product. */
 export function classify(product: Product): HsnClass {
   if (product.category === "diffuser") return DIFFUSER_HSN;
   if (product.category === "oil") return OIL_HSN;
+  if (product.category === "candle") return CANDLE_HSN;
   throw new Error(
     `No HSN classification for "${(product as { name?: string }).name ?? "unknown product"}". ` +
       `Add one to lib/admin/hsn.ts before invoicing it.`

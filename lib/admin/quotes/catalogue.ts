@@ -1,7 +1,7 @@
 import { candles } from "@/lib/data/candles";
 import { diffusers } from "@/lib/data/diffusers";
 import { oils } from "@/lib/data/oils";
-import { DIFFUSER_HSN, OIL_HSN } from "@/lib/admin/hsn";
+import { CANDLE_HSN, DIFFUSER_HSN, OIL_HSN } from "@/lib/admin/hsn";
 import {
   getCommerceMap,
   handleCandidates,
@@ -23,7 +23,7 @@ export interface CatalogueItem {
   gstRate: number;
   /** Shop price, GST included (live from Shopify when it answers). */
   price: number;
-  /** Candles have no confirmed HSN code or rate yet (lib/admin/hsn.ts). */
+  /** Set for a product whose HSN code or rate is not confirmed. */
   needsTaxCheck?: boolean;
 }
 
@@ -86,10 +86,9 @@ export async function quoteCatalogue(): Promise<CatalogueItem[]> {
       variant: `${c.volumeML} ml`,
       description: `Soy wax candle · ${c.notesLine}`,
       image: c.image,
-      hsn: "",
-      gstRate: 18,
+      hsn: CANDLE_HSN.hsn,
+      gstRate: CANDLE_HSN.ratePercent,
       price: sellableVariant(commerce)?.price ?? c.priceINR,
-      needsTaxCheck: true,
     });
   }
 

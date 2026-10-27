@@ -1,5 +1,5 @@
 import { splitInclusive, isInterState, totalSplits, type TaxSplit } from "./gst";
-import { classifyBySku, DIFFUSER_HSN, OIL_HSN, type HsnClass } from "./hsn";
+import { CANDLE_HSN, classifyBySku, DIFFUSER_HSN, OIL_HSN, type HsnClass } from "./hsn";
 import { getCommerceMap, shopifyHandle } from "@/lib/shopify/commerce";
 import { giftDisplayTitle } from "@/lib/cart-gift";
 import { oils } from "@/lib/data/oils";
@@ -205,6 +205,11 @@ function classifyLine(title: string, sku: string | null): { hsn: HsnClass; uncla
   if (/diffuser|pebble|monolith|loom|pillar|ember|drift/.test(t)) {
     return { hsn: DIFFUSER_HSN, unclassified: false };
   }
+  // Before the oils: the candles are named for places, and none of those
+  // names is shared with an oil.
+  if (/candle|forest|palace|study/.test(t)) {
+    return { hsn: CANDLE_HSN, unclassified: false };
+  }
   if (/oil|ritual|terrain|rain|hour|solitude|shoreline|lobby|arrival/.test(t)) {
     return { hsn: OIL_HSN, unclassified: false };
   }
@@ -266,15 +271,18 @@ export function toInvoice(
     };
   });
 
-  // Shipping is a supply too. It follows the rate of what is being shipped,
-  // which is 18% for everything in this catalogue.
+  // Shipping is a supply too, taxed at the rate of what it carries: 5% on a
+  // candle-only parcel, and the higher rate when one parcel mixes rates (a
+  // mixed supply is taxed at its highest rate). 18% when nothing is charged.
+  const goodsRates = lines.filter((l) => l.tax.gross > 0).map((l) => l.tax.ratePercent);
+  const shippingRate = goodsRates.length ? Math.max(...goodsRates) : 18;
   // What shipping actually cost, after a code that discounts it.
   const shippingList = (order.shipping_lines ?? []).reduce((t, s) => t + Number(s.price), 0);
   const shippingGross = (order.shipping_lines ?? []).reduce(
     (t, s) => t + Number(s.discounted_price ?? s.price),
     0
   );
-  const shipping = shippingGross > 0 ? splitInclusive(shippingGross, 18, interState) : null;
+  const shipping = shippingGross > 0 ? splitInclusive(shippingGross, shippingRate, interState) : null;
 
   const totals = totalSplits([...lines.map((l) => l.tax), ...(shipping ? [shipping] : [])]);
 

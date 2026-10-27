@@ -136,6 +136,19 @@ export function invoiceHtml(inv: Invoice, opts: { autoPrint?: boolean } = {}): s
 
   const qty = inv.lines.reduce((t, l) => t + l.quantity, 0);
 
+  // Tax grouped by rate (candles are 5%, everything else 18%), so a mixed
+  // order shows each rate rather than one label over the lot.
+  const rateMap = new Map<number, { rate: number; cgst: number; sgst: number; igst: number }>();
+  for (const t of [...inv.lines.map((l) => l.tax), ...(inv.shipping ? [inv.shipping] : [])]) {
+    if (t.gst === 0) continue;
+    const r = rateMap.get(t.ratePercent) ?? { rate: t.ratePercent, cgst: 0, sgst: 0, igst: 0 };
+    r.cgst += t.cgst;
+    r.sgst += t.sgst;
+    r.igst += t.igst;
+    rateMap.set(t.ratePercent, r);
+  }
+  const taxByRate = [...rateMap.values()].sort((a, b) => b.rate - a.rate);
+
   return `<!doctype html><html lang="en"><head><meta charset="utf-8" />
 <title>${esc(invoiceFilename(inv))}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -348,10 +361,14 @@ ${inv.needsAttention.length ? `<div class="warn noprint"><strong>Needs attention
     ? `<div class="band"><span>Discount${inv.discountCodes.length ? ` (${esc(inv.discountCodes.join(", "))})` : ""}</span><span>−${money(inv.codeDiscount)}</span></div>`
     : ""}
   <div><span>Total Before Tax</span><span>${money(inv.totals.taxable)}</span></div>
-  ${inter
-    ? `<div><span>IGST @ 18%</span><span>${money(inv.totals.igst)}</span></div>`
-    : `<div><span>CGST @ 9%</span><span>${money(inv.totals.cgst)}</span></div>
-       <div><span>SGST @ 9%</span><span>${money(inv.totals.sgst)}</span></div>`}
+  ${taxByRate
+    .map((r) =>
+      inter
+        ? `<div><span>IGST @ ${r.rate}%</span><span>${money(r.igst)}</span></div>`
+        : `<div><span>CGST @ ${r.rate / 2}%</span><span>${money(r.cgst)}</span></div>
+       <div><span>SGST @ ${r.rate / 2}%</span><span>${money(r.sgst)}</span></div>`
+    )
+    .join("")}
   <div class="band"><span>Total Tax</span><span>${money(inv.totals.gst)}</span></div>
   <div><span>Total After Tax</span><span>${money(inv.totals.gross)}</span></div>
   <div class="sub"><span>Shipping Amount</span><span>${money(inv.shipping ? inv.shipping.taxable : 0)}</span></div>

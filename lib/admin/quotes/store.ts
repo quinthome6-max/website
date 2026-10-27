@@ -13,6 +13,8 @@ import crypto from "node:crypto";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { redisConfigured, redisPipeline } from "@/lib/redis";
+import { candles } from "@/lib/data/candles";
+import { CANDLE_HSN } from "@/lib/admin/hsn";
 import { financialYear, type Quote, type QuoteInput } from "./types";
 
 const useFile = !redisConfigured && !process.env.VERCEL;
@@ -45,19 +47,35 @@ async function writeFileDb(db: FileDb): Promise<void> {
 
 /* Reading ----------------------------------------------------------------- */
 
+const CANDLE_SLUGS = new Set(candles.map((c) => c.slug));
+
 function parse(raw: unknown): Quote | null {
   if (typeof raw !== "string") return null;
   try {
-    return JSON.parse(raw) as Quote;
+    return upgrade(JSON.parse(raw) as Quote);
   } catch {
     return null;
   }
 }
 
+/** Candle lines saved before their HSN and rate were confirmed (27 Oct 2026)
+ *  get them now, so old quotes total correctly everywhere. */
+function upgrade(q: Quote): Quote {
+  if (!q.lines.some((l) => l.needsTaxCheck)) return q;
+  return {
+    ...q,
+    lines: q.lines.map((l) =>
+      l.needsTaxCheck && !l.hsn && l.productSlug && CANDLE_SLUGS.has(l.productSlug)
+        ? { ...l, hsn: CANDLE_HSN.hsn, gstRate: CANDLE_HSN.ratePercent, needsTaxCheck: undefined }
+        : l
+    ),
+  };
+}
+
 export async function listQuotes(): Promise<Quote[]> {
   if (useFile) {
     const db = await readFileDb();
-    return Object.values(db.quotes).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    return Object.values(db.quotes).map(upgrade).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   }
   const [ids] = (await redisPipeline([["ZREVRANGE", INDEX, 0, MAX_LISTED - 1]])) as [string[]];
   if (!ids?.length) return [];
@@ -67,7 +85,10 @@ export async function listQuotes(): Promise<Quote[]> {
 
 export async function getQuote(id: string): Promise<Quote | null> {
   if (!/^[a-z0-9]{6,32}$/.test(id)) return null;
-  if (useFile) return (await readFileDb()).quotes[id] ?? null;
+  if (useFile) {
+    const q = (await readFileDb()).quotes[id];
+    return q ? upgrade(q) : null;
+  }
   const [raw] = await redisPipeline([["GET", KEY(id)]]);
   return parse(raw);
 }

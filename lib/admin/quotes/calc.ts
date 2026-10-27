@@ -8,7 +8,7 @@
  *   3. GST on each line, at its rate. Inclusive prices have the tax taken out
  *      of them, exactly as the tax invoices do (lib/admin/gst.ts); exclusive
  *      prices have it added on.
- *   4. delivery, taxed at 18%
+ *   4. delivery, taxed at the goods' rate (the highest, if they differ)
  *   5. the grand total, rounded to the rupee, with the round-off shown
  *
  * Pure and free of server imports: the editor runs it on every keystroke and
@@ -16,7 +16,7 @@
  */
 import { isInterState, splitInclusive, type TaxSplit } from "@/lib/admin/gst";
 import { stateCode } from "@/lib/data/indian-states";
-import type { Quote, QuoteInput } from "./types";
+import type { Quote, QuoteInput, QuoteLine } from "./types";
 
 const paise = (n: number): number => Math.round(n * 100) / 100;
 
@@ -37,7 +37,12 @@ function splitExclusive(taxable: number, ratePercent: number, interState: boolea
   };
 }
 
-const DELIVERY_GST = 18;
+/** Delivery is taxed at the rate of the goods it carries; with goods at
+ *  several rates, the highest (a mixed supply). 18% with no goods. */
+export function deliveryRate(lines: Pick<QuoteLine, "quantity" | "unitPrice" | "gstRate">[]): number {
+  const charged = lines.filter((l) => l.quantity > 0 && l.unitPrice > 0 && l.gstRate > 0).map((l) => l.gstRate);
+  return charged.length ? Math.max(...charged) : 18;
+}
 
 export interface LineCalc {
   id: string;
@@ -124,10 +129,11 @@ export function calcQuote(q: Calculable): QuoteCalc {
   });
 
   const deliveryAmount = paise(Math.max(0, q.delivery));
+  const dRate = deliveryRate(q.lines);
   const delivery = deliveryAmount > 0
     ? incl
-      ? splitInclusive(deliveryAmount, DELIVERY_GST, inter)
-      : splitExclusive(deliveryAmount, DELIVERY_GST, inter)
+      ? splitInclusive(deliveryAmount, dRate, inter)
+      : splitExclusive(deliveryAmount, dRate, inter)
     : null;
 
   const splits = [...lines.map((l) => l.tax), ...(delivery ? [delivery] : [])];

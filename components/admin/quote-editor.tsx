@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useTransition, type ReactNode } from "react";
-import { calcQuote, formatINR } from "@/lib/admin/quotes/calc";
+import { calcQuote, deliveryRate, formatINR } from "@/lib/admin/quotes/calc";
 import { quoteHtml } from "@/lib/admin/quotes/quote-html";
 import {
   DEFAULT_TERMS,
@@ -197,7 +197,7 @@ export function QuoteEditor({
         ...q,
         pricesIncludeGst: incl,
         lines: q.lines.map((l) => ({ ...l, unitPrice: conv(l.unitPrice, l.gstRate) })),
-        delivery: conv(q.delivery, 18),
+        delivery: conv(q.delivery, deliveryRate(q.lines)),
       };
     });
   }
@@ -345,7 +345,7 @@ export function QuoteEditor({
 
                 {taxChecks.length > 0 && (
                   <div className="border-b border-[color:var(--color-rule)] bg-[color:var(--color-stardust-soft)] px-5 py-2.5 text-[0.78rem]">
-                    <strong className="font-medium">Check the tax on candles.</strong> Their HSN code and GST rate are not confirmed yet. Fill in the HSN and set the rate before sending.
+                    <strong className="font-medium">Check the tax on these items.</strong> Their HSN code or GST rate is not confirmed. Fill in the HSN and set the rate before sending.
                   </div>
                 )}
 
@@ -438,7 +438,7 @@ export function QuoteEditor({
                       />
                     </div>
                   </Field>
-                  <Field label={`Delivery charge (${basis})`} hint="Taxed at 18%. Leave at 0 for free delivery.">
+                  <Field label={`Delivery charge (${basis})`} hint="Taxed at the items' GST rate (the higher one if they differ). Leave at 0 for free delivery.">
                     <NumberInput value={quote.delivery} onValue={(n) => update((q) => ({ ...q, delivery: n }))} prefix="₹" />
                   </Field>
                 </div>
