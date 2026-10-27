@@ -7,7 +7,7 @@
  * from it carries everything inside.
  */
 import { LOGO_DATA_URI } from "@/lib/admin/invoice-html";
-import { SUPPLIER } from "@/lib/admin/supplier";
+import { SUPPLIER, supplierAddressLines } from "@/lib/admin/supplier";
 import { amountInWords } from "@/lib/admin/words";
 import { SITE } from "@/lib/seo";
 import { calcQuote, formatINR as money } from "./calc";
@@ -86,7 +86,6 @@ export function quoteHtml(q: Quote, opts: { autoPrint?: boolean; printHint?: boo
   ].join("");
 
   const terms = q.terms.split("\n").map((t) => t.trim()).filter(Boolean);
-  const supplierPlace = [SUPPLIER.city, SUPPLIER.state, SUPPLIER.pin].filter(Boolean).join(", ");
 
   return `<!doctype html><html lang="en"><head><meta charset="utf-8" />
 <title>${esc(quoteFilename(q))}</title>
@@ -116,7 +115,7 @@ export function quoteHtml(q: Quote, opts: { autoPrint?: boolean; printHint?: boo
            margin:0;padding-top:10px;border-top:1px solid var(--rule)}
   .doctype em{font-style:italic;color:var(--aerial-deep);font-size:15px;margin-left:8px}
   .supplier{text-align:right;font-size:10.5px;max-width:330px;line-height:1.6}
-  .supplier .name{font-family:'Literata',Georgia,serif;font-weight:600;font-size:15px;margin:0 0 4px}
+  .supplier .name{font-family:'Literata',Georgia,serif;font-weight:600;font-size:15px;margin:0 0 4px;color:var(--charcoal)}
   .supplier p{margin:0;color:var(--charcoal-soft)}
   .supplier .gstin{margin-top:7px;font-weight:600;color:var(--charcoal);letter-spacing:.02em}
 
@@ -202,8 +201,8 @@ ${opts.printHint ? `<div class="warn noprint"><strong>Printing:</strong> choose 
     <p class="doctype">Quotation<em>for ${esc(q.client.company || q.client.contactName || "you")}</em></p>
   </div>
   <div class="supplier">
-    <p class="name">Quint Home</p>
-    <p>${esc(SUPPLIER.legalName)} · ${esc(supplierPlace)}</p>
+    <p class="name">${esc(SUPPLIER.legalName)}</p>
+    ${supplierAddressLines().map((l) => `<p>${esc(l)}</p>`).join("")}
     <p>${esc(SUPPLIER.phone)} · ${esc(SUPPLIER.email)}</p>
     <p class="gstin">GSTIN ${esc(SUPPLIER.gstin)}</p>
   </div>
