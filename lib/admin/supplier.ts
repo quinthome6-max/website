@@ -23,7 +23,12 @@ export interface Supplier {
 
 export const SUPPLIER: Supplier = {
   legalName: "Rusera Lifestyle",
-  addressLines: ["54-57 Riddhi Siddhi CHS", "31st Floor, Flat 3102"],
+  // The street lines (building, floor and flat) were removed at the owner's
+  // request on 27 Oct 2026: the registered address is a home. Invoices,
+  // quotes and order emails now show the city, state and PIN only. GST
+  // rules ask for the supplier's address on a tax invoice, so confirm this
+  // with the accountant, or add a business address here.
+  addressLines: [],
   city: "Mumbai",
   state: "Maharashtra",
   stateCode: "27",
