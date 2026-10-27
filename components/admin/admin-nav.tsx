@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { Logo } from "@/components/brand/logo";
 import {
   IconCard,
   IconCart,
@@ -126,9 +127,9 @@ export function AdminNav({ staff, who }: { staff: boolean; who: string }) {
 
 function Brand() {
   return (
-    <Link href="/admin" className="block">
-      <span className="block font-[family-name:var(--font-serif)] text-[1.35rem] leading-none tracking-[0.18em]">QUINT</span>
-      <span className="mt-1 block text-[0.52rem] uppercase tracking-[0.42em] text-[color:var(--color-ivory)]/60">Back office</span>
+    <Link href="/admin" className="block" aria-label="Quint Home back office">
+      <Logo className="h-9 w-auto text-[color:var(--color-ivory)]" />
+      <span className="mt-2.5 block text-[0.52rem] uppercase tracking-[0.42em] text-[color:var(--color-ivory)]/55">Back office</span>
     </Link>
   );
 }

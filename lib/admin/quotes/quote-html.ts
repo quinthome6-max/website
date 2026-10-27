@@ -110,9 +110,9 @@ export function quoteHtml(q: Quote, opts: { autoPrint?: boolean; printHint?: boo
 
   .masthead{display:flex;justify-content:space-between;align-items:center;gap:34px;
             background:var(--stardust-soft);border:1px solid var(--rule);padding:18px 24px}
-  .brand{display:flex;flex-direction:column;gap:10px}
-  .logo{height:48px;width:auto;display:block}
-  .doctype{font-family:'Literata',Georgia,serif;font-size:24px;font-weight:400;letter-spacing:-0.01em;
+  .brand{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+  .logo{height:52px;width:auto;display:block}
+  .doctype{align-self:stretch;font-family:'Literata',Georgia,serif;font-size:24px;font-weight:400;letter-spacing:-0.01em;
            margin:0;padding-top:10px;border-top:1px solid var(--rule)}
   .doctype em{font-style:italic;color:var(--aerial-deep);font-size:15px;margin-left:8px}
   .supplier{text-align:right;font-size:10.5px;max-width:330px;line-height:1.6}

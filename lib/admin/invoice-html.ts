@@ -180,12 +180,13 @@ export function invoiceHtml(inv: Invoice, opts: { autoPrint?: boolean } = {}): s
   .masthead{display:flex;justify-content:space-between;align-items:center;gap:34px;
             background:var(--stardust-soft);border:1px solid var(--rule);
             padding:24px 28px}
-  .brand{display:flex;flex-direction:column;gap:14px}
+  /* flex-start: stretched across the column, the SVG would centre itself. */
+  .brand{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
   /* viewBox cropped to the artwork's measured bounds (getBBox), so the mark
      fills its box instead of floating in the source file's 3000x3000 canvas.
      Height is fixed and width follows the 2.9:1 ratio. */
   .logo{height:62px;width:auto;display:block}
-  .doctype{font-family:'Literata',Georgia,serif;font-size:23px;font-weight:400;
+  .doctype{align-self:stretch;font-family:'Literata',Georgia,serif;font-size:23px;font-weight:400;
            letter-spacing:-0.01em;margin:0;color:var(--charcoal);
            padding-top:13px;border-top:1px solid var(--rule)}
   .supplier{text-align:right;font-size:11.5px;max-width:290px;line-height:1.65}
