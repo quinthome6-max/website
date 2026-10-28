@@ -20,6 +20,35 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-28 — No hero video on phones; forced reflows; the № sign
+- **What:** phones no longer get the homepage video.
+  - The first slide on phones is the couple photograph (`hero-lounge-mobile.webp`, q75 via the image optimiser). It sits in the video's slot as a phone-only `<source>` in the same `<picture>`, so the HTML is the same for every screen.
+  - The other phone slides are unchanged and advance every 5 s.
+  - Tablet and desktop keep the video. On phones the `<video>` is hidden, never played and `preload="none"`, so the MP4 is never requested.
+  - The lounge slide is now desktop-only, since phones already open on it.
+- **Also, from the PageSpeed report of 1:36 PM (after the first deploy):**
+  - **Mobile PageSpeed:** 60. FCP 2.9 s, LCP 6.7 s, TBT 350 ms, SI 5.0 s; the 1:08 PM run had FCP 3.2 s, LCP 8.9 s, TBT 130 ms, SI 5.6 s.
+  - **Forced reflow (36 ms, first party):** `FadeUp` read `getBoundingClientRect` on mount (35 components), and the header read `offsetHeight` and the hero's rect, then wrote `--header-h`. Now:
+    - FadeUp takes "on screen at mount" from an IntersectionObserver's first report.
+    - The header measures itself with a ResizeObserver.
+    - "Past the hero" comes from an IntersectionObserver with the header's height cut off the top.
+    - Hide-on-scroll still uses scroll deltas, now only from scroll events.
+  - **№ sign:** the "№" labels pulled in Inter's 19 KB Cyrillic file on the critical chain (PageSpeed's network dependency tree). It is now a 1.3 KB cut of the same glyph (`public/fonts/inter-numero.woff2`), in the same "Inter Extras" face as ₹.
+- **Why:** even after load, the 1.4 MB video was half the phone homepage's weight and kept Lighthouse's Speed Index at about 4.6 s.
+- **Where:** `components/sections/hero.tsx`, `components/motion/fade-up.tsx`, `components/layout/header.tsx`, `app/globals.css`, `public/fonts/inter-numero.woff2`.
+- **Check:**
+  - Production build, phone: no .mp4 requests, the first image is the couple photo, the next slide arrives after 5 s, no console errors. Desktop still plays the video.
+  - Lighthouse 13.5 mobile, local medians of 3: page weight 2,803 → 1,369 KB, Speed Index 4.6 → 1.4 s, FCP 1.4 → 1.1 s; LCP 4.6 → 4.8 s and score 73 → 71, within run-to-run noise.
+  - The couple photo is about 38 KB as the first image, against the 20 KB video frame; the Peace poster would be about 10 KB.
+  - **With the reflow and № fixes too (local medians of 3):** score 73, FCP 1.2 s, LCP 4.6 s, TBT 329 ms, Speed Index 2.1 s, 1,351 KB.
+    - First-party forced reflows are gone. What remains is Embla's slide measurement (about 8 ms) and about 50 ms Lighthouse cannot attribute.
+    - No Google extra font file is requested.
+  - **Header and fade-ups checked on phone and desktop:**
+    - The header is see-through over the hero, solid past it, hides on scroll down and returns on scroll up.
+    - `--header-h` is 76/80 px.
+    - Fade-ups: on screen at load stay visible; off screen they hide and slide in.
+  - **Screenshots:** identical before and after on /about, /range/scented-candles, /range/the-forest, /range/monolith, the desktop homepage and a client-side navigation. Only the phone hero changed.
+
 ## 2026-10-28 — Meta Pixel in the first HTML; lighter first load on phones (page speed, Core Web Vitals)
 - **Found:** the candle campaign (Digi_Sales_Candle_9/OCT) counted a landing page view for only 21% of link clicks. A phone on slow 4G (1.6 Mbps, 150 ms, 4× CPU), measured on the live site:
   - Pages appeared in 1.6–2.0 s.

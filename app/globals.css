@@ -1,18 +1,27 @@
 @import "tailwindcss";
 
-/* The rupee sign, on its own. Google's Inter "latin" file has no ₹, so every
-   price on the page pulled in the 84 KB "latin-ext" file for that one glyph —
-   on a phone on slow 4G, about half a second of downloading in front of the
-   page and the Meta Pixel. This is that same glyph, cut from the same file
-   with every weight kept (public/fonts/inter-rupee.woff2, 1.2 KB, OFL like
-   Inter itself), and it is named first in --font-sans for ₹ alone. */
+/* Two signs, on their own. Google's Inter "latin" file has neither ₹ nor №,
+   so every price pulled in the 84 KB "latin-ext" file for ₹, and every "№ 01"
+   label the 19 KB "cyrillic" file for № — on a phone on slow 4G, about half
+   a second of downloading in front of the page and the Meta Pixel. These are
+   the same glyphs, cut from those same files with every weight kept
+   (public/fonts/inter-rupee.woff2 and inter-numero.woff2, about 1.2 KB each,
+   OFL like Inter itself), named first in --font-sans for those two signs. */
 @font-face {
-  font-family: "Inter Rupee";
+  font-family: "Inter Extras";
   src: url("/fonts/inter-rupee.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
   unicode-range: U+20B9;
+}
+@font-face {
+  font-family: "Inter Extras";
+  src: url("/fonts/inter-numero.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+2116;
 }
 
 /* ============================================================
@@ -47,7 +56,7 @@
 
   /* – Fonts (wired to next/font css vars) ------------------- */
   --font-serif: var(--font-literata), ui-serif, Georgia, serif;
-  --font-sans: "Inter Rupee", var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Extras", var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
   /* – Fluid type scale (clamp: min · preferred · max) -------
      Refined editorial – closer to Aesop / Cereal magazine register.

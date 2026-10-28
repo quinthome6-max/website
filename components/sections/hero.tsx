@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 /**
  * Home Hero – full-bleed carousel.
- * Order: image 1 → video → image 2 (add image 4 to the array when ready).
- * Images auto-advance after 5s; the video plays in full, then advances.
+ * Desktop and tablet open on the video, then the images; phones get images
+ * only. Images auto-advance after 5s; the video plays in full, then advances.
  * Thin arrows switch manually. Header floats over the top (tracks #hero).
  */
 
@@ -27,37 +27,44 @@ type Slide =
     }
   | {
       type: "video";
-      /** Desktop / tablet file. */
+      /** Desktop / tablet file. Phones never load it (see mobileStill). */
       src: string;
-      /** Phone file, cut to the 4:5 crop the phone hero shows, so it is a
-       *  fraction of the size with the same framing. */
-      srcMobile?: string;
       /** First frame as a still, shown at once while the video loads, so the
        *  hero is never blank and the first paint is a small image. */
       poster?: string;
-      posterMobile?: string;
+      /** What phones see in this slot instead of the video: a photograph,
+       *  held for IMAGE_MS like any image slide. It sits in the same slide,
+       *  art-directed in one <picture>, so the HTML is the same for every
+       *  screen and nothing swaps once the page knows it is on a phone. */
+      mobileStill?: { src: string; width: number; height: number; alt: string; position?: string };
       hideHeader?: boolean;
       desktopOnly?: boolean;
     };
 
 const slides: Slide[] = [
-  // Both views open on the diffuser cutaway, then the couple; everything else
-  // follows. The Peace poster is portrait, so it runs on phones only.
-  // 3.6 MB on desktop and 1.4 MB on phones, instead of one 4.7 MB file for
-  // both (audit #5 / plan T5: the mobile homepage's main content took 12.6 s).
+  // Desktop opens on the diffuser cutaway video, then the couple. Phones have
+  // no video (28 Oct 2026: even loaded after the page, its 1.4 MB weighed on
+  // PageSpeed and on visitors' data); they open on the couple instead, in
+  // the video's slot. The Peace poster is portrait, so it runs on phones only.
   {
     type: "video",
     src: "/videos/hero-3-desktop.mp4",
-    srcMobile: "/videos/hero-3-mobile.mp4",
     poster: "/images/hero-3-poster.webp",
-    posterMobile: "/images/hero-3-poster-mobile.webp",
+    mobileStill: {
+      src: "/images/hero-lounge-mobile.webp",
+      width: 1240,
+      height: 1550,
+      alt: "A couple relaxing on a sunlit sofa with a Quint tower diffuser on the table",
+      position: "center 50%",
+    },
   },
   {
     type: "image",
     src: "/images/hero-lounge.webp",
-    srcMobile: "/images/hero-lounge-mobile.webp",
     alt: "A couple relaxing on a sunlit sofa with a Quint tower diffuser on the table",
     position: "center 50%",
+    // Phones already open on this photograph (the video slide's mobileStill).
+    desktopOnly: true,
   },
   {
     type: "image",
@@ -111,6 +118,22 @@ const slides: Slide[] = [
 ];
 
 const IMAGE_MS = 5000;
+
+/** The phone still's srcset, from the image optimiser (AVIF/WebP, q75). */
+function stillSrcSet(still: NonNullable<Extract<Slide, { type: "video" }>["mobileStill"]>) {
+  return getImageProps({
+    src: still.src,
+    alt: still.alt,
+    width: still.width,
+    height: still.height,
+    sizes: "100vw",
+    quality: 75,
+  }).props.srcSet;
+}
+
+/** A slide that is shown as a still and advances on the timer. */
+const isStill = (s: Slide | undefined, isMobile: boolean) =>
+  s?.type === "image" || (isMobile && s?.type === "video" && !!s.mobileStill);
 
 export function Hero() {
   const [index, setIndex] = useState(0);
@@ -180,17 +203,18 @@ export function Hero() {
     };
   }, []);
 
-  const currentIsVideo = activeSlides[index]?.type === "video";
+  const currentIsVideo = activeSlides[index]?.type === "video" && !isMobile;
 
-  // Auto-advance: images on a 5s timer; the video advances itself on `ended`.
+  // Auto-advance: stills on a 5s timer (on phones that includes the video's
+  // slot); the video advances itself on `ended`.
   useEffect(() => {
-    if (activeSlides[index]?.type !== "image") return;
+    if (!isStill(activeSlides[index], isMobile)) return;
     const t = setTimeout(
       () => setIndex((i) => (i + 1) % activeSlides.length),
       IMAGE_MS
     );
     return () => clearTimeout(t);
-  }, [index]);
+  }, [index, isMobile]);
 
   // Only the active video plays, always from the start — once the page has
   // loaded (see videoAllowed).
@@ -199,7 +223,7 @@ export function Hero() {
       if (s.type !== "video") return;
       const v = videoRefs.current[i];
       if (!v) return;
-      if (i === index && videoAllowed) {
+      if (i === index && videoAllowed && !isMobile) {
         try {
           v.currentTime = 0;
         } catch {}
@@ -208,7 +232,7 @@ export function Hero() {
         v.pause();
       }
     });
-  }, [index, videoAllowed]);
+  }, [index, videoAllowed, isMobile]);
 
   // Some slides (e.g. the water video) ask the floating header to step aside.
   useEffect(() => {
@@ -276,33 +300,35 @@ export function Hero() {
             )
           ) : (
             <>
-              {s.poster && (
+              {(s.poster || s.mobileStill) && (
                 <picture>
-                  {s.posterMobile && (
-                    <source media="(max-width: 767px)" srcSet={s.posterMobile} />
+                  {/* Phones: a photograph in the video's place. */}
+                  {s.mobileStill && (
+                    <source media="(max-width: 767px)" srcSet={stillSrcSet(s.mobileStill)} sizes="100vw" />
                   )}
                   {/* A plain <img> in a <picture>: next/image can't art-direct a phone crop. */}
                   <img
-                    src={s.poster}
+                    src={s.poster ?? s.mobileStill?.src}
                     alt=""
                     fetchPriority={i === 0 ? "high" : "auto"}
                     decoding="async"
                     className="absolute inset-0 h-full w-[100%] object-cover"
+                    style={isMobile && s.mobileStill?.position ? { objectPosition: s.mobileStill.position } : undefined}
                   />
                 </picture>
               )}
+              {/* Tablet and desktop only. On phones it is never shown, never
+                  played and, with preload none, never downloaded. */}
               <video
                 ref={(el) => {
                   videoRefs.current[i] = el;
                 }}
                 muted={!soundOn}
                 playsInline
-                preload={videoAllowed ? (i === 0 ? "auto" : "metadata") : "none"}
+                preload={videoAllowed && !isMobile ? (i === 0 ? "auto" : "metadata") : "none"}
                 onEnded={() => setIndex((p) => (p + 1) % activeSlides.length)}
-                className="absolute inset-0 h-full w-[100%] object-cover"
+                className={`absolute inset-0 h-full w-[100%] object-cover ${s.mobileStill ? "hidden md:block" : ""}`}
               >
-                {/* The first source whose media matches is the one played. */}
-                {s.srcMobile && <source media="(max-width: 767px)" src={s.srcMobile} type="video/mp4" />}
                 <source src={s.src} type="video/mp4" />
               </video>
             </>

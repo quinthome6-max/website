@@ -34,39 +34,40 @@ export function FadeUp({
       setHydrated(true);
       return;
     }
-
-    // If the element is already in the viewport at mount, skip the entrance –
-    // avoids a flash of opacity-0 for above-the-fold content.
-    const rect = el.getBoundingClientRect();
-    const inViewAtMount =
-      rect.top < window.innerHeight && rect.bottom > 0;
-
-    if (inViewAtMount) {
+    if (typeof IntersectionObserver === "undefined") {
       setHydrated(true);
       return;
     }
 
-    // Off-screen: hide and wait for IO to reveal as user scrolls in.
-    setHydrated(true);
-    setVisible(false);
-
-    if (typeof IntersectionObserver === "undefined") {
-      const t = window.setTimeout(() => setVisible(true), 100);
-      return () => window.clearTimeout(t);
-    }
-
-    const io = new IntersectionObserver(
+    // Reveal as it scrolls into view.
+    const reveal = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setVisible(true);
-          io.disconnect();
+          reveal.disconnect();
         }
       },
       { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
     );
-    io.observe(el);
 
-    return () => io.disconnect();
+    // Was it on screen at mount? The observer's first report answers that
+    // after layout. Reading getBoundingClientRect here instead forced a
+    // reflow for every FadeUp on the page (PageSpeed, 28 Oct 2026). On
+    // screen: no entrance, so above-the-fold content never flashes out.
+    // Off screen: hide it, and let `reveal` bring it in.
+    const initial = new IntersectionObserver(([entry]) => {
+      initial.disconnect();
+      setHydrated(true);
+      if (entry.isIntersecting) return;
+      setVisible(false);
+      reveal.observe(el);
+    });
+    initial.observe(el);
+
+    return () => {
+      initial.disconnect();
+      reveal.disconnect();
+    };
   }, []);
 
   const Tag = as as keyof React.JSX.IntrinsicElements;

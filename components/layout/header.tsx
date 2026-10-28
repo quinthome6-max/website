@@ -50,24 +50,50 @@ export function Header() {
   // solid, so neither scroll position nor hover forces the panel any more.
   const transparent = overlay && !pastHero && !mobileOpen;
 
+  // The header's height, published as --header-h so the banner can sit
+  // exactly behind it. A ResizeObserver reports it after layout; reading
+  // offsetHeight on mount (and writing the variable straight after) forced a
+  // reflow (PageSpeed, 28 Oct 2026).
+  const [headerH, setHeaderH] = useState(80);
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(([entry]) => {
+      const h = Math.round(entry.borderBoxSize?.[0]?.blockSize ?? entry.contentRect.height);
+      if (!h) return;
+      document.documentElement.style.setProperty("--header-h", `${h}px`);
+      setHeaderH(h);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // Homepage: has the hero scrolled up behind the header yet? The observer
+  // cuts the header's height off the top of the viewport, so the hero stops
+  // "intersecting" exactly when its bottom edge passes under the header —
+  // without reading layout on every scroll.
+  useEffect(() => {
+    if (!overlay) return;
+    const hero = document.getElementById("hero");
+    if (!hero || typeof IntersectionObserver === "undefined") {
+      const onScroll = () => setPastHero(window.scrollY > window.innerHeight * 0.9);
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      return () => window.removeEventListener("scroll", onScroll);
+    }
+    const io = new IntersectionObserver(([entry]) => setPastHero(!entry.isIntersecting), {
+      rootMargin: `-${headerH}px 0px 0px 0px`,
+    });
+    io.observe(hero);
+    return () => io.disconnect();
+  }, [overlay, headerH]);
+
+  // The header is never pinned: it leaves on scroll-down and slides back on
+  // scroll-up. We accumulate small deltas (and reset on direction change) so
+  // smooth-scroll's tiny per-frame steps still trigger a reliable reveal.
   useEffect(() => {
     function onScroll() {
       const y = window.scrollY;
-
-      // Has the hero scrolled up behind the header yet? (homepage only)
-      let past = !overlay;
-      if (overlay) {
-        const hero = document.getElementById("hero");
-        const headerH = headerRef.current?.offsetHeight ?? 80;
-        past = hero
-          ? hero.getBoundingClientRect().bottom <= headerH
-          : y > window.innerHeight * 0.9;
-      }
-      setPastHero(past);
-
-      // The header is never pinned: it leaves on scroll-down and slides back on
-      // scroll-up. We accumulate small deltas (and reset on direction change) so
-      // smooth-scroll's tiny per-frame steps still trigger a reliable reveal.
       const delta = y - lastY.current;
       lastY.current = y;
 
@@ -88,24 +114,8 @@ export function Header() {
         }
       }
     }
-    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, [overlay]);
-
-  // Publish the real header height so the banner can sit exactly behind it.
-  useEffect(() => {
-    function measure() {
-      const h = headerRef.current?.offsetHeight;
-      if (h) document.documentElement.style.setProperty("--header-h", `${h}px`);
-    }
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
