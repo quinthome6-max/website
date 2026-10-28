@@ -47,6 +47,12 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
   - **Reduce unused JavaScript:** mostly gtag.js, fbevents.js and the pixel config.
   - **Avoid enormous network payloads:** the hero video (1.4 MB phone, 3.6 MB desktop; already 0.6 and 1.5 Mbps). It now loads after the page.
   - **Forced reflow and DOM size:** pass.
+- **Live after deploy (66eb80b, live about 45 s after the push), same tests:**
+  - **Slow 4G:** the page appears at about 1.1 s (was 1.6–2.0 s). Meta PageView at 5.5 s on home (was 9.6 s), 5.2 s on /range/scented-candles (was 6.2 s) and 5.8 s on /range/the-forest (was 6.8 s).
+  - **Typical 4G:** PageView at 1.2–1.4 s (was 1.4–2.4 s).
+  - **Events:** PageView + ViewContent on a product landing, PageView per client-side page change, nothing on /admin.
+  - **Lighthouse 13.5 mobile, 3 runs:** before 67/73/71, after 73/64/60, a swing of 60–73 for one page on one machine. Medians: FCP 1.7 → 1.2 s and LCP 4.2 → 3.8 s; TBT and Speed Index within noise. Speed Index may be slightly worse because the hero video now starts after load.
+  - **Found, not caused by this change:** GA4 `view_item` is missing when a visitor lands directly on a product page; it is only sent after a client-side page change.
 - **Lighthouse on localhost vs live:** mobile medians of 3 runs, live 71 against 73 locally, with blocking time 432 → 307 ms and first paint 1.7 → 1.4 s. Localhost is HTTP/1.1 with no CDN, which inflates Lantern's simulated LCP (4.6 vs 4.2 s live), so re-run PageSpeed on the live site after deploy. Removing the fbevents preload made no Lighthouse difference but delayed the PageView by up to 0.5 s, so it stays.
 
 ## 2026-10-24 — H1s with search phrases, favicon fix, shop and site-name markup (plan §07, T19)
