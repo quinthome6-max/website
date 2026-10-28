@@ -20,6 +20,28 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-29 — Search Console export, 30 Sep–26 Oct (web)
+- **Found:**
+  - **Totals:** 41 clicks, 276 impressions, CTR 14.9%. Impressions by week: 58 → 64 → 79 → 75 (the last week has 6 days); clicks 11 → 3 → 15 → 12. Peak day 26 Oct: 23 impressions, 4 clicks.
+  - **Brand-led:**
+    - "quint home": 15 clicks, 31 impressions, position 1.19, CTR 48%.
+    - Homepage: 27 of 41 clicks, position 2.7.
+    - /contact, /about, /range, /shipping and /terms sit at positions 2.5–4 with few clicks, which reads as sitelinks under brand searches.
+  - **Product snippets:** 101 impressions, 7 clicks, position 10.6 (product markup is working).
+  - **Mobile vs desktop:** mobile position 4.9, CTR 16%; desktop 9.4, CTR 12.5%. India has 196 of 276 impressions and all clicks but one.
+  - **Non-brand barely visible:** "pillar diffuser" 19, "first rain perfume" 54, "first rain" 27, "scenting services" 85. Listed queries cover only 51 of 276 impressions; the rest are hidden by Google.
+  - **Impressions but no clicks:** /range/monolith (35, position 4.6), /businesses (27), /journal (23), /range/pillar (23), /journal/diwali-gifting-guide (18, position 10.3), /range/first-rain (21, position 30.7).
+  - **Not in the data yet:** the 3 category pages (live 24 Oct) and 5 of 6 journal articles.
+  - **Old URLs:** /shop/ember, /shop/the-arrival and /shop/shoreline still show; all 301 to /range/ (checked live).
+- **Why:** the user shared the export after asking how to keep impressions rising.
+- **Where:** Search Console export supplied by the user (Chart, Queries, Pages, Countries, Devices, Search appearance).
+- **Check / next:**
+  - Request indexing for the 3 category pages and 5 articles.
+  - Lift the Diwali guide from position about 10 before Diwali.
+  - Make the Monolith and Pillar snippets more compelling.
+  - Add petrichor / "smell of first rain" wording to First Rain.
+  - Connect the Search Console API for weekly tracking.
+
 ## 2026-10-29 — Data connections and search health check (impressions at their highest)
 - **Found, per source:**
   - **Search Console API:** not connected. `~/.config/quinthome/seo.json` names `sc-domain:quinthome.in`, but `google-service-account.json` was never added, so the impressions graph is visible only in the Search Console UI.
