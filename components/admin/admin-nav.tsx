@@ -8,6 +8,7 @@ import { Logo } from "@/components/brand/logo";
 import {
   IconCard,
   IconCart,
+  IconMail,
   IconDashboard,
   IconGift,
   IconLogout,
@@ -31,6 +32,7 @@ const ITEMS: Item[] = [
   { href: "/admin/orders", label: "Orders & GST", icon: <IconReceipt />, also: ["/admin/invoice"], staffOnly: true },
   { href: "/admin/quotes", label: "Quotations", icon: <IconQuote />, staffOnly: true },
   { href: "/admin/abandoned", label: "Abandoned checkouts", icon: <IconCart />, staffOnly: false },
+  { href: "/admin/subscribers", label: "Subscribers", icon: <IconMail />, staffOnly: false },
   { href: "/admin/payments", label: "Payments", icon: <IconCard />, staffOnly: true },
   { href: "/admin/reviews", label: "Reviews", icon: <IconStar />, staffOnly: true },
   { href: "/admin/gift-stock", label: "Gift stock", icon: <IconGift />, staffOnly: true },

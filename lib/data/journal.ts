@@ -103,8 +103,9 @@ export const journal: JournalPost[] = [
   {
     slug: "diwali-gifting-guide",
     title: "What to gift this Diwali: a guide to premium, corporate and housewarming gifts",
-    seoTitle: "Premium Diwali, Corporate & Housewarming Gifts",
+    seoTitle: "Diwali Gift Ideas 2026: Premium & Corporate Gifts",
     seoDescription: "Premium Diwali, corporate and housewarming gifts that stay in use, from ₹1,699 soy candles to waterless diffusers, and when to order for Diwali on 8 Nov.",
+    updatedAt: "2026-10-29",
     eyebrow: "Gifting",
     excerpt: "Most festive gifts are put away before the diyas have cooled. How to choose a premium Diwali, corporate or housewarming gift that stays in use, from a ₹1,699 soy candle to a waterless diffuser, and when to order for Diwali on 8 November.",
     body: [
@@ -137,7 +138,7 @@ export const journal: JournalPost[] = [
       "When you are unsure of someone's taste, lean lighter. Clean, fresh blends such as Blanc Ritual and First Rain sit comfortably in almost any home; the deeper, warmer ones are best given when you know the recipient well. With candles, The Forest is an easier choice than the smoky Study. If you would like a second opinion, our [scent finder](/find-your-scent) narrows the range down in two questions.",
       "## When should you order for Diwali 2026?",
       "Diwali falls on Sunday 8 November this year, and Dhanteras on Friday 6 November. Orders are dispatched from Mumbai within 3 business days and usually take 3 to 5 business days to arrive, anywhere in India. Together that is up to eight business days, or about a week and a half on the calendar.",
-      "An order placed by Tuesday 27 October leaves the full eight business days before Dhanteras, so aim for that, and earlier if you can. These timelines are estimates and vary with the destination, so we can't promise a delivery date. You will get tracking details by email once the order ships.",
+      "So order as early as you can: with up to eight business days door to door, an order placed in the last week before Diwali may arrive after it. These timelines are estimates and vary with the destination, so we can't promise a delivery date. You will get tracking details by email once the order ships.",
       "Shipping is complimentary on orders of ₹5,000 and above, and a flat ₹99 applies below that. We currently ship within India only.",
       "A gift for the home is shared by everyone who lives in it. This season, give one that is still there, and still in use, long after the lights come down.",
       "## Questions",
@@ -152,7 +153,6 @@ export const journal: JournalPost[] = [
     ],
     cover: "/images/indoor/indoor-01.webp",
     publishedAt: "2026-09-21",
-    updatedAt: "2026-10-24",
     readMinutes: 6,
     keywords: ["Diwali gifting", "Diwali gift ideas", "premium gifting", "corporate gifting", "corporate Diwali gifts", "housewarming gift", "griha pravesh gift", "home fragrance gift", "waterless diffuser", "soy candle gift"],
   },

@@ -152,6 +152,9 @@ const diffusersByDefinition: Diffuser[] = [
     category: "diffuser",
     tier: "premium",
     tagline: "Elevate Every Room. Effortlessly.",
+    seoTitle: "The Monolith Cordless Waterless Diffuser",
+    seoDescription:
+      "Cordless waterless diffuser in brushed gold or matte black aluminium, for rooms up to 1,075 sq ft. App schedules and a free 50 ml oil. {price}.",
     description:
       "The Monolith in brushed gold is where function meets design. Standing tall in premium aluminum, this column diffuser brings a refined, hotel-like quality to any space. Its large 120 ml bottle keeps fragrance flowing for hours, and the built-in 2200 mAh rechargeable battery means it goes wherever you do – no outlet required.\n\nConnect via Bluetooth to control diffusion intensity and scheduling directly from your phone. Set a schedule and let the Monolith run your ambience on autopilot. A leak-proof design ensures spill-free placement, always.",
     priceINR: 18999,
@@ -301,6 +304,9 @@ const diffusersByDefinition: Diffuser[] = [
     category: "diffuser",
     tier: "premium",
     tagline: "Two Scents. One Space. Infinite Combinations.",
+    seoTitle: "The Pillar Dual-Scent Waterless Diffuser",
+    seoDescription:
+      "Runs two fragrance oils at once, or one at a time, from twin 60 ml bottles. Near-silent and app controlled, for rooms up to 540 sq ft. {price}.",
     description:
       "The Pillar does something no ordinary diffuser can: run two completely independent essential oil blends at once. Each of its dual 60 ml bottles operates separately, so you can diffuse two scents individually or layer them for a custom blend. Near-silent operation at ≤35 dB makes it whisper-quiet enough for a study, bedroom, or yoga session.\n\nBluetooth connectivity gives you full control from your phone – adjust each mist outlet independently without leaving your seat. Built from premium aluminum alloy and powered via USB.",
     priceINR: 11999,

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { NewsletterForm } from "@/components/layout/newsletter-form";
 import { Monogram } from "@/components/brand/logo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -439,6 +440,32 @@ export default async function JournalPostPage({
       {/* ====================================================
           § CONTINUE READING
           ==================================================== */}
+      {/* The journal, by email. Each signup records which piece it came from. */}
+      <section className="border-t border-[color:var(--color-rule)] bg-[color:var(--color-stardust-soft)] py-16 md:py-20">
+        <div className="mx-auto grid max-w-[var(--container-page)] gap-8 px-6 md:grid-cols-[1fr_1fr] md:items-end md:gap-16 md:px-10">
+          <div>
+            <p className="font-eyebrow">The Journal, by email</p>
+            <h2
+              className="mt-4 max-w-[22ch] text-balance"
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontSize: "var(--text-2xl)",
+                lineHeight: 1.12,
+                letterSpacing: "-0.012em",
+                fontWeight: 400,
+              }}
+            >
+              The next piece, in your inbox.
+            </h2>
+          </div>
+          <NewsletterForm
+            source={`journal:${post.slug}`}
+            className="max-w-md"
+            note="New writing on scent and the home, and first word of new fragrances. Occasional, never daily."
+          />
+        </div>
+      </section>
+
       <section className="border-t border-[color:var(--color-rule)] py-[var(--spacing-section)]">
         <div className="mx-auto max-w-[var(--container-page)] px-6 md:px-10">
           <FadeUp>

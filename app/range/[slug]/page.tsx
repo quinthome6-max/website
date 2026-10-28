@@ -108,6 +108,12 @@ export async function generateMetadata({
       : `Waterless car and bathroom diffuser in machined aluminium. Runs on pure fragrance oil, no water, and starts and stops with the car. ${price}.`;
   }
 
+  // A product can carry its own search title and description where the
+  // template undersells it (Search Console, 29 Oct 2026: the Monolith sat at
+  // position 4.6 for 35 impressions and drew no clicks).
+  if (product.seoTitle) title = product.seoTitle;
+  if (product.seoDescription) description = product.seoDescription.replace("{price}", price);
+
   const ogTitle = `${product.name} — Quint Home ${kind}`;
   return {
     title,

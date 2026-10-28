@@ -68,8 +68,11 @@ export const oils: FragranceOil[] = [
     category: "oil",
     tier: "standard",
     tagline: "Dewy, alive and luminous – the air just after a downpour.",
+    seoTitle: "First Rain Fragrance Oil: the Smell After Rain",
+    seoDescription:
+      "The fresh, dewy air just after the first rain: pear, grapefruit and violet leaf over lotus and jasmine. 50 ml oil for waterless diffusers. {price}.",
     description:
-      "Pear, grapefruit and violet leaf over lotus, jasmine and lily of the valley, on amber and benzoin. The air the moment the rain stops.",
+      "Pear, grapefruit and violet leaf over lotus, jasmine and lily of the valley, on amber and benzoin. The air the moment the first rain stops.",
     priceINR: 899,
     volumeML: 50,
     notes: {

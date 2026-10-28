@@ -20,6 +20,39 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-29 — Diwali push, better snippets for Monolith, Pillar and First Rain, email signups
+- **What:**
+  - **Snippets:** products can now carry their own search title and description (`seoTitle` / `seoDescription`, with "{price}" filled live).
+    - Monolith: "The Monolith Cordless Waterless Diffuser" (cordless, gold or black, 1,075 sq ft, free oil).
+    - Pillar: "The Pillar Dual-Scent Waterless Diffuser" (two oils at once, 540 sq ft).
+    - First Rain: "First Rain Fragrance Oil: the Smell After Rain"; its page copy now says "first rain". Not "petrichor": the oil is fresh and floral, not earthy.
+  - **Diwali guide:**
+    - Search title "Diwali Gift Ideas 2026: Premium & Corporate Gifts", updatedAt 29 Oct.
+    - The stale "order by Tuesday 27 October" line is replaced by advice that stays true: up to eight business days door to door, no promised date.
+  - **Internal links to the guide:** a Diwali band under the homepage hero, and a link in the site-wide announcement bar. Both switch off after 9 Nov (`lib/seasonal.ts`).
+  - **Email signups:** in the Diwali band, at the end of every journal piece, and in the footer as before.
+    - Each signup now goes to the site's own list (Redis `qh:nl:subs`, with its source) as well as to Shopify as a customer accepting marketing.
+    - The list is at /admin/subscribers: totals, source, unsubscribe and delete, and a CSV of subscribed addresses for Shopify Email. Open to staff and the marketing sign-in.
+- **Why:**
+  - From the Search Console export of 29 Oct: Monolith at position 4.6 with 35 impressions and no clicks; the Diwali guide at about 10.
+  - The user asked to let visitors subscribe so they can be emailed.
+- **Where:**
+  - `lib/types.ts`, `app/range/[slug]/page.tsx`, `lib/data/{diffusers,oils,journal}.ts`
+  - `lib/seasonal.ts`, `components/sections/diwali-band.tsx`, `components/layout/announcement-bar.tsx`, `components/home/home-sections.tsx`
+  - `app/journal/[slug]/page.tsx`
+  - `lib/newsletter/store.ts`, `app/actions/newsletter.ts`, `components/layout/newsletter-form.tsx`
+  - `app/admin/(protected)/subscribers/page.tsx`, `app/api/admin/subscribers/route.ts`, the admin nav and dashboard
+- **Check:**
+  - **Local dev, file store:**
+    - Signups from the Diwali band, a journal piece and the footer recorded their sources; a repeat says "already on the list"; a bad address is refused.
+    - New titles and descriptions render with live prices.
+  - **Admin:**
+    - The dashboard tile and list work; unsubscribe and delete work; the CSV holds subscribed addresses only.
+    - The marketing sign-in reaches Subscribers but not staff pages.
+    - Signed-out export and actions return 401.
+  - Production build passes.
+  - **Watch:** Search Console CTR on /range/monolith, /range/pillar and the Diwali guide over 2–3 weeks.
+
 ## 2026-10-29 — Search Console export, 30 Sep–26 Oct (web)
 - **Found:**
   - **Totals:** 41 clicks, 276 impressions, CTR 14.9%. Impressions by week: 58 → 64 → 79 → 75 (the last week has 6 days); clicks 11 → 3 → 15 → 12. Peak day 26 Oct: 23 impressions, 4 clicks.

@@ -18,6 +18,11 @@ export interface FragranceOil {
   tier: "standard" | "hotel-credential";
   tagline: string;
   description: string;
+  /** Search-result title, replacing the template in app/range/[slug] when
+   *  that undersells the product. Kept short: " · Quint Home" is appended. */
+  seoTitle?: string;
+  /** Search-result description; "{price}" becomes the live price. */
+  seoDescription?: string;
   priceINR: number;
   volumeML: number;
   notes: ScentNotes;
@@ -53,6 +58,11 @@ export interface Diffuser {
   tier: "entry" | "premium";
   tagline: string;
   description: string;
+  /** Search-result title, replacing the template in app/range/[slug] when
+   *  that undersells the product. Kept short: " · Quint Home" is appended. */
+  seoTitle?: string;
+  /** Search-result description; "{price}" becomes the live price. */
+  seoDescription?: string;
   priceINR: number;
   /**
    * Undiscounted list price, shown struck through beside priceINR. Only set

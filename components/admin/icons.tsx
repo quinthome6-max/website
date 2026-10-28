@@ -52,6 +52,9 @@ export const IconLogout = (p: P) => (
 export const IconPlus = (p: P) => (
   <Icon {...p}><path d="M12 5v14M5 12h14" /></Icon>
 );
+export const IconMail = (p: P) => (
+  <Icon {...p}><rect x="3.5" y="5.5" width="17" height="13" rx="1.5" /><path d="m4 7 8 6 8-6" /></Icon>
+);
 export const IconDownload = (p: P) => (
   <Icon {...p}><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14" /></Icon>
 );

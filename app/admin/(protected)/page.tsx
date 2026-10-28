@@ -8,11 +8,13 @@ import { calcQuote, formatINR } from "@/lib/admin/quotes/calc";
 import { QUOTE_STATUSES } from "@/lib/admin/quotes/types";
 import { listCheckouts } from "@/lib/abandoned/store";
 import { reviewsForAdmin } from "@/lib/reviews/store";
+import { joinedThisWeek, listSubscribers, newsletterAvailable } from "@/lib/newsletter/store";
 import { Box, btn, Figure, PageHeader, StatusBadge, Tile } from "@/components/admin/ui";
 import {
   IconCard,
   IconCart,
   IconGift,
+  IconMail,
   IconPlus,
   IconQuote,
   IconReceipt,
@@ -69,6 +71,9 @@ export default async function Dashboard() {
         </Tile>
         <Tile href="/admin/reviews" icon={<IconStar />} title="Reviews" blurb="Approve customer reviews before they go live." cta="Moderate">
           <Suspense fallback={<Loading n={2} />}><ReviewFigures /></Suspense>
+        </Tile>
+        <Tile href="/admin/subscribers" icon={<IconMail />} title="Subscribers" blurb="Who signed up for emails, and where. Export for Shopify Email." cta="Open subscribers">
+          <Suspense fallback={<Loading n={2} />}><SubscriberFigures /></Suspense>
         </Tile>
         <Tile href="/admin/payments" icon={<IconCard />} title="Payments" blurb="Look up a PayU payment and recover an order for it." cta="Open payments" />
         <Tile href="/admin/gift-stock" icon={<IconGift />} title="Gift stock" blurb="Stock of the complimentary 50 ml oils sent with diffusers." cta="Open gift stock" />
@@ -162,6 +167,19 @@ async function ReviewFigures() {
     <>
       <Figure label="Waiting" value={reviews.pending.length} tone={reviews.pending.length ? "warn" : undefined} />
       <Figure label="Live" value={reviews.approved.length} />
+    </>
+  );
+}
+
+async function SubscriberFigures() {
+  if (!newsletterAvailable) return <Unavailable what="subscribers (Redis is not connected)" />;
+  const subs = await attempt(listSubscribers);
+  if (!subs) return <Unavailable what="subscribers" />;
+  const active = subs.filter((s) => s.status === "subscribed");
+  return (
+    <>
+      <Figure label="Subscribed" value={active.length} />
+      <Figure label="This week" value={joinedThisWeek(subs)} />
     </>
   );
 }

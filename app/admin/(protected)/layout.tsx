@@ -21,8 +21,9 @@ export default async function AdminLayout({
 }) {
   const viewer = await currentViewer();
   if (!viewer) redirect("/admin/login");
-  // The marketing passphrase opens abandoned checkouts only. Its menu shows
-  // nothing else, and each staff page also checks for itself (requireStaff).
+  // The marketing passphrase opens abandoned checkouts and subscribers only.
+  // Its menu shows nothing else, and each staff page also checks for itself
+  // (requireStaff).
   const staff = viewer.role === "staff";
   const who =
     viewer.principal === PASSWORD_PRINCIPAL ? "Signed in with passphrase" : staff ? viewer.principal : "Marketing";
