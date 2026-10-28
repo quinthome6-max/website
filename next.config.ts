@@ -12,6 +12,14 @@ const SLUG_REDIRECTS: Record<string, string> = {
 };
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // Build from scratch on every deploy. Turbopack's build cache (on by
+    // default since 16.3, restored by Vercel from .next/cache) served a stale
+    // stylesheet on 28 Oct 2026: commit c1ecf82 changed app/globals.css, but
+    // the deployed CSS was the previous version's, while the JS and HTML were
+    // new. A slower build is cheaper than a stylesheet that silently lags.
+    turbopackFileSystemCacheForBuild: false,
+  },
   // Not experimental.inlineCss, though PageSpeed lists the stylesheet as
   // render-blocking: tried on 28 Oct 2026, it put the CSS in the HTML three
   // times (the <style> plus twice in the RSC payload), took the homepage from
