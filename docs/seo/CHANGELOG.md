@@ -20,6 +20,24 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-29 — Data connections and search health check (impressions at their highest)
+- **Found, per source:**
+  - **Search Console API:** not connected. `~/.config/quinthome/seo.json` names `sc-domain:quinthome.in`, but `google-service-account.json` was never added, so the impressions graph is visible only in the Search Console UI.
+  - **GA4 Data API:** not connected (no property ID, no key).
+  - **Semrush:** `no_api_units` on the corporate sub-account.
+  - **Gmail (campaign@ inbox):** no Search Console mail for quinthome.in in 60 days, so the property belongs to another Google account.
+  - **Clarity Data Export:** working. Last 3 days: 233 sessions; Google organic 18 (about 6 a day, against about 2.6 a day over the 30 days to 17 Oct); ChatGPT 24 (about 8 a day, against about 1.5); Facebook 118. Search and AI landings are on `/` only, which points to brand queries; no category, product or journal page landings showed.
+  - **Bing:** `site:quinthome.in` shows no results; the site is still not in Bing's index.
+- **Site health:** all 37 sitemap URLs return 200 with self canonicals, one H1, sensible title and description lengths and no noindex. Structured data: Product on 17 pages, AggregateRating on 2, FAQPage on 8, BreadcrumbList on 27. robots.txt, sitemap, llms.txt, the product feed and the IndexNow key all respond.
+- **Why:** the user reported Search Console impressions at their highest and asked what is working and how to keep it rising.
+- **Where:** `marketing/seo/tools/seo_data.py check`, `marketing/analytics/clarity.py` (Channel/Source and URL/Channel, 3 days), a live crawl of the sitemap.
+- **Check / next:**
+  - Connect Search Console (service account or a user on the property) to see queries and pages.
+  - Verify Bing Webmaster (import from Search Console) and submit the sitemap.
+  - Gather reviews: only 2 of 17 products have rating markup.
+  - Merchant Center free listings with /feeds/products.xml.
+  - Semrush units.
+
 ## 2026-10-28 — No hero video on phones; forced reflows; the № sign
 - **What:** phones no longer get the homepage video.
   - The first slide on phones is the couple photograph (`hero-lounge-mobile.webp`, q75 via the image optimiser). It sits in the video's slot as a phone-only `<source>` in the same `<picture>`, so the HTML is the same for every screen.
