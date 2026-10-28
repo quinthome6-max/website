@@ -52,9 +52,10 @@ function fbq(): Fbq | null {
 }
 
 /**
- * The pixel script is afterInteractive, so a page's own mount effect can run
- * before `fbq` exists and the event would vanish. Anything sent too early is
- * held here and replayed as soon as the script arrives.
+ * The base code is in the server HTML, so `fbq` normally exists before any
+ * component mounts; on the back office it never does, and an ad-blocker can
+ * remove it. Anything sent while it is missing is held here and replayed if
+ * the script arrives.
  */
 const waiting: unknown[][] = [];
 let draining = false;

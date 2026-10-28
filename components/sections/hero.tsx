@@ -159,6 +159,27 @@ export function Hero() {
     });
   };
 
+  // The video waits for the page. Its still frame is the first paint either
+  // way; fetched at once, the 1.4 MB phone file shared a slow 4G link with
+  // the page's own scripts and the Meta Pixel, and held both back. It starts
+  // half a second after the load event, or after 4 s if that never comes.
+  const [videoAllowed, setVideoAllowed] = useState(false);
+  useEffect(() => {
+    let t: ReturnType<typeof setTimeout> | undefined;
+    const allow = () => {
+      if (t) clearTimeout(t);
+      t = setTimeout(() => setVideoAllowed(true), 500);
+    };
+    const fallback = setTimeout(() => setVideoAllowed(true), 4000);
+    if (document.readyState === "complete") allow();
+    else window.addEventListener("load", allow, { once: true });
+    return () => {
+      window.removeEventListener("load", allow);
+      if (t) clearTimeout(t);
+      clearTimeout(fallback);
+    };
+  }, []);
+
   const currentIsVideo = activeSlides[index]?.type === "video";
 
   // Auto-advance: images on a 5s timer; the video advances itself on `ended`.
@@ -171,13 +192,14 @@ export function Hero() {
     return () => clearTimeout(t);
   }, [index]);
 
-  // Only the active video plays, always from the start.
+  // Only the active video plays, always from the start — once the page has
+  // loaded (see videoAllowed).
   useEffect(() => {
     activeSlides.forEach((s, i) => {
       if (s.type !== "video") return;
       const v = videoRefs.current[i];
       if (!v) return;
-      if (i === index) {
+      if (i === index && videoAllowed) {
         try {
           v.currentTime = 0;
         } catch {}
@@ -186,7 +208,7 @@ export function Hero() {
         v.pause();
       }
     });
-  }, [index]);
+  }, [index, videoAllowed]);
 
   // Some slides (e.g. the water video) ask the floating header to step aside.
   useEffect(() => {
@@ -210,7 +232,11 @@ export function Hero() {
           }`}
           style={{ opacity: i === index ? 1 : 0 }}
         >
-          {s.type === "image" ? (
+          {/* The slides after the first are hidden behind it until their turn,
+              so their images wait for the page to load too (they were about
+              250 KB fetched in the first seconds on a phone). One the visitor
+              skips to is drawn at once. */}
+          {s.type === "image" && i !== 0 && i !== index && !videoAllowed ? null : s.type === "image" ? (
             s.srcMobile ? (
               <>
                 {/* Desktop / tablet – landscape crop */}
@@ -271,7 +297,7 @@ export function Hero() {
                 }}
                 muted={!soundOn}
                 playsInline
-                preload={i === 0 ? "auto" : "metadata"}
+                preload={videoAllowed ? (i === 0 ? "auto" : "metadata") : "none"}
                 onEnded={() => setIndex((p) => (p + 1) % activeSlides.length)}
                 className="absolute inset-0 h-full w-[100%] object-cover"
               >

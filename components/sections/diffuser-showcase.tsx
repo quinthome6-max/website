@@ -61,7 +61,9 @@ export async function DiffuserShowcase() {
                     src={d.image}
                     alt={d.name}
                     fill
-                    sizes="(min-width: 768px) 30vw, 100vw"
+                    // Matches the card widths: a third from lg, 46% from sm,
+                    // 84% of the padded row on phones.
+                    sizes="(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 80vw"
                     className="object-cover transition-transform duration-[1600ms] ease-[var(--ease-quint)] group-hover:scale-[1.04]"
                   />
                   <div className="absolute inset-x-0 top-0 flex items-start justify-between p-5 text-[0.6rem] uppercase tracking-[0.32em] text-[color:var(--color-stardust)] md:p-6">

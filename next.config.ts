@@ -12,6 +12,11 @@ const SLUG_REDIRECTS: Record<string, string> = {
 };
 
 const nextConfig: NextConfig = {
+  // Not experimental.inlineCss, though PageSpeed lists the stylesheet as
+  // render-blocking: tried on 28 Oct 2026, it put the CSS in the HTML three
+  // times (the <style> plus twice in the RSC payload), took the homepage from
+  // 32 to 80 KB compressed, and lowered the Lighthouse mobile score from 76 to
+  // 66 (TBT 280 → 500 ms, LCP 4.4 → 4.6 s).
   images: {
     // Allow a crisper quality for hero/editorial imagery (Next 16 requires
     // whitelisting any quality value used via the `quality` prop).
@@ -65,7 +70,7 @@ const nextConfig: NextConfig = {
       // (max-age=0). 30 days, then a week of serving the old copy while it
       // refreshes. Same rule as above: a changed file needs a new name.
       {
-        source: "/:dir(images|videos)/:path*",
+        source: "/:dir(images|videos|fonts)/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=604800" }],
       },
     ];

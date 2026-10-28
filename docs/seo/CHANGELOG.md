@@ -20,6 +20,35 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-28 — Meta Pixel in the first HTML; lighter first load on phones (page speed, Core Web Vitals)
+- **Found:** the candle campaign (Digi_Sales_Candle_9/OCT) counted a landing page view for only 21% of link clicks. A phone on slow 4G (1.6 Mbps, 150 ms, 4× CPU), measured on the live site:
+  - Pages appeared in 1.6–2.0 s.
+  - Meta's PageView left only at 9.6 s (home), 6.2 s (/range/scented-candles) and 6.8 s (/range/the-forest), so anyone who left sooner was a click with no landing page view.
+  - Cause: the pixel was added only after the app had loaded and hydrated (afterInteractive, then also gated by StorefrontOnly from 25 Oct).
+  - Lighthouse mobile: home 42 (LCP 10.1 s), candles 83.
+  - A third-party report flagged DOM size, INP and mobile-friendliness. DOM size is fine (713 nodes on home). The viewport tag is present, and the page is served normally to every bot UA tried, so those two flags were the tool failing to load the page. Taps after load measured 56–88 ms at 4× CPU, inside the 200 ms INP threshold.
+- **What:**
+  - **Meta Pixel:** its base code is a plain `<script>` in `<head>`, with a preload of fbevents.js and preconnects to both Meta hosts. It skips /admin and pdf.* itself. Route-change PageViews are unchanged.
+  - **GA4:** gtag.js is fetched once the PageView has gone, or after 2.5 s. Its config and events still queue in order.
+  - **Hero video:** starts after the load event; the still frame is the first paint as before.
+  - **Hero images:** the hidden slides' images wait for the load event too.
+  - **₹ sign:** comes from a 1.2 KB cut of Inter (`public/fonts/inter-rupee.woff2`) instead of the 84 KB latin-ext file every price pulled in.
+- **Where:** `components/analytics/meta-pixel-base.tsx` (new), `app/layout.tsx`, `components/analytics/meta-pixel.tsx`, `components/analytics/gtag-after-meta.tsx` (new), `components/analytics/google-analytics.tsx`, `components/sections/hero.tsx`, `app/globals.css`, `public/fonts/inter-rupee.woff2`, `next.config.ts` (/fonts cached like /images), `components/sections/diffuser-showcase.tsx`.
+- **Check:** the same test, against a production build:
+  - Meta PageView at 5.2 s on home, 5.2–5.4 s on candles and 5.2 s on The Forest; 1.0–1.4 s on typical 4G (was 1.4–2.4 s).
+  - One PageView per landing and one per client-side page change. ViewContent still sent on product pages. GA4 page_view and view_item still sent. No fbq and no events on /admin.
+  - **Watch:** landing page views ÷ link clicks in Ads Manager over the 5–7 days after deploy, by placement.
+  - **Not done (needs a design call):** Literata's optical-size axis costs 114 KB of the 219 KB serif download.
+- **PageSpeed list, same day (Lighthouse 13.5, homepage), item by item:**
+  - **Improve image delivery:** diffuser cards had `sizes` of 100vw on phones and 30vw on tablets, but the cards are 84% and 46% wide. Now `(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 80vw` (`components/sections/diffuser-showcase.tsx`). The rest of the estimate is recompression of hero photos at q90. Those now load after the page, so they were left alone (design call).
+  - **Render-blocking requests:** tried `experimental.inlineCss` and reverted it. It put the CSS in the HTML three times (32 → 80 KB compressed) and lowered the mobile score from 76 to 66 (TBT 280 → 500 ms). Noted in `next.config.ts`.
+  - **Use efficient cache lifetimes:** only Meta and Clarity scripts, whose cache times are set by those companies. Own assets are already long-cached; /fonts added.
+  - **Legacy JavaScript:** 14 KB is Next.js's own built-in polyfills (no opt-out), 12.5 KB is in fbevents.js.
+  - **Reduce unused JavaScript:** mostly gtag.js, fbevents.js and the pixel config.
+  - **Avoid enormous network payloads:** the hero video (1.4 MB phone, 3.6 MB desktop; already 0.6 and 1.5 Mbps). It now loads after the page.
+  - **Forced reflow and DOM size:** pass.
+- **Lighthouse on localhost vs live:** mobile medians of 3 runs, live 71 against 73 locally, with blocking time 432 → 307 ms and first paint 1.7 → 1.4 s. Localhost is HTTP/1.1 with no CDN, which inflates Lantern's simulated LCP (4.6 vs 4.2 s live), so re-run PageSpeed on the live site after deploy. Removing the fbevents preload made no Lighthouse difference but delayed the PageView by up to 0.5 s, so it stays.
+
 ## 2026-10-24 — H1s with search phrases, favicon fix, shop and site-name markup (plan §07, T19)
 - **Found (brand search for "quint home"):**
   - **Favicon:** blank white circle. The icon was a white mark on a transparent ground, which disappears on Google's white circle.

@@ -10,6 +10,7 @@ import { ImageGuard } from "@/components/atmosphere/image-guard";
 import { Clarity } from "@/components/analytics/clarity";
 import { StorefrontOnly } from "@/components/analytics/storefront-only";
 import { MetaPixel } from "@/components/analytics/meta-pixel";
+import { MetaPixelBase } from "@/components/analytics/meta-pixel-base";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { WhatsAppButton } from "@/components/layout/whatsapp-button";
 import { CartProvider } from "@/components/cart/cart-provider";
@@ -62,6 +63,12 @@ export default function RootLayout({
       lang="en"
       className={`${literata.variable} ${inter.variable} antialiased`}
     >
+      <head>
+        {/* The Meta Pixel's base code, first in the head, so a click from an
+            ad counts as a landing page view as soon as the page arrives, not
+            after the app has started. It skips the back office itself. */}
+        <MetaPixelBase />
+      </head>
       <body
         suppressHydrationWarning
         // Product pages on mobile carry a sticky buy bar (68px + the home
