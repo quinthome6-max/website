@@ -13,6 +13,8 @@ import {
 export interface SubscribeResult {
   ok: boolean;
   message: string;
+  /** A first-time signup, as opposed to an address already on the list. */
+  isNew?: boolean;
 }
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
@@ -66,6 +68,7 @@ export async function subscribeAction(email: string, source = "footer"): Promise
   const already = listed ? listed === "already" : shopify === "already";
   return {
     ok: true,
+    isNew: !already,
     message: already ? "You’re already on the list — thank you." : "Thank you. Look out for the next one.",
   };
 }

@@ -20,6 +20,26 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-10-29 — Diwali band replaced by a homepage popup; signups reported as leads
+- **What:**
+  - **The popup:** at the user's request, the Diwali band under the hero is gone, replaced by a popup on the homepage only (`components/sections/diwali-popup.tsx`) offering the Diwali picks by email and a link to the guide.
+    - **When:** after 8 seconds or a third of the way down the page, not on arrival.
+    - **How often:** once per visitor (localStorage `qh:diwali-popup-2026`).
+    - **Layout:** a bottom panel on phones, a centred card with the candle photo on computers.
+    - **Closing:** Escape, the ×, "No thanks" or a click outside; it closes itself after a signup.
+    - **Season:** rendered only until 9 Nov (`lib/seasonal.ts`).
+  - **Leads:** a first-time signup from any form now sends Meta "Lead" (content_name "Newsletter signup") and GA4 "generate_lead" (lead_source newsletter_<source>), as the business enquiry form does.
+  - The announcement-bar link to the guide stays.
+- **Why:** the user found the band didn't look right. The delay avoids an intrusive interstitial on mobile (a Google page-experience risk) and leaves ad visitors the page they clicked through to.
+- **Where:**
+  - `components/sections/diwali-popup.tsx` (new); `components/sections/diwali-band.tsx` removed
+  - `components/home/home-sections.tsx`, `components/layout/newsletter-form.tsx`, `app/actions/newsletter.ts`
+  - `lib/newsletter/store.ts` (the source label now reads "Diwali popup (homepage)")
+- **Check:**
+  - **Local dev, phone:** not shown at 3 s, shown at about 9 s; Escape closes it and a reload keeps it closed.
+  - **Local dev, desktop:** scrolling a third of the way opens it at about 4 s; a signup is stored with source diwali, queues generate_lead and closes the popup.
+  - Production build passes.
+
 ## 2026-10-29 — Diwali push, better snippets for Monolith, Pillar and First Rain, email signups
 - **What:**
   - **Snippets:** products can now carry their own search title and description (`seoTitle` / `seoDescription`, with "{price}" filled live).

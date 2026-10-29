@@ -10,7 +10,8 @@ import { USPs } from "@/components/sections/usps";
 import { FounderTeaser } from "@/components/sections/founder-teaser";
 import { JournalTeaser } from "@/components/sections/journal-teaser";
 import { MonogramDivider } from "@/components/brand/monogram-divider";
-import { DiwaliBand } from "@/components/sections/diwali-band";
+import { DiwaliPopup } from "@/components/sections/diwali-popup";
+import { diwaliSeason } from "@/lib/seasonal";
 
 /**
  * The real home page. Held here, untouched, while the launch teaser is up so
@@ -20,9 +21,10 @@ export function HomeSections() {
   return (
     <>
       <Hero />
-      {/* Seasonal: Diwali gifting and the email signup. Hides itself after
-          9 Nov 2026 (lib/seasonal.ts). */}
-      <DiwaliBand />
+      {/* Seasonal: a Diwali popup (gifting picks by email, the gifting guide),
+          rendered only until 9 Nov 2026 (lib/seasonal.ts), shown once per
+          visitor. */}
+      {diwaliSeason() && <DiwaliPopup />}
       {/* Minimal white breathing space between the hero and the section below */}
       <div
         aria-hidden

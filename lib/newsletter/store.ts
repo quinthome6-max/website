@@ -48,7 +48,7 @@ export function addressKey(ip: string): string {
 /** Where a signup came from, in words, for the back office. */
 export function sourceLabel(source: string): string {
   if (source === "footer") return "Footer";
-  if (source === "diwali") return "Diwali (homepage)";
+  if (source === "diwali") return "Diwali popup (homepage)";
   if (source.startsWith("journal:")) return `Journal: ${source.slice(8).replace(/-/g, " ")}`;
   return source;
 }
