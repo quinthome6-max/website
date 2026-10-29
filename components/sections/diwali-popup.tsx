@@ -15,8 +15,11 @@ import { DIWALI_GUIDE } from "@/lib/seasonal";
  * covering the page on arrival: Google treats a popup that hides the content
  * the moment a visitor lands from search as intrusive, and ad visitors should
  * see the page they clicked through to first. On a phone it is a panel from
- * the bottom; on a computer, a card in the middle.
+ * the bottom with the "Have a शुद्ध Diwali" picture as a banner; on a
+ * computer, a card in the middle with the whole picture beside the form.
  */
+
+const PICTURE = "/images/diwali/shuddh-diwali-2026.webp";
 
 const KEY = "qh:diwali-popup-2026";
 const DELAY_MS = 8000;
@@ -129,26 +132,28 @@ export function DiwaliPopup() {
         aria-modal="true"
         aria-labelledby="diwali-popup-title"
         tabIndex={-1}
-        className={`relative w-full max-w-[52rem] bg-[color:var(--color-stardust-soft)] shadow-[0_24px_60px_-20px_rgba(0,0,0,0.45)] outline-none transition-[opacity,transform] duration-300 ease-[var(--ease-quint)] md:grid md:grid-cols-[0.85fr_1.15fr] ${
+        className={`relative w-full max-w-[52rem] bg-[color:var(--color-stardust-soft)] shadow-[0_24px_60px_-20px_rgba(0,0,0,0.45)] outline-none transition-[opacity,transform] duration-300 ease-[var(--ease-quint)] md:grid md:grid-cols-[21rem_1fr] ${
           shown ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
         }`}
       >
-        <div className="relative hidden min-h-[25rem] md:block">
+        {/* Phones: a banner across the top, cropped to the lettering, the gifts
+            and the Monolith. Computers: the whole 4:5 picture (21 × 26.25 rem). */}
+        <div className="relative h-[14rem] md:h-auto md:min-h-[26.25rem]">
           <Image
-            src="/images/candles/the-study-01.webp"
-            alt="A hand lighting a Quint Home soy candle"
+            src={PICTURE}
+            alt="Have a Shuddh Diwali: the Monolith diffuser and The Study soy candle on a festive table with diyas and gifts"
             fill
-            sizes="22rem"
-            className="object-cover"
+            sizes="(min-width: 768px) 21rem, 100vw"
+            className="object-cover object-[50%_36%] md:object-center"
           />
         </div>
 
-        <div className="px-6 pb-[calc(1.75rem+env(safe-area-inset-bottom))] pt-7 md:px-10 md:py-11">
+        <div className="px-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-6 md:px-10 md:py-11">
           <button
             type="button"
             onClick={close}
             aria-label="Close"
-            className="absolute right-2 top-2 flex h-10 w-10 items-center justify-center text-[color:var(--color-charcoal-soft)] transition-colors hover:text-[color:var(--color-charcoal)]"
+            className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--color-stardust-soft)]/85 text-[color:var(--color-charcoal)] backdrop-blur-sm transition-colors hover:bg-[color:var(--color-stardust-soft)]"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" className="h-5 w-5" aria-hidden>
               <path d="M6 6l12 12M18 6 6 18" />
@@ -170,7 +175,9 @@ export function DiwaliPopup() {
             Our Diwali gifting picks,{" "}
             <em className="text-[color:var(--color-aerial-deep)]">in your inbox.</em>
           </h2>
-          <p className="mt-4 max-w-[40ch] text-[0.9rem] leading-[1.65] text-[color:var(--color-charcoal-soft)]">
+          {/* Hidden on phones, where the picture already says it and the panel
+              should stay short. */}
+          <p className="mt-4 hidden max-w-[40ch] text-[0.9rem] leading-[1.65] text-[color:var(--color-charcoal-soft)] md:block">
             Gifts for the home that stay in use long after the festival, from hand-poured soy candles to waterless
             diffusers.
           </p>
