@@ -9,11 +9,13 @@ import { QUOTE_STATUSES } from "@/lib/admin/quotes/types";
 import { listCheckouts } from "@/lib/abandoned/store";
 import { reviewsForAdmin } from "@/lib/reviews/store";
 import { joinedThisWeek, listSubscribers, newsletterAvailable } from "@/lib/newsletter/store";
+import { listManualInvoices, manualInvoicesAvailable } from "@/lib/admin/invoices/store";
 import { Box, btn, Figure, PageHeader, StatusBadge, Tile } from "@/components/admin/ui";
 import {
   IconCard,
   IconCart,
   IconGift,
+  IconInvoice,
   IconMail,
   IconPlus,
   IconQuote,
@@ -52,6 +54,9 @@ export default async function Dashboard() {
             <Link href="/admin/quotes/new" className={btn.primary}>
               <IconPlus /> New quotation
             </Link>
+            <Link href="/admin/invoices/new" className={btn.primary}>
+              <IconPlus /> New invoice
+            </Link>
             <Link href="/admin/orders" className={btn.secondary}>
               View orders
             </Link>
@@ -65,6 +70,9 @@ export default async function Dashboard() {
         </Tile>
         <Tile href="/admin/quotes" icon={<IconQuote />} title="Quotations" blurb="Bulk and business quotes, saved and sent as PDFs." cta="Open quotations">
           <Suspense fallback={<Loading n={2} />}><QuoteFigures /></Suspense>
+        </Tile>
+        <Tile href="/admin/invoices" icon={<IconInvoice />} title="Manual invoices" blurb="Tax invoices for sales off the website, in their own MI/ series." cta="Open invoices">
+          <Suspense fallback={<Loading n={2} />}><ManualInvoiceFigures /></Suspense>
         </Tile>
         <Tile href="/admin/abandoned" icon={<IconCart />} title="Abandoned checkouts" blurb="Shoppers who reached checkout and did not pay." cta="Follow up">
           <Suspense fallback={<Loading n={2} />}><AbandonedFigures /></Suspense>
@@ -167,6 +175,20 @@ async function ReviewFigures() {
     <>
       <Figure label="Waiting" value={reviews.pending.length} tone={reviews.pending.length ? "warn" : undefined} />
       <Figure label="Live" value={reviews.approved.length} />
+    </>
+  );
+}
+
+async function ManualInvoiceFigures() {
+  if (!manualInvoicesAvailable) return <Unavailable what="invoices (Redis is not connected)" />;
+  const all = await attempt(listManualInvoices);
+  if (!all) return <Unavailable what="invoices" />;
+  const issued = all.filter((i) => i.status === "issued");
+  const due = issued.filter((i) => !i.paid);
+  return (
+    <>
+      <Figure label="Issued" value={issued.length} hint={rupees(issued.reduce((t, i) => t + calcQuote(i).total, 0))} />
+      <Figure label="Payment due" value={due.length} tone={due.length ? "warn" : undefined} />
     </>
   );
 }

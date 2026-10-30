@@ -42,7 +42,8 @@ export function invoiceFilename(inv: Invoice): string {
     .replace(/[^\p{L}\p{N}\p{M}\s-]/gu, "")
     .trim()
     .replace(/\s+/g, "-");
-  return ["Tax-Invoice", inv.invoiceNumber, customer].filter(Boolean).join("-");
+  // A manual invoice is numbered MI/26-27/0001; a slash can't go in a file name.
+  return ["Tax-Invoice", inv.invoiceNumber.replace(/\//g, "-"), customer].filter(Boolean).join("-");
 }
 
 const esc = (v: unknown): string =>
@@ -75,8 +76,23 @@ function partyBlock(title: string, c: InvoiceCustomer): string {
   </div>`;
 }
 
-export function invoiceHtml(inv: Invoice, opts: { autoPrint?: boolean } = {}): string {
+export interface InvoiceHtmlOptions {
+  autoPrint?: boolean;
+  /** The word across the items. Website orders are paid, so "paid" is the
+   *  default; a manual invoice can be unpaid ("none"), a draft or cancelled. */
+  stamp?: "paid" | "draft" | "cancelled" | "none";
+  /** Label for the second reference in the header: "Order No." on website
+   *  orders, "Reference" on a manual invoice (a PO number, a quote). */
+  orderLabel?: string;
+  /** Printed under the totals: payment terms, bank details. One per line. */
+  notes?: string;
+}
+
+export function invoiceHtml(inv: Invoice, opts: InvoiceHtmlOptions = {}): string {
   const gaps = supplierGaps();
+  const stamp = opts.stamp ?? "paid";
+  const stampWord = { paid: "PAID", draft: "DRAFT", cancelled: "CANCELLED", none: "" }[stamp];
+  const noteLines = (opts.notes ?? "").split("\n").map((l) => l.trim()).filter(Boolean);
   const inter = inv.interState;
 
   // Only the columns that apply: CGST+SGST inside the state, IGST outside.
@@ -238,6 +254,11 @@ export function invoiceHtml(inv: Invoice, opts: { autoPrint?: boolean } = {}): s
         font-family:'Literata',Georgia,serif;font-size:82px;font-weight:600;
         letter-spacing:.16em;color:var(--clay);opacity:.13;pointer-events:none;z-index:2;
         border:4px solid var(--clay);border-radius:8px;padding:6px 26px}
+  .paid.draft{color:var(--charcoal-soft);border-color:var(--charcoal-soft);font-size:70px}
+  .paid.cancelled{font-size:58px;opacity:.2}
+  .notes{margin-top:22px;border-top:1px solid var(--rule);padding-top:12px}
+  .notes h4{font-size:8.5px;text-transform:uppercase;letter-spacing:.18em;color:var(--charcoal-soft);margin:0 0 6px;font-weight:600}
+  .notes p{margin:0 0 3px;font-size:11px;line-height:1.55}
   .tablewrap table{position:relative;z-index:1;background:transparent}
   .tablewrap tbody tr:nth-child(even){background:rgba(250,248,243,.72)}
 
@@ -315,7 +336,7 @@ ${inv.needsAttention.length ? `<div class="warn noprint"><strong>Needs attention
 
 <div class="meta">
   <div><dt>Invoice No.</dt><dd>${esc(inv.invoiceNumber)}</dd></div>
-  <div><dt>Order No.</dt><dd>${esc(inv.orderName)}</dd></div>
+  <div><dt>${esc(opts.orderLabel ?? "Order No.")}</dt><dd>${esc(inv.orderName || "—")}</dd></div>
   <div><dt>Invoice Date</dt><dd>${esc(DATE_FMT.format(new Date(inv.createdAt)))}</dd></div>
   <div><dt>Payment</dt><dd>${esc(inv.paymentMode)}</dd></div>
   <div><dt>Place of Supply</dt><dd>${esc(inv.placeOfSupply)}</dd></div>
@@ -328,7 +349,7 @@ ${inv.needsAttention.length ? `<div class="warn noprint"><strong>Needs attention
 </div>
 
 <div class="tablewrap">
-<span class="paid" aria-hidden="true">PAID</span>
+${stampWord ? `<span class="paid${stamp === "paid" ? "" : " " + stamp}" aria-hidden="true">${stampWord}</span>` : ""}
 <table>
   <thead><tr>
     <th>Item description</th><th>HSN</th><th class="num">Qty</th>
@@ -379,6 +400,7 @@ ${inv.needsAttention.length ? `<div class="warn noprint"><strong>Needs attention
 </div>
 </div>
 
+${noteLines.length ? `<div class="notes"><h4>Notes</h4>${noteLines.map((l) => `<p>${esc(l)}</p>`).join("")}</div>` : ""}
 <footer>
   <div><strong>Thank you for your business.</strong><br />
     Questions? ${esc(SUPPLIER.email)}</div>

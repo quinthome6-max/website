@@ -31,6 +31,9 @@ export const IconReceipt = (p: P) => (
 export const IconQuote = (p: P) => (
   <Icon {...p}><path d="M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z" /><path d="M14 3v5h5" /><path d="M8.5 13h7M8.5 16.5h4.5" /></Icon>
 );
+export const IconInvoice = (p: P) => (
+  <Icon {...p}><path d="M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z" /><path d="M14 3v5h5" /><path d="M9 11.5h6M9 14h6M12.5 11.5c1.6 0 1.6 2.5 0 2.5H9.5l3.5 3.5" /></Icon>
+);
 export const IconCart = (p: P) => (
   <Icon {...p}><path d="M3 4h2l2.2 10.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L20.5 8H6" /><circle cx="9.5" cy="19.5" r="1.2" /><circle cx="17" cy="19.5" r="1.2" /></Icon>
 );
