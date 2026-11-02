@@ -6,6 +6,7 @@ import {
   reviewsForAdmin,
   type Review,
 } from "@/lib/reviews/store";
+import { isSampleReview } from "@/lib/reviews/sample-reviews";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,8 @@ const NOTICES: Record<string, string> = {
   invalid: "That action didn't make sense; nothing changed.",
   failed: "That didn't go through. Try again in a moment.",
   missing: "That review was already handled.",
+  "samples-added": "Sample reviews added under Waiting for approval. Nothing shows on the site unless approved.",
+  "samples-removed": "All sample reviews removed.",
 };
 
 const when = (iso: string) =>
@@ -88,6 +91,10 @@ export default async function ReviewsAdminPage({
               <Row key={r.id} review={r} />
             ))}
           </Group>
+          <SampleReviews
+            pending={data.pending.filter(isSampleReview).length}
+            approved={data.approved.filter(isSampleReview).length}
+          />
         </>
       )}
     </div>
@@ -164,5 +171,37 @@ function Row({ review: r, pending = false }: { review: Review; pending?: boolean
         </button>
       </form>
     </li>
+  );
+}
+
+/** Loading and clearing the sample reviews (lib/reviews/sample-reviews.ts). */
+function SampleReviews({ pending, approved }: { pending: number; approved: number }) {
+  const button = "h-9 px-4 text-[0.62rem] uppercase tracking-[0.22em] transition-colors";
+  return (
+    <section className="mt-12 rounded-lg border border-dashed border-[color:var(--color-rule)] px-5 py-5">
+      <h2 className="text-[0.66rem] uppercase tracking-[0.28em] text-[color:var(--color-charcoal-soft)]">
+        Sample reviews
+      </h2>
+      <p className="mt-2 max-w-[70ch] text-[0.84rem] leading-[1.6] text-[color:var(--color-charcoal-soft)]">
+        20–25 sample reviews per product, added under Waiting for approval. They show
+        nowhere on the site unless approved. Now: {pending} waiting, {approved} on the site.
+      </p>
+      <form action="/api/admin/reviews" method="post" className="mt-4 flex flex-wrap gap-2">
+        <button
+          name="action"
+          value="add-samples"
+          className={`${button} bg-[color:var(--color-charcoal)] text-[color:var(--color-ivory)] hover:bg-[color:var(--color-clay-deep)]`}
+        >
+          Add sample reviews
+        </button>
+        <button
+          name="action"
+          value="remove-samples"
+          className={`${button} border border-[color:var(--color-rule)] text-[color:var(--color-charcoal)] hover:border-[color:var(--color-clay)] hover:text-[color:var(--color-clay)]`}
+        >
+          Remove sample reviews
+        </button>
+      </form>
+    </section>
   );
 }

@@ -23,6 +23,7 @@ import { diffusers } from "@/lib/data/diffusers";
 import { oils } from "@/lib/data/oils";
 import { candles } from "@/lib/data/candles";
 import { redisConfigured, redisPipeline, redisRead } from "@/lib/redis";
+import { buildSampleReviews, isSampleReview } from "@/lib/reviews/sample-reviews";
 
 export interface Review {
   id: string;
@@ -257,4 +258,45 @@ export async function deleteReview(id: string, slug: string): Promise<void> {
     ["HDEL", PENDING, id],
     ["HDEL", okKey(slug), id],
   ]);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Sample reviews (lib/reviews/sample-reviews.ts)                             */
+/* -------------------------------------------------------------------------- */
+
+/** Files the sample reviews as pending. Running it again replaces them. */
+export async function addSampleReviews(): Promise<number> {
+  const reviews = buildSampleReviews();
+  if (useFile) {
+    const db = await readFileDb();
+    for (const r of reviews) db.pending[r.id] = JSON.stringify(r);
+    await writeFileDb(db);
+    return reviews.length;
+  }
+  await redisPipeline([["HSET", PENDING, ...reviews.flatMap((r) => [r.id, JSON.stringify(r)])]]);
+  return reviews.length;
+}
+
+/** Removes every sample review, pending or approved. Returns the slugs touched. */
+export async function removeSampleReviews(): Promise<string[]> {
+  const { pending, approved } = await reviewsForAdmin();
+  const fromPending = pending.filter(isSampleReview);
+  const fromSite = approved.filter(isSampleReview);
+  if (!fromPending.length && !fromSite.length) return [];
+  if (useFile) {
+    const db = await readFileDb();
+    for (const r of [...fromPending, ...fromSite]) {
+      delete db.pending[r.id];
+      if (db.ok[r.slug]) delete db.ok[r.slug][r.id];
+    }
+    await writeFileDb(db);
+  } else {
+    const bySlug = new Map<string, string[]>();
+    for (const r of fromSite) bySlug.set(r.slug, [...(bySlug.get(r.slug) ?? []), r.id]);
+    await redisPipeline([
+      ...(fromPending.length ? [["HDEL", PENDING, ...fromPending.map((r) => r.id)]] : []),
+      ...[...bySlug].map(([slug, ids]) => ["HDEL", okKey(slug), ...ids]),
+    ]);
+  }
+  return [...new Set(fromSite.map((r) => r.slug))];
 }

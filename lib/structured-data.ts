@@ -4,6 +4,7 @@ import { SITE, BRAND, abs } from "@/lib/seo";
 import { FREE_SHIPPING_FROM, SHIPPING_FLAT } from "@/lib/checkout-config";
 import { numericId } from "@/lib/shopify/admin";
 import { summarize, type PublicReview } from "@/lib/reviews/store";
+import { isSampleReview } from "@/lib/reviews/sample-reviews";
 
 /**
  * JSON-LD for the storefront.
@@ -167,7 +168,9 @@ export function productJsonLd(
 }
 
 /** aggregateRating plus the latest few reviews, only when there are some. */
-function ratingJsonLd(reviews: PublicReview[]): Record<string, unknown> {
+function ratingJsonLd(all: PublicReview[]): Record<string, unknown> {
+  // Sample reviews (lib/reviews/sample-reviews.ts) never reach Google.
+  const reviews = all.filter((r) => !isSampleReview(r));
   if (!reviews.length) return {};
   const { average, count } = summarize(reviews);
   return {

@@ -2,9 +2,11 @@ import { NextResponse } from "next/server";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { currentStaffShop } from "@/lib/admin/session";
 import {
+  addSampleReviews,
   approveReview,
   deleteReview,
   isProductSlug,
+  removeSampleReviews,
   reviewsTag,
 } from "@/lib/reviews/store";
 
@@ -26,6 +28,25 @@ export async function POST(request: Request): Promise<NextResponse> {
   const slug = String(form.get("slug") ?? "");
   const back = (done: string) =>
     NextResponse.redirect(new URL(`/admin/reviews?done=${done}`, request.url), 303);
+
+  // Sample reviews (lib/reviews/sample-reviews.ts): load them as pending, or
+  // take every one away again.
+  if (action === "add-samples" || action === "remove-samples") {
+    try {
+      if (action === "add-samples") {
+        await addSampleReviews();
+        return back("samples-added");
+      }
+      for (const s of await removeSampleReviews()) {
+        revalidateTag(reviewsTag(s), { expire: 0 });
+        revalidatePath(`/range/${s}`);
+      }
+      return back("samples-removed");
+    } catch (e) {
+      console.error("[reviews] sample reviews failed", { action, error: e instanceof Error ? e.message : String(e) });
+      return back("failed");
+    }
+  }
 
   if (!/^[A-Za-z0-9_-]{6,24}$/.test(id) || !isProductSlug(slug)) return back("invalid");
 
