@@ -45,6 +45,13 @@ export function OilHero({
       image: d.image,
       variantId: diffuserVariant?.id,
       meta: d.coverageLabel,
+      // A diffuser added here ships with its complimentary bottle, but this
+      // page has no scent picker, so it defaults to the oil being bought.
+      // Change it on the order if the customer asks for a different one.
+      // The Pebble and the Drift come without one, so they carry no note.
+      attributes: d.includesOil
+        ? [{ key: COMPLIMENTARY_OIL, value: `${oil.name} · ${oil.volumeML} ml` }]
+        : [],
     };
   });
 
@@ -219,16 +226,6 @@ export function OilHero({
               <PairBundle
                 basePriceINR={variant?.price ?? oil.priceINR}
                 baseName={oil.name}
-                // A diffuser added here also ships with its complimentary
-                // bottle, but this page has no scent picker — so it defaults to
-                // the oil being bought. Change it on the order if the customer
-                // asks for a different one.
-                partnerAttributes={[
-                  {
-                    key: COMPLIMENTARY_OIL,
-                    value: `${oil.name} · ${oil.volumeML} ml`,
-                  },
-                ]}
                 partnerNoun="diffuser"
                 heading="Add a diffuser"
                 options={diffuserOptions}
@@ -249,7 +246,7 @@ export function OilHero({
               </li>
               <li className="flex items-baseline gap-3">
                 <span className="text-[color:var(--color-clay)]">–</span>
-                Free with every room diffuser: your first 50 ml.
+                Free with the Monolith, Pillar, Ember or Loom: your first 50 ml.
               </li>
             </ul>
           </FadeUp>

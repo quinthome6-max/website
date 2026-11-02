@@ -78,8 +78,8 @@ export interface Diffuser {
    *  when the manufacturer publishes no figure. */
   coverageLabel: string;
   /**
-   * Whether a complimentary 50 ml oil ships with it. True for the room
-   * diffusers; the car model is sold on its own.
+   * Whether a complimentary 50 ml oil ships with it. True for the Monolith,
+   * Pillar, Ember and Loom; the Pebble and the Drift are sold on their own.
    */
   includesOil: boolean;
   /** Catalogue "BEST FOR" placement tags. */

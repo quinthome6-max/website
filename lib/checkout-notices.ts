@@ -6,7 +6,7 @@
 
 const BAG: Record<string, string> = {
   gift:
-    "Your bag holds more complimentary oils than diffusers. One oil is included with each diffuser — remove the extra to continue.",
+    "Your bag holds more complimentary oils than diffusers. One oil is included with each diffuser except the Pebble and the Drift — remove the extra to continue.",
   "payments-unavailable":
     "Payment is not available right now. Nothing has been charged — please try again in a little while.",
 };

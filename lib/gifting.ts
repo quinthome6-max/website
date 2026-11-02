@@ -58,7 +58,7 @@ export function giftingMarkdown(commerce: Record<string, ShopifyCommerce>): stri
 
   return `## Gifting
 
-Quint Home diffusers suit Diwali gifting, corporate gifting and housewarming (griha pravesh) gifts. Every room diffuser ships with a complimentary 50 ml fragrance oil chosen by the buyer, so it arrives ready to use; the Drift, the car diffuser, is sold on its own.
+Quint Home diffusers suit Diwali gifting, corporate gifting and housewarming (griha pravesh) gifts. The Monolith, Pillar, Ember and Loom each ship with a complimentary 50 ml fragrance oil chosen by the buyer, so they arrive ready to use; the Pebble (plug-in) and the Drift (car) are sold on their own.
 
 Gift ideas by budget:
 ${budget}

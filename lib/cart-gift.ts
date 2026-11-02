@@ -86,7 +86,7 @@ export function giftOnLine(
 /**
  * The ₹0 variant that carries the complimentary oil.
  *
- * Every diffuser ships with an oil, and that bottle has to leave the warehouse
+ * A diffuser that ships with an oil has to send that bottle out of the warehouse
  * as a real line: otherwise stock never moves, the packer has only a note to go
  * on, and a courier claim has no proof the oil was in the parcel. So the gift
  * is a genuine Shopify variant priced at zero rather than a property on the
@@ -159,13 +159,17 @@ export function isGiftVariant(
   );
 }
 
-/** True when this variant id belongs to a diffuser — what earns a gift. */
+/**
+ * True when this variant id belongs to a diffuser that ships with a free oil —
+ * what earns a gift. The Pebble and the Drift don't, so they earn none.
+ */
 export function isDiffuserVariant(
   merchandiseId: string,
   commerce: Record<string, ShopifyCommerce> | undefined
 ): boolean {
   if (!commerce) return false;
   return diffusers.some((d) =>
+    d.includesOil &&
     commerce[shopifyHandle(d.name)]?.variants.some((v) => v.id === merchandiseId)
   );
 }

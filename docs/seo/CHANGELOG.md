@@ -20,6 +20,68 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-11-02 — Specs slide moved to second place in product galleries
+- **What:**
+  - **Diffuser and oil pages:** the gallery now runs first photo, Specs, the other photos, then the key-features sheet. The Specs used to follow all the photos.
+  - **Candle pages** have no Specs slide and are unchanged.
+  - The product feed and image sitemap are unaffected, since they read the photo list, not the gallery.
+- **Why:** client's request (gallery order). This replaces the order recorded on 19 Oct.
+- **Where:** `components/product/product-gallery.tsx`.
+- **Check:** local dev, desktop and phone: Monolith, Pebble and First Rain read photo > Specs > photos; The Forest is unchanged; no JS errors.
+
+## 2026-11-02 — The Pebble is sold without a free oil
+- **What:**
+  - **Product page and meta description:** the Pebble no longer offers "Choose your free oil", and its meta description drops "Free 50 ml oil included".
+  - **Copy:** pages that said "every room diffuser ships with a free oil" now name the four that do (Monolith, Pillar, Ember, Loom) and say the Pebble and the Drift are sold on their own. This covers:
+    - the waterless diffusers and fragrance oils category pages
+    - four journal pieces, including the Diwali guide, whose FAQ is now "Do the Pebble and the Drift come with a free oil?"
+    - /range, the oil pages, the empty bag
+    - llms.txt and llms-full.txt
+    - the gifting text
+  - **Checkout:** checkout now refuses a free bottle against a Pebble or a Drift. Before this, any diffuser, the Drift included, counted towards a free oil.
+  - **Oil pages:** "Add a diffuser" no longer notes a complimentary oil on a Pebble or Drift line.
+- **Why:** the client confirmed the free-oil offer doesn't apply to the Pebble. The site was offering it.
+- **Where:**
+  - Data and checkout: `lib/data/diffusers.ts`, `lib/cart-gift.ts` (`isDiffuserVariant`), `lib/checkout-notices.ts`
+  - Product components: `components/product/{oil-hero,pair-bundle,diffuser-hero}.tsx`
+  - Copy: `lib/data/{category-pages,journal}.ts`, `lib/gifting.ts`, `app/range/page.tsx`, `components/cart/cart-view.tsx`, `app/llms*.txt`
+- **Check:**
+  - **Local dev:** the Pebble page has no oil picker and reads "Add an oil"; adding it puts only the Pebble in the bag (₹3,999 + ₹99 shipping). The Monolith still adds its free Terrain. No JS errors.
+  - **Checkout check:** Monolith + free oil is allowed; Pebble + free oil and Drift + free oil are refused; the Pebble alone is allowed.
+  - **Watch:** a bag built before the deploy with a Pebble and a free oil is refused at checkout with a notice. If one was paid in that window, settlement writes a placeholder order for staff.
+
+## 2026-10-31 — Investigation: impressions, clicks and AI visits falling; keyword gaps
+- **Reported:** Search Console impressions and clicks falling after the 26 Oct peak, and fewer visits from AI tools.
+- **Found:**
+  - **Clarity, 3-day windows:** 26–28 Oct against 29–31 Oct.
+    - Google organic: 18 → 4.
+    - ChatGPT: 24 → 16.
+    - Facebook: 118 → 158.
+    - All sessions: 233 → 267.
+    - Search and AI visits still land on `/` only, which points to brand searches.
+  - **Site health:** all 37 sitemap URLs fetch as Googlebot with 200, self canonicals and no noindex; robots.txt is fine. Nothing technical explains the fall.
+  - **Likely cause:** search traffic is almost all brand. In the 30 Sep–26 Oct export, "quint home" took 15 of 41 clicks and the homepage 27 of 41. At about 10 impressions a day, a few fewer people searching the name shows as a steep drop. Non-brand pages aren't in Google's results yet.
+  - **Keyword research:**
+    - Google autocomplete, India, 31 Oct, gives phrases without volumes. Semrush is still out of API units.
+    - **Already covered** by a page: waterless diffuser (for home, for large rooms, India), fragrance oil for diffuser, hotel fragrance for home, scented candles for Diwali / gift set, soy wax candles, corporate Diwali gifts.
+    - **No page yet:** waterless vs reed diffuser, fragrance oil vs essential oil (and "can you use fragrance oils in a diffuser"), how to use or clean a waterless diffuser, aroma diffuser for hotels / office / showroom, scented candles vs diffusers, best diffuser for a large room. Many phrases end in "reddit", so AI answers and buyers lean on forum threads.
+  - **Bing:** not checkable by script (it serves bots junk results). Bing Webmaster Tools is still not set up, and ChatGPT search draws on Bing.
+- **Why:** the user asked why impressions and clicks are falling, and how to rank and pull traffic beyond technical SEO.
+- **Where:** `marketing/analytics/clarity.py`, a live sitemap crawl, Google autocomplete (`hl=en-IN`, `gl=in`).
+- **Next:**
+  - A fresh Search Console export (last 7 days against the previous 7), or API access, to confirm it is brand demand.
+  - Request indexing for the 3 category pages and 5 articles.
+  - Set up Bing Webmaster Tools and submit to Merchant Center.
+  - Write the comparison pages listed above.
+
+## 2026-10-31 — GA4 starts straight after the Meta PageView again
+- **What:** gtag.js now loads after the pixel's first request to `facebook.com/tr`, with a 1.5 s fallback (it was 2.5 s).
+- **Why:** Meta now sends the PageView as a POST beacon to `/tr/`, with no `ev=PageView` in the URL, so the old match never fired.
+  - From 28 to 31 Oct GA4 waited for the fallback on every page and started at about 3.1 s; its page_view went out at about 3.5–3.8 s.
+  - Visitors who left in the first few seconds weren't counted, so GA4's figures for 28–31 Oct are understated. Search Console and Clarity aren't affected.
+- **Where:** `components/analytics/gtag-after-meta.tsx`.
+- **Check:** local dev server, fast connection: on `/` and `/range/the-forest`, gtag.js loaded 0.25–0.35 s after Meta's first request, with both GET and POST, and the GA4 page_view followed about 0.5 s later. Next, check on the live site after deploy.
+
 ## 2026-10-29 — Diwali band replaced by a homepage popup; signups reported as leads
 - **What:**
   - **The popup:** at the user's request, the Diwali band under the hero is gone, replaced by a popup on the homepage only (`components/sections/diwali-popup.tsx`) offering the Diwali picks by email and a link to the guide.

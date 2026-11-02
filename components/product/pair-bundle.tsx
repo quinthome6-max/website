@@ -16,6 +16,8 @@ export interface PairOption {
   meta?: string;
   /** Scent-note summary shown in the option label and under the picker. */
   note?: string;
+  /** Buyer choices for this option alone; replaces `partnerAttributes`. */
+  attributes?: { key: string; value: string }[];
 }
 
 interface Props {
@@ -184,7 +186,7 @@ export function PairBundle({
               // The partner only. Whatever this page is about is added by the
               // buy box above, so adding it here as well would double it up.
               if (partner?.variantId)
-                add(partner.variantId, 1, partnerAttributes);
+                add(partner.variantId, 1, partner.attributes ?? partnerAttributes);
             }}
             className="group mt-4 flex h-12 w-[100%] items-center justify-center gap-2.5 border border-[color:var(--color-charcoal)] px-6 text-[0.68rem] uppercase tracking-[0.26em] text-[color:var(--color-charcoal)] transition-colors duration-500 hover:bg-[color:var(--color-charcoal)] hover:text-[color:var(--color-ivory)] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-[color:var(--color-charcoal)]"
           >

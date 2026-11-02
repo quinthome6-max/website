@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-/** A designed (non-photo) slide appended after the images, e.g. a spec sheet. */
+/** A designed (non-photo) slide shown after the first image, e.g. a spec sheet. */
 export interface GalleryCard {
   key: string;
   /** Short label shown in the thumbnail. */
@@ -16,7 +16,7 @@ export interface GalleryCard {
 interface Props {
   images: string[];
   alt: string;
-  /** Optional designed slides (rendered after the photos), each with a thumb. */
+  /** Optional designed slides (shown after the first photo), each with a thumb. */
   cards?: GalleryCard[];
   /** Images shown after the cards, e.g. the key-features sheet, last. */
   after?: string[];
@@ -30,14 +30,17 @@ type Slide =
  * Editorial gallery – vertically stacked thumbs on the left,
  * large image on the right (desktop). Stacks on mobile.
  * No carousels with dots – switch via small numbered thumbs.
- * Photos come first; optional designed `cards` (e.g. a specifications sheet)
- * follow as their own slides, then any `after` images.
+ * The first photo leads; optional designed `cards` (e.g. a specifications
+ * sheet) come straight after it, then the other photos, then any `after`
+ * images.
  */
 export function ProductGallery({ images, alt, cards = [], after = [] }: Props) {
+  const photo = (src: string) => ({ kind: "image" as const, key: src, src });
   const slides: Slide[] = [
-    ...images.map((src) => ({ kind: "image" as const, key: src, src })),
+    ...images.slice(0, 1).map(photo),
     ...cards.map((card) => ({ kind: "card" as const, key: card.key, card })),
-    ...after.map((src) => ({ kind: "image" as const, key: src, src })),
+    ...images.slice(1).map(photo),
+    ...after.map(photo),
   ];
   const total = slides.length;
   const [active, setActive] = useState(0);

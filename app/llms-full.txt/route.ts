@@ -112,7 +112,7 @@ air. Every ${BRAND} diffuser is waterless.
 - All prices in Indian rupees (INR, ₹).
 - Ships within India only, from Mumbai.
 - Shipping is free at ${inr(FREE_SHIPPING_FROM)} and above, otherwise a flat ${inr(SHIPPING_FLAT)}.
-- Every room diffuser includes one complimentary 50 ml oil, chosen by the buyer on the diffuser's page. The Drift, the car and bathroom model, is sold on its own.
+- The Monolith, Pillar, Ember and Loom each include one complimentary 50 ml oil, chosen by the buyer on the diffuser's page. The Pebble (plug-in) and the Drift (car and bathroom) are sold on their own.
 - Oils are IFRA-compliant.
 - Contact: hello@quinthome.in · +91 98196 16668 · Instagram @shopquinthome
 

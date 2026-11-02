@@ -464,8 +464,8 @@ export default async function ShopPage() {
           </FadeUp>
           <FadeUp delay={0.16}>
             <p className="mx-auto mt-7 max-w-[52ch] text-[var(--text-base)] leading-[1.85] text-[color:var(--color-charcoal-soft)]">
-              Every room diffuser ships with a 50 ml fragrance oil of your
-              choice. A bottle lasts about 45–60 days, depending on the model
+              The Monolith, Pillar, Ember and Loom ship with a 50 ml
+              fragrance oil of your choice. A bottle lasts about 45–60 days, depending on the model
               and setting, and refills start at ₹899.
             </p>
           </FadeUp>

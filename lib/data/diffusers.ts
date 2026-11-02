@@ -108,7 +108,8 @@ const diffusersByDefinition: Diffuser[] = [
     bluetooth: false,
     coverageSqFt: [161, 250],
     coverageLabel: "161–250 sq ft",
-    includesOil: true,
+    // Sold on its own, like the Drift: no free oil.
+    includesOil: false,
     bestFor: ["Bathrooms", "Kitchens", "Compact Spaces"],
     highlights: [
       "Plug and play – no assembly, no app",

@@ -74,7 +74,7 @@ export function DiffuserHero({
   const selectedOil =
     offeredOils.find((o) => o.slug === oilSlug) ?? offeredOils[0];
 
-  // The complimentary bottle that ships with every diffuser. It is not a line
+  // The complimentary bottle that ships with a diffuser (not the Pebble or Drift). It is not a line
   // item of its own, so this note is the only record of it — in the bag, on the
   // Shopify order and on the packing slip. Every path that puts a diffuser in
   // the bag has to carry it, or the scent the customer picked is lost (which is
@@ -193,7 +193,7 @@ export function DiffuserHero({
               images={gallery}
               alt={`${product.name}${color ? ` – ${color.name}` : ""} – Quint Home`}
               cards={[{ key: "specs", thumbLabel: "Specs", content: specsCard }]}
-              // The key-features sheet closes the gallery, after the specs.
+              // Specs follow the first photo; the key-features sheet closes the gallery.
               after={product.featuresImage ? [product.featuresImage] : []}
             />
           </FadeUp>
@@ -362,7 +362,7 @@ export function DiffuserHero({
                 basePriceINR={variant?.price ?? product.priceINR}
                 baseName={product.name}
                 partnerNoun="oil"
-                // The Drift ships without an oil, so there is no "another".
+                // The Pebble and the Drift ship without an oil, so there is no "another".
                 heading={product.includesOil ? "Add another oil" : "Add an oil"}
                 options={oilOptions}
               />

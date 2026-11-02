@@ -13,14 +13,19 @@ import { useEffect } from "react";
  * dataLayer (google-analytics.tsx, lib/analytics/ga4.ts) and read in order
  * when the script arrives.
  *
- * Waits for the PageView's request to finish (resource timing), or 2.5 s,
+ * Waits for the pixel's first request to finish (resource timing), or 1.5 s,
  * whichever comes first, so an ad-blocked pixel never holds GA4 back for long.
+ *
+ * Any request to facebook.com/tr counts: the PageView is always the first,
+ * and Meta now sends it as a POST beacon to "/tr/", with no event name in the
+ * URL. (Matching "ev=PageView" missed it, so from 28 to 31 Oct GA4 waited for
+ * the fallback on every page and lost visitors who left in the first seconds.)
  */
 export function GtagAfterMeta({ src }: { src: string }) {
   useEffect(() => {
     let done = false;
     let observer: PerformanceObserver | null = null;
-    const isPageView = (e: PerformanceEntry) => e.name.includes("facebook.com/tr") && e.name.includes("ev=PageView");
+    const isPageView = (e: PerformanceEntry) => e.name.includes("facebook.com/tr");
 
     const load = () => {
       if (done) return;
@@ -34,7 +39,7 @@ export function GtagAfterMeta({ src }: { src: string }) {
       document.head.appendChild(s);
     };
 
-    const timer = setTimeout(load, 2500);
+    const timer = setTimeout(load, 1500);
     if (performance.getEntriesByType("resource").some(isPageView)) {
       load();
     } else if (typeof PerformanceObserver !== "undefined") {

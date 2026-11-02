@@ -74,7 +74,7 @@ export const categoryPages: CategoryPage[] = [
       {
         h2: "What comes in the box",
         paras: [
-          "Every room diffuser ships with a 50 ml fragrance oil of your choice, free. The Drift, our car diffuser, is sold on its own. A 50 ml bottle lasts about 45–60 days, depending on the model and how strong you set it, and refills start at ₹899.",
+          "The Monolith, Pillar, Ember and Loom each ship with a 50 ml fragrance oil of your choice, free. The Pebble and the Drift are sold on their own. A 50 ml bottle lasts about 45–60 days, depending on the model and how strong you set it, and refills start at ₹899.",
           "The Monolith, Pillar and Ember work with the Quint Home companion app, which sets schedules and intensity from your phone. The app talks to the diffuser directly: no Wi-Fi, account or cloud is needed.",
         ],
       },
@@ -138,7 +138,7 @@ export const categoryPages: CategoryPage[] = [
       {
         h2: "How long a bottle lasts",
         paras: [
-          "A 50 ml bottle lasts about 45–60 days in a diffuser, depending on the model and how strong you set it. Every room diffuser ships with your first 50 ml free, so most people start with one scent and add a second to swap between seasons or rooms.",
+          "A 50 ml bottle lasts about 45–60 days in a diffuser, depending on the model and how strong you set it. The Monolith, Pillar, Ember and Loom ship with your first 50 ml free, so most people start with one scent and add a second to swap between seasons or rooms.",
         ],
       },
     ],

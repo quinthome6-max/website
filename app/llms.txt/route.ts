@@ -43,7 +43,7 @@ roughly 1–3% fragrance in humidified air.
 - Based in Mumbai, India. Ships within India only.
 - Prices are in Indian rupees (INR, ₹).
 - Shipping is free on orders of ${inr(FREE_SHIPPING_FROM)} and above; a flat ${inr(SHIPPING_FLAT)} applies below that.
-- Every room diffuser includes one complimentary 50 ml fragrance oil, chosen by the buyer on the product page. The Drift, the car and bathroom model, is sold on its own.
+- The Monolith, Pillar, Ember and Loom each include one complimentary 50 ml fragrance oil, chosen by the buyer on the product page. The Pebble (plug-in) and the Drift (car and bathroom) are sold on their own.
 - Suited to gifting: Diwali, corporate and housewarming (griha pravesh). See the Gifting section below for ideas by budget.
 - Fragrance oils are 50 ml, IFRA-compliant, at 70–90% fragrance concentration.
 - Catalogue size: ${diffusers.length} diffuser models, ${oils.length} fragrance oils and ${candles.length} soy candles.

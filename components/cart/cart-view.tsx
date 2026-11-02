@@ -60,7 +60,7 @@ export function CartView({ notice = null }: { notice?: string | null }) {
             Your bag is currently empty.
           </h1>
           <p className="mt-8 max-w-[44ch] text-[var(--text-base)] leading-[1.75] text-[color:var(--color-charcoal-soft)]">
-            Every Quint Home diffuser ships with the fragrance oil of your
+            Most Quint Home diffusers ship with the fragrance oil of your
             choice. Start with the range.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
