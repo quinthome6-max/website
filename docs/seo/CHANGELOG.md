@@ -20,6 +20,39 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-11-02 — Competitor keyword research and an 8-week plan of action
+- **Found** (sitemaps and live pages of 8 Indian brands, 2 Nov):
+  - **Azhara** (azhara.in) is the closest rival.
+    - Same hotel and waterless angle; waterless diffusers ₹6,999–₹25,499; free oil with every diffuser.
+    - 54 guides and 1,549 "[designer perfume] fragrance oil" pages.
+  - **The Aroma Aisle** has 32 buying-intent posts with "India" in the titles. Its main product link returns 404.
+  - **SOSA** has 41,021 mostly machine-made posts, including 34 hotel-chain pages.
+  - **InstaCuppa** owns "Best Aroma Diffuser for Home in India (2026)".
+  - **Isak** has 99 posts and owns "first rain" for perfume.
+  - **House of Aroma** has 116 posts and gifting categories.
+  - **Nyne** and **Fruik** have no SEO content.
+  - "Nynue" = Nyne and "Azara" = Azhara; "word fruik" is probably Fruik (thefruik.com), not yet confirmed.
+  - **Gaps:**
+    - room-size / large-room and hotel fragrance oil
+    - best oils for diffusers, and office / scent marketing
+    - gifts (housewarming, corporate under ₹5,000)
+    - diffuser vs candle and agarbatti vs diffuser
+    - pages by room, cordless, running cost and safety
+    - the "nebuliser" and "cold-air" names
+    - petrichor wording for First Rain (position 30.7)
+  - **Not to copy:** designer "dupe" oils, hotel brand names (trademark risk), mass AI content, fake city pages, years in URLs.
+- **Why:** the user asked for keyword research on Indian diffuser competitors and a plan of action.
+- **Where:**
+  - The plan: `marketing/seo/Quint-Home-Competitor-Keyword-Plan.pdf`, source `marketing/seo/src/competitors.html`.
+  - Raw sitemaps were kept in the session scratchpad, not the repo.
+- **Check / next:** for 3 Nov – 28 Dec:
+  - Two pages a week, starting with a Hotel Fragrance Oils page and "Diffuser for a Large Room".
+  - Week 1 quick fixes:
+    - retitle First Rain
+    - add "nebuliser" and "cold-air" to the waterless pages
+    - a footer Guides block
+  - Client decisions: free-shipping threshold, tester kit, founder byline, Search Console access.
+
 ## 2026-11-02 — Five buying guides that sell, with product cards and interlinking
 - **What:** five new journal pages, each built on a keyword gap from the 31 Oct research:
 
