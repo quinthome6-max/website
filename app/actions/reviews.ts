@@ -14,9 +14,6 @@ export interface ReviewInput {
   slug: string;
   rating: number;
   name: string;
-  email: string;
-  city: string;
-  title: string;
   body: string;
   /** Hidden field a person never sees; a bot fills it in. */
   website: string;
@@ -28,10 +25,9 @@ export interface ReviewResult {
   ok: boolean;
   message: string;
   /** Which field to point the shopper at, when one is the problem. */
-  field?: "rating" | "name" | "email" | "city" | "title" | "body";
+  field?: "rating" | "name" | "body";
 }
 
-const EMAIL = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
 // Control characters other than line breaks have no place in a review.
 const CONTROL = /[\u0000-\u0009\u000B\u000C\u000E-\u001F\u007F]/g;
 const clean = (v: unknown, max: number) =>
@@ -68,12 +64,6 @@ export async function submitReviewAction(input: ReviewInput): Promise<ReviewResu
   if (name.length < 2) {
     return { ok: false, field: "name", message: "Add your name as it should appear." };
   }
-  const email = clean(input.email, 200).toLowerCase();
-  if (!EMAIL.test(email)) {
-    return { ok: false, field: "email", message: "That email doesn’t look right." };
-  }
-  const city = clean(input.city, 40);
-  const title = clean(input.title, 80);
   const body = clean(input.body, 1500);
   if (body.length < 20) {
     return {
@@ -93,9 +83,6 @@ export async function submitReviewAction(input: ReviewInput): Promise<ReviewResu
         slug,
         rating: rating as Review["rating"],
         name,
-        email,
-        city,
-        title,
         body,
       },
       addressKey(ip)

@@ -55,9 +55,6 @@ export function WriteReview({ slug, productName }: { slug: string; productName: 
         slug,
         rating,
         name: String(data.get("name") ?? ""),
-        email: String(data.get("email") ?? ""),
-        city: String(data.get("city") ?? ""),
-        title: String(data.get("title") ?? ""),
         body: String(data.get("body") ?? ""),
         website: String(data.get("website") ?? ""),
         openedAt: openedAt.current,
@@ -189,30 +186,9 @@ export function WriteReview({ slug, productName }: { slug: string; productName: 
                 </div>
               </fieldset>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="block">
-                  <span className={label}>Name</span>
-                  <input name="name" autoComplete="name" maxLength={60} className={cn(field, bad("name"))} />
-                </label>
-                <label className="block">
-                  <span className={label}>City (optional)</span>
-                  <input name="city" autoComplete="address-level2" maxLength={40} className={field} />
-                </label>
-              </div>
               <label className="block">
-                <span className={label}>Email – never shown</span>
-                <input
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  inputMode="email"
-                  maxLength={200}
-                  className={cn(field, bad("email"))}
-                />
-              </label>
-              <label className="block">
-                <span className={label}>Headline (optional)</span>
-                <input name="title" maxLength={80} className={field} />
+                <span className={label}>Name</span>
+                <input name="name" autoComplete="name" maxLength={60} className={cn(field, bad("name"))} />
               </label>
               <label className="block">
                 <span className={label}>Your review</span>
@@ -245,8 +221,7 @@ export function WriteReview({ slug, productName }: { slug: string; productName: 
                 {pending ? "Sending…" : "Submit review"}
               </button>
               <p className="text-[0.72rem] leading-[1.5] text-[color:var(--color-charcoal-soft)]">
-                Your name and city appear with your review. Your email is only
-                used if we need to ask about your order.
+                Your name appears with your review.
               </p>
             </form>
           )}

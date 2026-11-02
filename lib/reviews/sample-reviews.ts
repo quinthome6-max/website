@@ -16,7 +16,6 @@ export const isSampleReview = (r: { id?: string }): boolean => Boolean(r.id?.sta
 
 const FIRST = ["Aarav", "Ananya", "Rohan", "Priya", "Vikram", "Neha", "Arjun", "Kavya", "Siddharth", "Ishita", "Karan", "Meera", "Aditya", "Pooja", "Rahul", "Sneha", "Nikhil", "Riya", "Varun", "Divya", "Harsh", "Tanvi", "Manish", "Shreya", "Kunal", "Anjali", "Yash", "Nisha", "Amit", "Radhika", "Deepak", "Swati", "Gaurav", "Aditi", "Sameer", "Kritika", "Vivek", "Pallavi", "Rajat", "Simran", "Akash", "Bhavna", "Tushar", "Lakshmi", "Arnav", "Zoya", "Farhan", "Gurpreet", "Harini", "Sanjay"];
 const LAST = ["Sharma", "Mehta", "Iyer", "Reddy", "Kapoor", "Nair", "Patel", "Desai", "Joshi", "Malhotra", "Gupta", "Rao", "Menon", "Bose", "Chatterjee", "Shah", "Kulkarni", "Agarwal", "Pillai", "Singh", "Verma", "Khanna", "Banerjee", "Bhatt", "Sethi", "Krishnan", "Saxena", "Shetty", "Kaur", "Ali"];
-const CITIES = ["Mumbai", "Pune", "Bengaluru", "Delhi", "Gurugram", "Hyderabad", "Chennai", "Kolkata", "Ahmedabad", "Jaipur", "Noida", "Chandigarh", "Kochi", "Indore", "Surat", "Lucknow", "Goa", "Nagpur", "Thane", "Navi Mumbai"];
 
 type Kind = "diffuser" | "oil" | "candle";
 type Text = [title: string, body: string];
@@ -57,17 +56,14 @@ export function buildSampleReviews(now = Date.now()): Review[] {
     for (let i = 0; i < n; i++) {
       const r = rnd();
       const rating = r < 0.68 ? 5 : r < 0.93 ? 4 : 3;
-      const [title, body] = pick(TEXT[p.kind][rating]);
+      const [, body] = pick(TEXT[p.kind][rating]);
       out.push({
         // Within the admin route's id check (6–24 characters).
         id: `${SAMPLE_PREFIX}${p.slug}-${i}`,
         slug: p.slug,
         rating,
-        title,
         body,
         name: `${pick(FIRST)} ${pick(LAST)[0]}.`,
-        city: pick(CITIES),
-        email: `sample+${p.slug}-${i}@example.com`,
         createdAt: new Date(now - int(1, 60) * 86_400_000 - int(0, 86_399) * 1000).toISOString(),
       });
     }

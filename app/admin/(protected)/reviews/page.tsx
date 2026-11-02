@@ -60,7 +60,6 @@ export default async function ReviewsAdminPage({
       <h1 className="font-[family-name:var(--font-serif)] text-[1.8rem] leading-tight">Reviews</h1>
       <p className="mt-2 max-w-[60ch] text-[0.86rem] text-[color:var(--color-charcoal-soft)]">
         New reviews wait here and appear on their product page only once approved.
-        The reviewer&rsquo;s email is for you only and is never shown.
       </p>
 
       {done && NOTICES[done] && (
@@ -147,7 +146,7 @@ function Row({ review: r, pending = false }: { review: Review; pending?: boolean
         <p className="mt-2 max-w-[75ch] whitespace-pre-line text-[0.88rem] leading-[1.6]">{r.body}</p>
         <p className="mt-2 text-[0.75rem] text-[color:var(--color-charcoal-soft)]">
           {r.name}
-          {r.city ? ` · ${r.city}` : ""} · <a href={`mailto:${r.email}`} className="underline-offset-4 hover:underline">{r.email}</a>
+          {r.city ? ` · ${r.city}` : ""}
         </p>
       </div>
       <form action="/api/admin/reviews" method="post" className="flex items-start gap-2">

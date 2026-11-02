@@ -29,12 +29,13 @@ export interface Review {
   id: string;
   slug: string;
   rating: 1 | 2 | 3 | 4 | 5;
-  title: string;
+  /** Older reviews have a headline and city; new ones are name and text only. */
+  title?: string;
   body: string;
   name: string;
-  city: string;
-  /** For staff to reach the reviewer. Never rendered on the storefront. */
-  email: string;
+  city?: string;
+  /** Collected on older reviews only. Never shown, on the site or in admin. */
+  email?: string;
   createdAt: string;
 }
 
