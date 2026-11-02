@@ -29,6 +29,35 @@ import {
   ORDER_EMAIL_REPLY_TO,
 } from "@/lib/email/config";
 
+/**
+ * The email goes out within the 60 s the payment route is given (settle
+ * included), so no step may take the rest of it. The PDF gets 20 s; past
+ * that the email goes without the invoice, tagged for staff to send.
+ */
+const PDF_TIME_LIMIT_MS = 20_000;
+
+function withTimeout<T>(work: Promise<T>, ms: number, what: string): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const limit = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`${what} took longer than ${ms / 1000} s`)), ms);
+  });
+  return Promise.race([work, limit]).finally(() => clearTimeout(timer));
+}
+
+/**
+ * The order, read back from Shopify. Asked for a moment after it is written,
+ * Shopify can answer "no such order" for a few seconds, so a miss is tried
+ * again twice before it counts.
+ */
+async function findInvoice(orderNumber: number): Promise<Invoice | null> {
+  for (const wait of [0, 1500, 3000]) {
+    if (wait) await new Promise((r) => setTimeout(r, wait));
+    const inv = await getInvoice(orderNumber);
+    if (inv) return inv;
+  }
+  return null;
+}
+
 const C = {
   ivory: "#FAF8F3",
   stardust: "#EEE4D8",
@@ -260,10 +289,17 @@ export async function sendOrderEmail(
 ): Promise<OrderEmailResult> {
   let inv: Invoice | null = null;
   try {
-    inv = await getInvoice(orderNumber);
-    if (!inv) return { sent: false, reason: "order not found" };
+    inv = await findInvoice(orderNumber);
+    if (!inv) {
+      // Logged, not silent: this used to end here without a trace.
+      console.error("[order-email] NOT SENT — order not found in Shopify; send it from /admin", { orderNumber });
+      return { sent: false, reason: "order not found" };
+    }
     const to = inv.customer.email || inv.billTo.email;
-    if (!to) return { sent: false, reason: "the order has no email address" };
+    if (!to) {
+      console.error("[order-email] NOT SENT — the order has no email address", { order: inv.orderName });
+      return { sent: false, reason: "the order has no email address" };
+    }
 
     const issues = invoiceIssues(inv);
     let attachment: { filename: string; content: Buffer } | null = null;
@@ -273,7 +309,11 @@ export async function sendOrderEmail(
           filename: `${invoiceFilename(inv)}.pdf`,
           // At full size the invoice runs a few lines onto a second sheet;
           // at 80% an order of up to three lines is one A4 page.
-          content: await htmlToPdf(invoiceHtml(inv), { scale: 0.8 }),
+          content: await withTimeout(
+            htmlToPdf(invoiceHtml(inv), { scale: 0.8 }),
+            PDF_TIME_LIMIT_MS,
+            "the invoice PDF"
+          ),
         };
       } catch (e) {
         issues.push(`PDF could not be made: ${e instanceof Error ? e.message : String(e)}`);
