@@ -3,6 +3,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { currentStaffShop } from "@/lib/admin/session";
 import {
   addSampleReviews,
+  approveAllReviews,
   approveReview,
   deleteReview,
   isProductSlug,
@@ -28,6 +29,21 @@ export async function POST(request: Request): Promise<NextResponse> {
   const slug = String(form.get("slug") ?? "");
   const back = (done: string) =>
     NextResponse.redirect(new URL(`/admin/reviews?done=${done}`, request.url), 303);
+
+  // Every pending customer review at once (sample reviews are skipped).
+  if (action === "approve-all") {
+    try {
+      const slugs = await approveAllReviews();
+      for (const s of slugs) {
+        revalidateTag(reviewsTag(s), { expire: 0 });
+        revalidatePath(`/range/${s}`);
+      }
+      return back(slugs.length ? "approved-all" : "none-to-approve");
+    } catch (e) {
+      console.error("[reviews] approve all failed", { error: e instanceof Error ? e.message : String(e) });
+      return back("failed");
+    }
+  }
 
   // Sample reviews (lib/reviews/sample-reviews.ts): load them as pending, or
   // take every one away again.

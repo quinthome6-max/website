@@ -301,3 +301,29 @@ export async function removeSampleReviews(): Promise<string[]> {
   }
   return [...new Set(fromSite.map((r) => r.slug))];
 }
+
+/**
+ * Approves every pending customer review at once. Sample reviews are skipped:
+ * those go on the site one by one, if at all. Returns the slugs touched.
+ */
+export async function approveAllReviews(): Promise<string[]> {
+  const { pending } = await reviewsForAdmin();
+  const real = pending.filter((r) => !isSampleReview(r));
+  if (!real.length) return [];
+  if (useFile) {
+    const db = await readFileDb();
+    for (const r of real) {
+      const raw = db.pending[r.id];
+      if (!raw) continue;
+      (db.ok[r.slug] ??= {})[r.id] = raw;
+      delete db.pending[r.id];
+    }
+    await writeFileDb(db);
+  } else {
+    await redisPipeline([
+      ...real.map((r) => ["HSET", okKey(r.slug), r.id, JSON.stringify(r)]),
+      ["HDEL", PENDING, ...real.map((r) => r.id)],
+    ]);
+  }
+  return [...new Set(real.map((r) => r.slug))];
+}

@@ -18,6 +18,8 @@ const NOTICES: Record<string, string> = {
   missing: "That review was already handled.",
   "samples-added": "Sample reviews added under Waiting for approval. Nothing shows on the site unless approved.",
   "samples-removed": "All sample reviews removed.",
+  "approved-all": "All waiting customer reviews approved – they're on their product pages now.",
+  "none-to-approve": "No customer reviews were waiting. Sample reviews aren't approved in bulk.",
 };
 
 const when = (iso: string) =>
@@ -80,6 +82,7 @@ export default async function ReviewsAdminPage({
 
       {data && (
         <>
+          <ApproveAll count={data.pending.filter((r) => !isSampleReview(r)).length} />
           <Group title={`Waiting for approval (${data.pending.length})`} empty="Nothing waiting.">
             {data.pending.map((r) => (
               <Row key={r.id} review={r} pending />
@@ -202,5 +205,24 @@ function SampleReviews({ pending, approved }: { pending: number; approved: numbe
         </button>
       </form>
     </section>
+  );
+}
+
+/** Approves every waiting customer review in one go; sample reviews are skipped. */
+function ApproveAll({ count }: { count: number }) {
+  if (!count) return null;
+  return (
+    <form action="/api/admin/reviews" method="post" className="mt-8 flex flex-wrap items-center gap-3">
+      <button
+        name="action"
+        value="approve-all"
+        className="h-9 bg-[color:var(--color-charcoal)] px-4 text-[0.62rem] uppercase tracking-[0.22em] text-[color:var(--color-ivory)] transition-colors hover:bg-[color:var(--color-clay-deep)]"
+      >
+        Approve all ({count})
+      </button>
+      <span className="text-[0.78rem] text-[color:var(--color-charcoal-soft)]">
+        Every waiting customer review. Sample reviews are left as they are.
+      </span>
+    </form>
   );
 }
