@@ -7,6 +7,9 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { journal, getJournalPost, journalNewestFirst } from "@/lib/data/journal";
 import { FadeUp } from "@/components/motion/fade-up";
+import { ShopBlock, type ShopCard } from "@/components/journal/shop-block";
+import { parseShopBlock, shopItem } from "@/lib/data/shop-items";
+import { getCommerceMap, pricePair, shopifyHandle } from "@/lib/shopify/commerce";
 import { OG_LOCALE } from "@/lib/seo";
 import {
   articleJsonLd,
@@ -69,9 +72,13 @@ export async function generateMetadata({
 type Block =
   | { kind: "h2"; text: string; id: string }
   | { kind: "img"; alt: string; src: string }
+  | { kind: "shop"; slugs: string[]; label?: string }
   | { kind: "p"; text: string };
 
 function toBlock(raw: string): Block {
+  // "[[shop: monolith, loom | Label]]" on its own: product cards, priced live.
+  const shop = parseShopBlock(raw);
+  if (shop) return { kind: "shop", ...shop };
   if (raw.startsWith("## ")) {
     const text = raw.slice(3).trim();
     return { kind: "h2", text, id: anchorFor(text) };
@@ -164,6 +171,16 @@ export default async function JournalPostPage({
 
   const blocks = post.body.map(toBlock);
   const firstParagraph = blocks.findIndex((b) => b.kind === "p");
+
+  // Product cards are priced and stocked from Shopify, like the range pages.
+  const commerce = blocks.some((b) => b.kind === "shop") ? await getCommerceMap() : {};
+  const cardsFor = (slugs: string[]): ShopCard[] =>
+    slugs.flatMap((s) => {
+      const item = shopItem(s);
+      if (!item) return [];
+      const live = commerce[shopifyHandle(item.name)];
+      return [{ ...item, ...pricePair(live, item.priceINR, item.listPriceINR), soldOut: live ? !live.available : false }];
+    });
 
   return (
     <article className="bg-[color:var(--color-white)]">
@@ -324,6 +341,13 @@ export default async function JournalPostPage({
                         >
                           {block.text}
                         </h2>
+                      </FadeUp>
+                    );
+                  }
+                  if (block.kind === "shop") {
+                    return (
+                      <FadeUp key={i} delay={delay}>
+                        <ShopBlock label={block.label} cards={cardsFor(block.slugs)} />
                       </FadeUp>
                     );
                   }

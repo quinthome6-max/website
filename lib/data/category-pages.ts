@@ -102,6 +102,10 @@ export const categoryPages: CategoryPage[] = [
       },
     ],
     related: [
+      { href: "/journal/best-aroma-diffuser-for-home-india", label: "How to choose a diffuser" },
+      { href: "/journal/waterless-diffuser-vs-reed-diffuser", label: "Waterless vs reed diffuser" },
+      { href: "/journal/how-to-use-a-waterless-diffuser", label: "How to use a waterless diffuser" },
+      { href: "/journal/car-diffuser-vs-car-perfume", label: "Car diffuser vs car perfume" },
       { href: "/journal/what-is-a-waterless-diffuser", label: "Why we don't use water" },
       { href: "/range/fragrance-oils", label: "The fragrance oils" },
       { href: "/find-your-scent", label: "Find your scent" },
@@ -161,7 +165,9 @@ export const categoryPages: CategoryPage[] = [
       },
     ],
     related: [
+      { href: "/journal/fragrance-oil-vs-essential-oil", label: "Fragrance oil vs essential oil" },
       { href: "/journal/the-architecture-of-scent", label: "How to read a scent profile" },
+      { href: "/journal/how-to-make-your-home-smell-like-a-luxury-hotel", label: "Make your home smell like a hotel" },
       { href: "/find-your-scent", label: "Find your scent" },
       { href: "/range/waterless-diffusers", label: "The diffusers" },
       { href: "/faq", label: "All questions" },
@@ -223,6 +229,7 @@ export const categoryPages: CategoryPage[] = [
       { href: "/range/waterless-diffusers", label: "The diffusers" },
       { href: "/range/fragrance-oils", label: "The fragrance oils" },
       { href: "/journal/diwali-gifting-guide", label: "Diwali gifting guide" },
+      { href: "/journal/best-aroma-diffuser-for-home-india", label: "How to choose a diffuser" },
     ],
   },
 ];

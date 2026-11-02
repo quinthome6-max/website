@@ -20,6 +20,41 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-11-02 — Five buying guides that sell, with product cards and interlinking
+- **What:** five new journal pages, each built on a keyword gap from the 31 Oct research:
+
+  | Page | Target searches |
+  |---|---|
+  | `/journal/best-aroma-diffuser-for-home-india` | best aroma diffuser for home in India, aroma diffuser price in India, for large room / bedroom |
+  | `/journal/waterless-diffuser-vs-reed-diffuser` | waterless vs reed diffuser, reed vs aroma / electric diffuser |
+  | `/journal/fragrance-oil-vs-essential-oil` | fragrance oil vs essential oil, can you use fragrance oil in a diffuser, hotel fragrance oil |
+  | `/journal/how-to-use-a-waterless-diffuser` | how to use a waterless diffuser, how long it lasts, refills, placement |
+  | `/journal/car-diffuser-vs-car-perfume` | car diffuser India, car perfume vs car diffuser, best car perfume India |
+
+  - **How each page is built:**
+    - It answers its question in the first paragraph.
+    - Question-style H2s throughout.
+    - A closing FAQ, emitted as FAQPage markup.
+    - Two or three "Shop" blocks of product cards.
+  - **Shop blocks:** a new journal block, `[[shop: slug, slug | label]]`, shows picture, type, the deciding fact, live Shopify price with strikethrough, a "Free 50 ml oil" or "Hotel Credential" badge beside the text (never over the photo), and Shop now / Sold out.
+  - **Interlinking:**
+    - The new pages link to each other, to the category and product pages, and to the scent finder.
+    - The waterless vs ultrasonic, luxury hotel and notes articles now link to the new pages.
+    - The waterless diffusers, fragrance oils and candles category pages list them under "read next".
+  - **Facts:** everything comes from lib/data (manufacturer coverage, live prices, 45–60 days a bottle, IFRA, the Pebble's 8/16-hour cycle and 16-day shut-off). There are no claims about other brands. The Drift's bottle size isn't published, so no figure is given for how long it lasts.
+- **Why:** almost all organic clicks were brand searches, and these phrases came from Google autocomplete (India). The user asked for five pages that bring traffic and sell like ads, with interlinking.
+- **Where:**
+  - Content: `lib/data/journal-guides.ts`, `lib/data/journal.ts`, `lib/data/category-pages.ts`
+  - Shop blocks: `lib/data/shop-items.ts`, `components/journal/shop-block.tsx`, `app/journal/[slug]/page.tsx`
+  - Feeds and markup: `app/llms-full.txt/route.ts` (shop blocks become product links), `lib/structured-data.ts` (word count skips them)
+- **Check:**
+  - **Local dev:** titles are 52–58 characters and descriptions 142–155. Each page has BlogPosting + FAQPage + BreadcrumbList markup and 5–6 FAQ questions. All 64 internal links return 200.
+  - **Product cards:** live prices match the shop. Checked on desktop and phone, with no sideways scroll.
+  - **Feeds and build:** the sitemap lists 11 articles, llms-full has no raw tokens, and the production build passes.
+  - **Next:**
+    - Submit the five URLs through IndexNow and request indexing in Search Console.
+    - Watch impressions for the target phrases over 4–6 weeks.
+
 ## 2026-11-02 — Specs slide moved to second place in product galleries
 - **What:**
   - **Diffuser and oil pages:** the gallery now runs first photo, Specs, the other photos, then the key-features sheet. The Specs used to follow all the photos.

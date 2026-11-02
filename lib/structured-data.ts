@@ -246,7 +246,7 @@ export function articleJsonLd(post: {
 }): Record<string, unknown> {
   const url = abs(`/journal/${post.slug}`);
   const words = post.body
-    .filter((b) => !b.startsWith("!["))
+    .filter((b) => !b.startsWith("![") && !b.startsWith("[[shop:"))
     .join(" ")
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
     .split(/\s+/)

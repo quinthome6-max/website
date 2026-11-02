@@ -1,4 +1,5 @@
 import type { JournalPost } from "../types";
+import { guides } from "./journal-guides";
 
 export const journal: JournalPost[] = [
   {
@@ -60,7 +61,7 @@ export const journal: JournalPost[] = [
       "The Monolith, Pillar and Ember work with the Quint Home companion app for iOS and Android, which sets schedules and intensity from your phone. It talks to the diffuser directly, without Wi-Fi or an account. The Loom is set at its knob, and the Pebble and the Drift have no app. You can compare all six in [our waterless diffusers](/range/waterless-diffusers).",
       "## So, waterless or ultrasonic?",
       "If you want a hint of scent in a dry room at the lowest price, an ultrasonic diffuser will do. If you want the room to smell of a fragrance you chose, at full strength and on a schedule, with no water to manage and nothing turning damp in the monsoon, choose a diffuser without water.",
-      "That is why we make only waterless diffusers. The oil reaches the room as itself, not diluted in a tank of water.",
+      "That is why we make only waterless diffusers. The oil reaches the room as itself, not diluted in a tank of water. Weighing up a reed diffuser instead? We compare the two in [waterless diffuser vs reed diffuser](/journal/waterless-diffuser-vs-reed-diffuser), and [our buying guide](/journal/best-aroma-diffuser-for-home-india) matches each model to a room.",
       "## Questions",
       "**Does a waterless diffuser need any water?**",
       "No. It runs on fragrance oil alone, atomised by cold air. There is no tank to fill, and nothing is heated.",
@@ -69,7 +70,7 @@ export const journal: JournalPost[] = [
       "**How long does a 50 ml oil last?**",
       "About 45–60 days, depending on the model and the intensity. Most models average around 50 days at moderate settings.",
       "**Can I use the oils from my old ultrasonic diffuser?**",
-      "No. Use only Quint Home oils, which are undiluted, high-concentration blends made for cold-air nebulisation. Diluted or third-party oils can clog the nebuliser and will void the warranty.",
+      "No. Use only Quint Home oils, which are undiluted, high-concentration blends made for cold-air nebulisation. Diluted or third-party oils can clog the nebuliser and will void the warranty. More in [fragrance oil vs essential oil](/journal/fragrance-oil-vs-essential-oil).",
       "**Is a waterless diffuser safe around children and pets?**",
       "There is no flame and nothing is heated, and every Quint Home oil is composed to IFRA standards. Used as directed, the diffusers are safe around children and pets.",
       "**How quickly will a diffuser reach me?**",
@@ -95,6 +96,7 @@ export const journal: JournalPost[] = [
       "Heart notes carry the room. These are the floral, fruity, and softly resinous notes that hold for several hours, and they are where the personality of the fragrance lives.",
       "Base notes give the scent its weight and its memory. Woods, musks, ambers, and resins settle in slowly and stay the longest. They are what you still notice on the cushions the next morning.",
       "So read a scent profile from the top down. It tells you how the room will feel at minute one, at hour three, and the morning after.",
+      "Those three layers are also what separates a composed fragrance oil from a single essential oil, which smells of one plant and fades as its top notes go. We set the two side by side in [fragrance oil vs essential oil](/journal/fragrance-oil-vs-essential-oil).",
     ],
     cover: "/images/vibe/vibe-15.webp",
     publishedAt: "2026-04-10",
@@ -185,9 +187,9 @@ export const journal: JournalPost[] = [
       "## How big a diffuser does each room need?",
       "Size it to the room, not the flat. Coverage figures are the manufacturer's and refer to floor area, so measure the room you want to scent, and remember that walls and closed doors stop the scent where they stop you.",
       "For a large living room or an open-plan living and dining space, the Monolith covers up to 1,075 sq ft. [The Loom](/range/loom) covers up to 590 sq ft, and the Pillar and the Ember up to 540 sq ft each, enough for a separate living room or a main bedroom. The Pebble plugs into a wall socket and covers 161–250 sq ft, the right size for a passage or a guest bathroom. The Drift is made for the car.",
-      "Think in zones. In a 2 BHK, one diffuser in the living room by the door and a Pebble in the passage is a sensible start; an open-plan 3 BHK is where the Monolith earns its place. Two diffusers set low feel more like a hotel than one large machine run on full. The [waterless diffusers](/range/waterless-diffusers) page sets the range out side by side.",
+      "Think in zones. In a 2 BHK, one diffuser in the living room by the door and a Pebble in the passage is a sensible start; an open-plan 3 BHK is where the Monolith earns its place. Two diffusers set low feel more like a hotel than one large machine run on full. The [waterless diffusers](/range/waterless-diffusers) page sets the range out side by side, and [our buying guide](/journal/best-aroma-diffuser-for-home-india) matches each model to a room.",
       "## When should the diffuser run?",
-      "Schedule it for arrivals. At home those fall in the morning, when the house wakes up, and in the evening, when everyone comes back from work and school. Set a slot for each at a low intensity, and turn it up a step only if, after a few days, you can't smell it as you walk in.",
+      "Schedule it for arrivals. At home those fall in the morning, when the house wakes up, and in the evening, when everyone comes back from work and school. Set a slot for each at a low intensity, and turn it up a step only if, after a few days, you can't smell it as you walk in. The full routine is in [how to use a waterless diffuser](/journal/how-to-use-a-waterless-diffuser).",
       "The Monolith, Pillar and Ember pair with the Quint Home companion app, where you set the schedule and intensity once. The diffuser then keeps to it on its own. The Loom is set by hand at its knob. The Pebble has no app: it runs for 8 hours, sleeps for 16 and repeats that cycle daily, so switch it on at the hour you want the scent to begin.",
       "The seasons change the brief a little. In the monsoon, with the windows shut and the air already heavy, a waterless diffuser adds no moisture of its own. Over Diwali, with guests every evening, add a second evening slot or a step more intensity for the festive weeks, then go back to your usual setting.",
       "## Should the bedroom smell the same as the living room?",
@@ -202,7 +204,7 @@ export const journal: JournalPost[] = [
       "**How long does a bottle last?**",
       "About 45–60 days for a 50 ml bottle, depending on the diffuser and the intensity. Most models average around 50 days at moderate settings, and a gentle schedule keeps you towards the longer end.",
       "**Can I use other oils in the diffuser?**",
-      "Use only Quint Home oils. They are undiluted blends made for cold-air nebulisation, and thinner or water-based oils from elsewhere can clog the nebuliser and will void the warranty.",
+      "Use only Quint Home oils. They are undiluted blends made for cold-air nebulisation, and thinner or water-based oils from elsewhere can clog the nebuliser and will void the warranty. Why, in [fragrance oil vs essential oil](/journal/fragrance-oil-vs-essential-oil).",
       "**Do I need Wi-Fi to set a schedule?**",
       "No. The app talks to the diffuser directly, and the schedule runs on the device itself, without Wi-Fi or an account.",
       "**How soon will an order reach me?**",
@@ -259,6 +261,8 @@ export const journal: JournalPost[] = [
     readMinutes: 6,
     keywords: ["Diwali fragrance", "Diwali home fragrance", "pooja room diffuser", "festive home scent", "waterless diffuser"],
   },
+  // Buying guides and explainers, November 2026 (lib/data/journal-guides.ts).
+  ...guides,
 ];
 
 /**

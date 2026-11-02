@@ -2,6 +2,7 @@ import { diffusers } from "@/lib/data/diffusers";
 import { oils } from "@/lib/data/oils";
 import { candles, CANDLE_CARE, CANDLE_MAKE } from "@/lib/data/candles";
 import { journal } from "@/lib/data/journal";
+import { parseShopBlock, shopItem } from "@/lib/data/shop-items";
 import { getCommerceMap } from "@/lib/shopify/commerce";
 import { FREE_SHIPPING_FROM, SHIPPING_FLAT } from "@/lib/checkout-config";
 import { BRAND, SUMMARY, abs, inr, priceOf } from "@/lib/seo";
@@ -88,7 +89,7 @@ Category: ${a.eyebrow}
 Published: ${a.publishedAt}
 Reading time: ${a.readMinutes} minutes
 
-${a.body.join("\n\n")}`
+${a.body.map(asMarkdown).join("\n\n")}`
   );
 
   const body = `# ${BRAND} — full catalogue
@@ -145,4 +146,12 @@ ${articleBlocks.join("\n\n")}
       "Cache-Control": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400",
     },
   });
+}
+
+/** A journal block as plain markdown: product cards become a list of links. */
+function asMarkdown(block: string): string {
+  const shop = parseShopBlock(block);
+  if (!shop) return block;
+  const items = shop.slugs.map(shopItem).filter((i) => i !== null);
+  return items.map((i) => `- [${i.name}](${abs(`/range/${i.slug}`)}): ${i.kind}, ${i.line}`).join("\n");
 }
