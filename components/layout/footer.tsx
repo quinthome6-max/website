@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Monogram } from "@/components/brand/logo";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
+import { SUPPLIER } from "@/lib/admin/supplier";
 
 const cols = [
   {
@@ -79,6 +80,17 @@ export function Footer() {
               >
                 hello@quinthome.in
               </a>
+            </p>
+            {/* Who runs the shop and how to reach them, in plain view: shoppers
+                and Google Merchant Center both look for it. */}
+            <p className="mt-2 text-[0.78rem] tracking-[0.06em] text-[color:var(--color-charcoal-soft)]">
+              <a href={`tel:${SUPPLIER.phone.replace(/\s/g, "")}`} className="underline-offset-4 hover:underline">
+                {SUPPLIER.phone}
+              </a>{" "}
+              · call or WhatsApp
+            </p>
+            <p className="mt-2 text-[0.78rem] leading-[1.6] tracking-[0.06em] text-[color:var(--color-charcoal-soft)]">
+              {SUPPLIER.legalName} · {SUPPLIER.city}, India
             </p>
             <p className="mt-3 text-[0.78rem] tracking-[0.06em] text-[color:var(--color-charcoal-soft)]">
               <a

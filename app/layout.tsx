@@ -19,6 +19,16 @@ import { payuConfigured } from "@/lib/payu/client";
 import { shopifyAdminConfigured } from "@/lib/shopify/admin";
 import { DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/seo";
 
+/**
+ * Google ownership codes: the "content" value of each Google tool's
+ * google-site-verification tag. Merchant Center (account 5876359718) verifies
+ * quinthome.in with one; paste its code here. GOOGLE_SITE_VERIFICATION in
+ * Vercel still works and is added alongside.
+ */
+const GOOGLE_VERIFICATION: string[] = [
+  ...(process.env.GOOGLE_SITE_VERIFICATION ? [process.env.GOOGLE_SITE_VERIFICATION] : []),
+];
+
 export const metadata: Metadata = {
   title: {
     default: "Quint Home",
@@ -31,9 +41,7 @@ export const metadata: Metadata = {
   // Vercel env vars (the "content" value of each tool's meta tag). Not needed
   // when the domain is verified by DNS instead. See docs/seo/.
   verification: {
-    ...(process.env.GOOGLE_SITE_VERIFICATION
-      ? { google: process.env.GOOGLE_SITE_VERIFICATION }
-      : {}),
+    ...(GOOGLE_VERIFICATION.length ? { google: GOOGLE_VERIFICATION } : {}),
     ...(process.env.BING_SITE_VERIFICATION
       ? { other: { "msvalidate.01": process.env.BING_SITE_VERIFICATION } }
       : {}),
@@ -86,7 +94,7 @@ export default function RootLayout({
               "@graph": [
                 {
                   // OnlineStore is Google's type for a shop that sells online
-                  // only. City and PIN only: the registered address is a home.
+                  // only. City only: the registered address is a home.
                   "@type": "OnlineStore",
                   "@id": "https://www.quinthome.in/#organization",
                   name: "Quint Home",
@@ -112,7 +120,6 @@ export default function RootLayout({
                     "@type": "PostalAddress",
                     addressLocality: "Mumbai",
                     addressRegion: "Maharashtra",
-                    postalCode: "400019",
                     addressCountry: "IN",
                   },
                   description:

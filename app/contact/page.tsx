@@ -1,11 +1,12 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { FadeUp } from "@/components/motion/fade-up";
+import { SUPPLIER } from "@/lib/admin/supplier";
 
 export const metadata: Metadata = {
   title: "Contact Us: WhatsApp, Email & Orders",
   description:
-    "Questions about a diffuser, an oil or an order? Reach Quint Home on WhatsApp or at hello@quinthome.in. Based in Mumbai, shipping across India.",
+    "Questions about a diffuser, an oil or an order? Call or WhatsApp Quint Home on +91 98196 16668, or write to hello@quinthome.in. Based in Mumbai, shipping across India.",
   alternates: { canonical: "/contact" },
 };
 
@@ -90,7 +91,7 @@ export default function ContactPage() {
                 className="group flex flex-col justify-between gap-12 bg-[color:var(--color-white)] p-8 transition-colors duration-500 hover:bg-[color:var(--color-stardust-soft)] md:min-h-[360px]"
               >
                 <p className="text-[0.62rem] uppercase tracking-[0.42em] text-[color:var(--color-charcoal-soft)]">
-                  № 02 · WhatsApp
+                  № 02 · Phone &amp; WhatsApp
                 </p>
                 <div>
                   <p
@@ -103,7 +104,10 @@ export default function ContactPage() {
                       fontWeight: 400,
                     }}
                   >
-                    Chat on WhatsApp
+                    {SUPPLIER.phone}
+                  </p>
+                  <p className="mt-3 max-w-[36ch] text-[0.92rem] leading-[1.65] text-[color:var(--color-charcoal-soft)]">
+                    Call, or chat with us on WhatsApp.
                   </p>
                   <p className="mt-7 text-[0.6rem] uppercase tracking-[0.32em] text-[color:var(--color-charcoal-soft)] transition-transform duration-500 group-hover:translate-x-1">
                     Open WhatsApp →
@@ -144,6 +148,34 @@ export default function ContactPage() {
               </Link>
             </FadeUp>
           </div>
+
+          {/* The business behind the shop, as on our invoices. */}
+          <FadeUp>
+            <dl className="mt-10 grid gap-6 border-t border-[color:var(--color-rule)] pt-8 text-[0.9rem] leading-[1.6] sm:grid-cols-2 md:grid-cols-4">
+              <div>
+                <dt className="text-[0.6rem] uppercase tracking-[0.32em] text-[color:var(--color-charcoal-soft)]">Business</dt>
+                <dd className="mt-2">Quint Home is a brand of {SUPPLIER.legalName}</dd>
+              </div>
+              <div>
+                <dt className="text-[0.6rem] uppercase tracking-[0.32em] text-[color:var(--color-charcoal-soft)]">Based in</dt>
+                <dd className="mt-2">{SUPPLIER.city}, India</dd>
+              </div>
+              <div>
+                <dt className="text-[0.6rem] uppercase tracking-[0.32em] text-[color:var(--color-charcoal-soft)]">Phone</dt>
+                <dd className="mt-2">
+                  <a href={`tel:${SUPPLIER.phone.replace(/\s/g, "")}`} className="underline-offset-4 hover:underline">{SUPPLIER.phone}</a>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-[0.6rem] uppercase tracking-[0.32em] text-[color:var(--color-charcoal-soft)]">GSTIN</dt>
+                <dd className="mt-2 tabular-nums">{SUPPLIER.gstin}</dd>
+              </div>
+            </dl>
+            <p className="mt-6 text-[0.86rem] text-[color:var(--color-charcoal-soft)]">
+              Orders ship across India from Mumbai. Returns and exchanges: see{" "}
+              <Link href="/shipping" className="underline underline-offset-4">Shipping &amp; Returns</Link>.
+            </p>
+          </FadeUp>
         </div>
       </section>
 

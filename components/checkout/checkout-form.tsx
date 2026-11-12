@@ -411,7 +411,7 @@ export function CheckoutForm({
                 required
                 autoComplete="shipping postal-code"
                 pattern="[0-9]{6}"
-                placeholder="400019"
+                placeholder="400001"
                 inputMode="numeric"
                 maxLength={6}
                 value={pin}

@@ -93,6 +93,8 @@ async function diffuserItems(d: Diffuser): Promise<FeedItem[]> {
         id: String(numericId(v.id) ?? v.id),
         groupId: d.slug,
         title: `${base.title} — ${v.title}`,
+        // Opens the page on this finish (components/product/diffuser-hero.tsx).
+        link: color ? `${base.link}?finish=${encodeURIComponent(color.name.toLowerCase())}` : base.link,
         image: abs(color?.image ?? d.image),
         extraImages: (color?.gallery ?? d.gallery).map(abs),
         available: v.available,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { FadeUp } from "@/components/motion/fade-up";
 import { Breadcrumbs, CATEGORY_CRUMB } from "@/components/layout/breadcrumbs";
 import { Monogram } from "@/components/brand/logo";
@@ -21,6 +21,9 @@ import {
   type ShopifyCommerce,
 } from "@/lib/shopify/commerce";
 import { COMPLIMENTARY_OIL, giftVariantFor } from "@/lib/cart-gift";
+
+/** The URL doesn't change while the page is open, so there is nothing to watch. */
+const noSubscription = () => () => {};
 
 /**
  * Diffuser PDP – images on the left (sticky), and a single right column. The
@@ -43,7 +46,21 @@ export function DiffuserHero({
   commerceMap?: Record<string, ShopifyCommerce>;
 }) {
   const colors = product.colors;
-  const [active, setActive] = useState(0);
+
+  // "?finish=black" opens on that finish: the Merchant Center listing for
+  // each finish links here, and Google checks that the page matches it. Read
+  // on the client only (the server renders the first finish), so the page
+  // itself stays static. A finish the shopper picks always wins.
+  const finishParam = useSyncExternalStore(
+    noSubscription,
+    () => new URLSearchParams(window.location.search).get("finish"),
+    () => null
+  );
+  const fromUrl = finishParam
+    ? (colors?.findIndex((c) => c.name.toLowerCase() === finishParam.toLowerCase()) ?? -1)
+    : -1;
+  const [picked, setActive] = useState<number | null>(null);
+  const active = picked ?? (fromUrl > 0 ? fromUrl : 0);
   const color = colors?.[active];
 
   // Match the Shopify variant to the selected finish (or the sole variant).

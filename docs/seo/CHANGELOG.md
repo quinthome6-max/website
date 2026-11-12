@@ -20,6 +20,37 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-11-12 — Merchant Center: contact details, per-finish links, a place for the verification code
+- **Found:** the user set up Google Merchant Center (account 5876359718), but products weren't showing.
+  - **Fine from outside:**
+    - The feed `/feeds/products.xml` has 18 items, with every required field and prices and stock that match the site.
+    - Googlebot, Storebot-Google and Googlebot-Image all get the pages, feed and images (200), and robots.txt allows them.
+    - Shipping, returns, privacy and terms are live.
+  - **Gaps:**
+    - The site carries no google-site-verification tag, so Merchant Center can't verify and claim it unless verification goes through Search Console or DNS.
+    - The contact page showed only email and WhatsApp, a common reason for "misrepresentation" holds on new accounts.
+    - The black Monolith's feed link opened the gold page.
+- **What changed:**
+  - **Contact details:**
+    - The contact page shows the phone number (+91 98196 16668), "Quint Home is a brand of Rusera Lifestyle", "Mumbai, India" and the GSTIN.
+    - The footer shows the phone and "Rusera Lifestyle · Mumbai, India".
+    - Per the user, there is no street address or PIN anywhere (it is a home): the PIN is removed from the OnlineStore markup, and the checkout PIN placeholder is now 400001.
+  - **Per-finish links:** feed links for finishes carry `?finish=gold` / `?finish=black`, and the product page opens on that finish (read on the client, so the page stays static).
+  - **Verification code:** `GOOGLE_VERIFICATION` in `app/layout.tsx` takes Merchant Center's google-site-verification code; the Vercel env var still works.
+- **Why:** to get products approved and showing in Google Shopping and free listings.
+- **Where:** `app/contact/page.tsx`, `components/layout/footer.tsx`, `app/layout.tsx`, `components/product/diffuser-hero.tsx`, `app/feeds/products.xml/route.ts`, `components/checkout/checkout-form.tsx`.
+- **Check:**
+  - **Local dev:**
+    - The contact page and footer show the phone and business name, and no PIN.
+    - `/range/monolith?finish=black` opens on Black with black photos; an unknown finish falls back to Gold; a click still changes the finish; no hydration errors.
+    - Feed links carry the finish. The production build passes.
+  - **Next (user, in Merchant Center):**
+    - Business info → Website → Add an HTML tag; send the code, then Verify and Claim.
+    - Add the feed as a scheduled daily fetch.
+    - Set shipping (free over ₹5,000, else ₹99; 0–3 days handling, 3–5 transit) and returns (3 days, exchange).
+    - Turn on free listings.
+    - Check Products → Needs attention.
+
 ## 2026-11-02 — Competitor keyword research and an 8-week plan of action
 - **Found** (sitemaps and live pages of 8 Indian brands, 2 Nov):
   - **Azhara** (azhara.in) is the closest rival.
