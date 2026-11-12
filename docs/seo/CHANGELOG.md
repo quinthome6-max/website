@@ -20,6 +20,35 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-11-12 — Google store panel: Customer Reviews survey, Merchant Center logos
+- **Found:** Merchant Center shows the website verified and claimed, but "Provided by you 0, found by Google 11": the feed was never added. The user wants a brand panel like Mokobara's.
+  - That panel is built by Google from Merchant Center:
+    - logo
+    - store rating and the Top Quality Store badge
+    - free delivery and returns (from the shipping and returns settings)
+    - chat (from the customer-service contact)
+    - trending products (from the feed)
+- **What changed:**
+  - **Google Customer Reviews survey** (merchant 5876359718), for the store rating and the Top Quality Store badge:
+    - When Pay is pressed, the checkout keeps the buyer's email in that tab's sessionStorage only.
+    - The thank-you page loads Google's opt-in box with the order number, the email, country IN and an estimated delivery date of 8 weekdays.
+    - The email is then deleted. Nothing travels in URLs or through our server.
+    - Shown bottom left, clear of the WhatsApp button.
+  - **Privacy policy:** a line on the survey under "Reviews & Public Content".
+  - **Logos for Merchant Center** (in the user's Downloads, not the repo): square wordmark 1200×1200, square monogram 1200×1200, wide 2000×500.
+- **Why:** a store rating, logo and delivery and returns badges in Google's brand panel, and eligibility for the Top Quality Store badge.
+- **Where:** `lib/analytics/customer-reviews.ts`, `components/analytics/google-customer-reviews.tsx`, `components/checkout/checkout-form.tsx`, `app/order/confirmed/page.tsx`, `app/privacy/page.tsx`.
+- **Check:**
+  - **Local dev:**
+    - With an email saved, the thank-you page loads platform.js and the surveyoptin module, and the email is removed from the tab.
+    - On a reload or with no email, nothing is loaded. No page errors.
+    - An order on Thu 12 Nov gets an estimated delivery of 24 Nov.
+  - **Next (user, in Merchant Center):**
+    - Turn on Customer Reviews under Growth → Manage programs.
+    - Add the feed as a data source, and upload the logos under Business info → Brand.
+    - Set shipping and returns, and rename the business "Quint Home".
+    - Stars show once enough reviews collect.
+
 ## 2026-11-12 — Merchant Center: contact details, per-finish links, a place for the verification code
 - **Found:** the user set up Google Merchant Center (account 5876359718), but products weren't showing.
   - **Fine from outside:**

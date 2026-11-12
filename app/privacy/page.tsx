@@ -42,6 +42,7 @@ const sections = [
     label: "Reviews & Public Content",
     paragraphs: [
       "When you use certain features of our website, such as submitting a product review or rating, please be aware that any personal information you choose to post or share – including comments, ratings, and photos – may be accessible to other users and become public information. It is important to understand the risks associated with sharing such information, as we cannot control its use by others. If you disclose personal information in your profile or when posting publicly, it may become publicly available.",
+      "After you order, Google may ask whether you would like to rate your purchase through Google Customer Reviews. If you agree, Google receives your email address, your order number and the expected delivery date, and emails you a short survey once the order should have arrived. The survey is optional, it is run by Google under Google's own privacy policy, and your ratings may appear publicly as Quint Home's store rating on Google.",
     ],
   },
   {

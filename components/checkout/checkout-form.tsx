@@ -11,6 +11,7 @@ import { FREE_SHIPPING_FROM } from "@/lib/checkout-config";
 import { deliveryEstimate, deliveryEstimateFromTransit } from "@/lib/delivery";
 import { saveCheckoutProgress } from "@/app/actions/checkout-progress";
 import { claritySessionRef } from "@/lib/analytics/clarity-ref";
+import { rememberForReviewSurvey } from "@/lib/analytics/customer-reviews";
 import type { CheckoutPrefill } from "@/lib/checkout-prefill";
 
 const inputClass =
@@ -323,6 +324,10 @@ export function CheckoutForm({
           // Which Clarity recording this order belongs to (see clarity-ref).
           const clarity = e.currentTarget.elements.namedItem("clarity");
           if (clarity instanceof HTMLInputElement) clarity.value = claritySessionRef(document.cookie);
+          // For Google's "rate this order" box on the thank-you page; kept in
+          // this tab only (lib/analytics/customer-reviews.ts).
+          const email = e.currentTarget.elements.namedItem("email");
+          if (email instanceof HTMLInputElement) rememberForReviewSurvey(email.value.trim());
         }}
         className="grid gap-12 pt-10 md:grid-cols-12 md:gap-16"
       >
