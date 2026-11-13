@@ -20,6 +20,30 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-11-13 — Progress check: search traffic reaching category and product pages; plan status
+- **Found** (Clarity, 11–13 Nov, against 29–31 Oct):
+  - **Google organic: 4 → 11.**
+    - No longer homepage-only: /range/waterless-diffusers 6, /range/monolith 3, /range/drift 3, plus grand-lobby, ember and pebble 2 each, and terrain 1.
+  - **ChatGPT: 16 → 12.** It lands on /range/fragrance-oils (5) and / (5).
+  - **5 completed payments** returned from PayU, e.g. order #1028, ₹9,898. The user reports more impressions and clicks, and orders.
+  - **Facebook / Instagram: 158 → 2.** Meta ads look paused.
+  - **Broken ChatGPT link:** ChatGPT sent a visitor to a garbled URL ("/ — My favourite for design- Monolith: …"), which returns a bare Next.js 404. There is no app/not-found.tsx (T15 incomplete).
+- **October plan:**
+  - Done (16): T1–T13 except partials, T16, T18, T21.
+  - Partly (6): T15 404, T17 alt texts (all 5 Monolith photos share one), T19 byline / author, T22 sitemap lastmod, T24 manifest and x-powered-by, T26 email platform.
+  - Open (4):
+    - T14 business sector pages
+    - T20 /gifting
+    - T23 consent banner
+    - T25: still two redirect hops (http://quinthome.in → https://quinthome.in → www), and functions run in iad1 (`x-vercel-id: bom1::iad1`)
+- **November plan:** week 1 (Hotel Fragrance Oils page, large-room guide, quick fixes) not started. The Merchant Center feed isn't connected.
+- **Where:** `marketing/seo/Quint-Home-SEO-Progress-and-Next-Steps-13-Nov.pdf` (source `marketing/seo/src/progress-nov.html`).
+- **Next (13 Nov – 3 Dec):**
+  - **Week 1:** branded 404, Hotel Fragrance Oils page, large-room guide, quick fixes.
+  - **Week 2:** best oils guide, office guide, wedding / housewarming guide with /gifting, alt texts, manifest.
+  - **Week 3:** corporate gifts under ₹5,000, bedroom guide, consent banner, refresh the 2 Nov guides.
+  - **From the client:** a 28-day Search Console export, Merchant Center steps, the Vercel one-hop redirect, the Meta ads status.
+
 ## 2026-11-12 — Google store panel: Customer Reviews survey, Merchant Center logos
 - **Found:** Merchant Center shows the website verified and claimed, but "Provided by you 0, found by Google 11": the feed was never added. The user wants a brand panel like Mokobara's.
   - That panel is built by Google from Merchant Center:
