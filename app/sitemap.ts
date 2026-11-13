@@ -31,6 +31,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE}/range/waterless-diffusers`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE}/range/fragrance-oils`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE}/range/scented-candles`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${SITE}/range/hotel-fragrance-oils`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${SITE}/gifting`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${SITE}/find-your-scent`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE}/about`, changeFrequency: "monthly", priority: 0.6 },
     { url: `${SITE}/journal`, changeFrequency: "weekly", priority: 0.6 },

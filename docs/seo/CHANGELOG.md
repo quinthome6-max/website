@@ -20,6 +20,45 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-11-13 — Weeks 1 and 2: branded 404, Hotel Fragrance Oils, four guides, /gifting, photo alts
+- **What:**
+  - **Branded 404** (`app/not-found.tsx`, plan T15):
+    - Header, footer, the three categories with photos, the guides, WhatsApp; status 404 and noindex.
+    - "Were you looking for …?" finds a product named in a broken address. ChatGPT's garbled "/ — My favourite for design- Monolith: …" now offers The Monolith; "/shop/grand-lobby-oil" offers Grand Lobby.
+  - **`/range/hotel-fragrance-oils`:**
+    - A category page of a new "hotel" kind: Grand Lobby, The Arrival, Monolith, Pillar.
+    - Copy on what makes a home smell like a hotel, choosing between the two oils, diffusers and cost per day, with ItemList + BreadcrumbList + FAQPage markup.
+    - No hotel brand names. It is in the sitemap and llms.txt, and the fragrance oils page links to it.
+  - **Four guides** (`lib/data/journal-guides.ts`):
+
+    | Page | Target searches |
+    |---|---|
+    | `/journal/diffuser-for-large-room` | diffuser for large room, what size diffuser, 3BHK |
+    | `/journal/best-fragrance-oils-for-diffuser-india` | best fragrance oil for diffuser India, the eight oils by room |
+    | `/journal/diffuser-for-office` | diffuser for office, reception, scent marketing; leads to /businesses (part of T14) |
+    | `/journal/housewarming-and-wedding-gifts-india` | housewarming / griha pravesh and wedding gifts by budget |
+
+  - **`/gifting` hub** (T20): gifts by budget (under ₹2,000, under ₹5,000, ₹8,000–12,000, the Monolith) as live-priced Shop blocks, occasion guides, bulk orders through /businesses, and FAQ and breadcrumb markup.
+  - **Quick fixes:**
+    - **First Rain:** retitled "First Rain: Petrichor Florals Fragrance Oil" ("petrichor florals" is the catalogue's own wording; the description says "fresh, not earthy", so no "geeli mitti").
+    - **Wording:** "nebulising / cold-air" added to the waterless category page and the waterless vs ultrasonic article.
+    - **Footer:** a Guides column on every page (choosing a diffuser, large room, hotel oils, best oils, gift guide).
+    - **Guides:** each of the 2 Nov guides now shows a product card before its first heading.
+  - **Photo descriptions** (T17): `lib/data/image-alts.ts` gives each of the 40 diffuser and candle gallery photos its own alt text, written from the photo, plus a bottle and notes line for each oil.
+  - **T24:** `poweredByHeader: false`; `app/manifest.ts` (name, colours, icons).
+  - **Code:** `lib/shop-cards.ts` holds the shared live-priced card builder (journal and /gifting).
+- **Why:** the 13 Nov plan, weeks 1 and 2, and the leak from the garbled ChatGPT link.
+- **Check:**
+  - **Local dev:**
+    - Titles are 49–60 characters including " · Quint Home"; descriptions 147–152.
+    - FAQPage on all six new pages, and 87 internal links all 200.
+    - Shop cards match live prices. The 404 returns 404 + noindex with the right suggestion.
+    - The Monolith has 6 distinct alts. Phones: no sideways scroll on /gifting, the hotel page, the office guide, the 404 and the home page.
+  - **Build:** the production build passes.
+  - **Next:**
+    - Submit the new URLs through IndexNow and request indexing in Search Console.
+    - Week 3: corporate gifts under ₹5,000, bedroom guide, consent banner (T23).
+
 ## 2026-11-13 — Progress check: search traffic reaching category and product pages; plan status
 - **Found** (Clarity, 11–13 Nov, against 29–31 Oct):
   - **Google organic: 4 → 11.**

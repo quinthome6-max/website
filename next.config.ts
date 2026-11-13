@@ -12,6 +12,9 @@ const SLUG_REDIRECTS: Record<string, string> = {
 };
 
 const nextConfig: NextConfig = {
+  // No "x-powered-by: Next.js" on every response (plan T24): it tells
+  // scanners what to probe and tells shoppers nothing.
+  poweredByHeader: false,
   experimental: {
     // Build from scratch on every deploy. Turbopack's build cache (on by
     // default since 16.3, restored by Vercel from .next/cache) served a stale

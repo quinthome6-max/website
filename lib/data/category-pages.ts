@@ -13,12 +13,13 @@
 //  product cards show the live Shopify price.
 // ============================================================
 
-export type CategorySlug = "waterless-diffusers" | "fragrance-oils" | "scented-candles";
+export type CategorySlug = "waterless-diffusers" | "fragrance-oils" | "scented-candles" | "hotel-fragrance-oils";
 
 export interface CategoryPage {
   slug: CategorySlug;
-  /** Which products the page lists. */
-  kind: "diffuser" | "oil" | "candle";
+  /** Which products the page lists. "hotel": the Hotel Credential oils and
+   *  the diffusers that suit them. */
+  kind: "diffuser" | "oil" | "candle" | "hotel";
   /** Short name for breadcrumbs and navigation. */
   label: string;
   title: string;
@@ -45,12 +46,12 @@ export const categoryPages: CategoryPage[] = [
     h1: "Waterless aroma diffusers",
     h1Accent: "for every room, and the car.",
     intro:
-      "Six diffusers that run on fragrance oil alone. No water, no steam and no heat: the oil is turned into a fine dry mist by air pressure, so nothing is diluted and nothing gets damp.",
+      "Six diffusers that run on fragrance oil alone, also known as nebulising or cold-air diffusers. No water, no steam and no heat: the oil is turned into a fine dry mist by air pressure, so nothing is diluted and nothing gets damp.",
     sections: [
       {
         h2: "How waterless diffusion works",
         paras: [
-          "An ultrasonic diffuser mixes a few drops of oil into a tank of water and vibrates it into a damp mist. A waterless, or nebulising, diffuser skips the water entirely. Cold air is pushed past the fragrance oil and atomises it into microscopic particles that hang in the air rather than settling as moisture.",
+          "An ultrasonic diffuser mixes a few drops of oil into a tank of water and vibrates it into a damp mist. A waterless diffuser, also called a nebulising (nebulizer) or cold-air diffuser, skips the water entirely. Cold air is pushed past the fragrance oil and atomises it into microscopic particles that hang in the air rather than settling as moisture.",
           "Because nothing is diluted, the oil goes into the air at full strength; there is no tank to clean or refill with water, and nothing is heated. That is also why our diffusers take only Quint Home oils: they are undiluted blends at 70–90% concentration, made for cold-air nebulisation.",
         ],
       },
@@ -165,6 +166,7 @@ export const categoryPages: CategoryPage[] = [
       },
     ],
     related: [
+      { href: "/range/hotel-fragrance-oils", label: "Hotel fragrance oils" },
       { href: "/journal/fragrance-oil-vs-essential-oil", label: "Fragrance oil vs essential oil" },
       { href: "/journal/the-architecture-of-scent", label: "How to read a scent profile" },
       { href: "/journal/how-to-make-your-home-smell-like-a-luxury-hotel", label: "Make your home smell like a hotel" },
@@ -230,6 +232,76 @@ export const categoryPages: CategoryPage[] = [
       { href: "/range/fragrance-oils", label: "The fragrance oils" },
       { href: "/journal/diwali-gifting-guide", label: "Diwali gifting guide" },
       { href: "/journal/best-aroma-diffuser-for-home-india", label: "How to choose a diffuser" },
+    ],
+  },
+  {
+    slug: "hotel-fragrance-oils",
+    kind: "hotel",
+    label: "Hotel Fragrance Oils",
+    title: "Hotel Fragrance Oils for Your Home Diffuser",
+    description:
+      "Hotel-lobby fragrance oils: Grand Lobby and The Arrival, composed in the spirit of a grand hotel, at full strength for home waterless diffusers. ₹1,099.",
+    h1: "Hotel fragrance oils",
+    h1Accent: "the lobby, at home.",
+    intro:
+      "Two oils composed in the spirit of a grand hotel lobby and held at full home concentration. Grand Lobby is open and welcoming; The Arrival is quieter and more composed. Each is a 50 ml bottle for waterless diffusers.",
+    sections: [
+      {
+        h2: "What makes a home smell like a hotel?",
+        paras: [
+          "Consistency, more than any single note. A good hotel lobby smells the same on a Tuesday morning as at midnight on a Saturday: one scent, chosen on purpose, diffused steadily from the moment you walk in, at a level you notice and then stop thinking about.",
+          "The scents people remember share a shape rather than a recipe: fresh as you come through the door, warm and clean underneath. Our two Hotel Credential oils are composed to that shape, at 70–90% concentration, so a waterless diffuser carries them through a room the way a lobby system does.",
+        ],
+      },
+      {
+        h2: "Grand Lobby or The Arrival?",
+        paras: [
+          "Grand Lobby is the more generous of the two. Melon, peach and apple open onto tuberose, freesia and mimosa, settling on sandalwood, musk and oakmoss. It suits a home that entertains often, where the front door is always opening.",
+          "The Arrival is calmer. Peach, citrus and pink grapefruit lift the opening, rose, violet and lily of the valley sit in the middle, and tea, musk and amber stay longest. If Grand Lobby is the welcome, The Arrival is the quiet that follows it.",
+          "Not sure which? Keep both in a Pillar, which holds two bottles and runs either one, or layers them.",
+        ],
+      },
+      {
+        h2: "Which diffuser to run them in",
+        paras: [
+          "For a living room that works as your lobby, the Monolith covers up to 1,075 sq ft and runs on a built-in battery, so it can stand by the door with no cable to hide. The Pillar covers up to 540 sq ft and holds two 60 ml bottles that work independently. For a bedroom, the Ember or the Loom.",
+          "The Monolith, Pillar, Ember and Loom come with a 50 ml oil of your choice. Choose Grand Lobby or The Arrival as that free bottle for a ₹200 supplement.",
+        ],
+      },
+      {
+        h2: "How long a bottle lasts",
+        paras: [
+          "A 50 ml bottle lasts about 45–60 days, depending on the diffuser and how strong you set it; most models average around 50 days at moderate settings. At ₹1,099, that is roughly ₹18–24 a day for a home that smells the same every time you walk in.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "What do luxury hotels use to make their lobbies smell good?",
+        a: "A signature scent diffused steadily, usually by a waterless system, at a level you notice on arrival and then stop thinking about. Lobby scents differ from hotel to hotel; Grand Lobby and The Arrival are composed in that spirit, not copies of any one hotel's scent.",
+      },
+      {
+        q: "Can I use a hotel fragrance oil in any diffuser?",
+        a: "Our oils are undiluted blends made for waterless, cold-air diffusers. In a Quint Home diffuser, use only Quint Home oils; other oils can clog the nebuliser and will void the warranty. For another maker's diffuser, follow its guidance.",
+      },
+      {
+        q: "How long does a 50 ml hotel fragrance oil last?",
+        a: "About 45–60 days, depending on the diffuser and the intensity. Most models average around 50 days at moderate settings.",
+      },
+      {
+        q: "Which is better for a living room, Grand Lobby or The Arrival?",
+        a: "Grand Lobby for a home that entertains and wants a warm, generous welcome; The Arrival for a calmer, more composed room. The Pillar can hold both and run either.",
+      },
+      {
+        q: "Can I get a hotel oil free with a diffuser?",
+        a: "Yes. The Monolith, Pillar, Ember and Loom come with a 50 ml oil of your choice, and choosing Grand Lobby or The Arrival as that bottle carries a ₹200 supplement.",
+      },
+    ],
+    related: [
+      { href: "/journal/how-to-make-your-home-smell-like-a-luxury-hotel", label: "Make your home smell like a hotel" },
+      { href: "/journal/fragrance-oil-vs-essential-oil", label: "Fragrance oil vs essential oil" },
+      { href: "/range/fragrance-oils", label: "All fragrance oils" },
+      { href: "/range/waterless-diffusers", label: "The diffusers" },
     ],
   },
 ];

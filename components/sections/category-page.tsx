@@ -54,25 +54,34 @@ export async function CategoryPage({ slug }: { slug: CategorySlug }) {
     return { ...pricePair(live, price, list), soldOut: live ? !live.available : false };
   };
 
+  const diffuserCard = (d: (typeof diffusers)[number]): Card => ({
+    slug: d.slug,
+    name: d.name,
+    image: d.image,
+    line: d.coverageLabel,
+    sub: d.tagline,
+    ...priced(d.name, d.priceINR, d.listPriceINR),
+  });
+  const oilCard = (o: (typeof oils)[number]): Card => ({
+    slug: o.slug,
+    name: o.name,
+    image: o.image,
+    line: oilNoteSummary(o),
+    sub: o.tier === "hotel-credential" ? `Hotel Credential · ${o.mood}` : o.mood,
+    ...priced(o.name, o.priceINR),
+  });
+
   const cards: Card[] =
     c.kind === "diffuser"
-      ? diffusers.map((d) => ({
-          slug: d.slug,
-          name: d.name,
-          image: d.image,
-          line: d.coverageLabel,
-          sub: d.tagline,
-          ...priced(d.name, d.priceINR, d.listPriceINR),
-        }))
+      ? diffusers.map(diffuserCard)
+      : c.kind === "hotel"
+        ? [
+            ...oils.filter((o) => o.tier === "hotel-credential").map(oilCard),
+            // The two that suit them best: lobby-sized rooms, and both oils at once.
+            ...diffusers.filter((d) => d.slug === "monolith" || d.slug === "pillar").map(diffuserCard),
+          ]
       : c.kind === "oil"
-        ? oils.map((o) => ({
-            slug: o.slug,
-            name: o.name,
-            image: o.image,
-            line: oilNoteSummary(o),
-            sub: o.tier === "hotel-credential" ? `Hotel Credential · ${o.mood}` : o.mood,
-            ...priced(o.name, o.priceINR),
-          }))
+        ? oils.map(oilCard)
         : candles.map((k) => ({
             slug: k.slug,
             name: k.name,

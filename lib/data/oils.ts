@@ -68,9 +68,11 @@ export const oils: FragranceOil[] = [
     category: "oil",
     tier: "standard",
     tagline: "Dewy, alive and luminous – the air just after a downpour.",
-    seoTitle: "First Rain Fragrance Oil: the Smell After Rain",
+    // "Petrichor florals" is the catalogue's own description; "fresh, not
+    // earthy" keeps it honest for anyone expecting wet earth (geeli mitti).
+    seoTitle: "First Rain: Petrichor Florals Fragrance Oil",
     seoDescription:
-      "The fresh, dewy air just after the first rain: pear, grapefruit and violet leaf over lotus and jasmine. 50 ml oil for waterless diffusers. {price}.",
+      "The smell of the first rain as petrichor florals: pear, grapefruit and violet leaf over lotus and jasmine. Fresh, not earthy. 50 ml oil. {price}.",
     description:
       "Pear, grapefruit and violet leaf over lotus, jasmine and lily of the valley, on amber and benzoin. The air the moment the first rain stops.",
     priceINR: 899,

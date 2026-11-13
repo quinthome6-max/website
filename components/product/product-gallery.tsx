@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { photoAlt } from "@/lib/data/image-alts";
 
 /** A designed (non-photo) slide shown after the first image, e.g. a spec sheet. */
 export interface GalleryCard {
@@ -112,7 +113,7 @@ export function ProductGallery({ images, alt, cards = [], after = [] }: Props) {
             {slide.kind === "image" ? (
               <Image
                 src={slide.src}
-                alt={alt}
+                alt={photoAlt(slide.src, alt)}
                 fill
                 priority={i === 0}
                 sizes="(min-width: 768px) 520px, 100vw"

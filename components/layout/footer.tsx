@@ -13,6 +13,17 @@ const cols = [
     ],
   },
   {
+    // The guides people search for, linked from every page.
+    heading: "Guides",
+    links: [
+      { href: "/journal/best-aroma-diffuser-for-home-india", label: "Choosing a diffuser" },
+      { href: "/journal/diffuser-for-large-room", label: "Diffuser for a large room" },
+      { href: "/range/hotel-fragrance-oils", label: "Hotel fragrance oils" },
+      { href: "/journal/best-fragrance-oils-for-diffuser-india", label: "Best fragrance oils" },
+      { href: "/gifting", label: "Gift guide" },
+    ],
+  },
+  {
     heading: "Company",
     links: [
       { href: "/about", label: "About" },
@@ -63,7 +74,7 @@ export function Footer() {
         </div>
 
         {/* Nav columns */}
-        <div className="grid gap-10 pt-14 md:grid-cols-4">
+        <div className="grid gap-10 pt-14 sm:grid-cols-2 md:grid-cols-[1.3fr_1fr_1fr_1fr_1fr]">
           <div>
             <p className="font-eyebrow mb-5">Quint Home</p>
             <p className="max-w-[34ch] text-[0.92rem] leading-[1.7] text-[color:var(--color-charcoal-soft)]">

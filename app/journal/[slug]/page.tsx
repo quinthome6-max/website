@@ -7,9 +7,10 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { journal, getJournalPost, journalNewestFirst } from "@/lib/data/journal";
 import { FadeUp } from "@/components/motion/fade-up";
-import { ShopBlock, type ShopCard } from "@/components/journal/shop-block";
-import { parseShopBlock, shopItem } from "@/lib/data/shop-items";
-import { getCommerceMap, pricePair, shopifyHandle } from "@/lib/shopify/commerce";
+import { ShopBlock } from "@/components/journal/shop-block";
+import { parseShopBlock } from "@/lib/data/shop-items";
+import { getCommerceMap } from "@/lib/shopify/commerce";
+import { shopCards } from "@/lib/shop-cards";
 import { OG_LOCALE } from "@/lib/seo";
 import {
   articleJsonLd,
@@ -174,13 +175,7 @@ export default async function JournalPostPage({
 
   // Product cards are priced and stocked from Shopify, like the range pages.
   const commerce = blocks.some((b) => b.kind === "shop") ? await getCommerceMap() : {};
-  const cardsFor = (slugs: string[]): ShopCard[] =>
-    slugs.flatMap((s) => {
-      const item = shopItem(s);
-      if (!item) return [];
-      const live = commerce[shopifyHandle(item.name)];
-      return [{ ...item, ...pricePair(live, item.priceINR, item.listPriceINR), soldOut: live ? !live.available : false }];
-    });
+  const cardsFor = (slugs: string[]) => shopCards(slugs, commerce);
 
   return (
     <article className="bg-[color:var(--color-white)]">
