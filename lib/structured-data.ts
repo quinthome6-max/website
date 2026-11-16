@@ -4,6 +4,7 @@ import { SITE, BRAND, abs } from "@/lib/seo";
 import { FREE_SHIPPING_FROM, SHIPPING_FLAT } from "@/lib/checkout-config";
 import { numericId } from "@/lib/shopify/admin";
 import { summarize, type PublicReview } from "@/lib/reviews/store";
+import { productJpeg } from "@/lib/data/product-images";
 import { isSampleReview } from "@/lib/reviews/sample-reviews";
 
 /**
@@ -149,8 +150,9 @@ export function productJsonLd(
     "@id": `${url}#product`,
     name: product.name,
     description: product.description.split("\n\n")[0],
-    // Several photos, so Google can pick a crop for each result layout.
-    image: [...new Set([product.image, ...("gallery" in product ? product.gallery : [])])].slice(0, 5).map(abs),
+    // The JPEG of the main photo first (shown everywhere, lib/data/product-images),
+    // then several photos, so Google can pick a crop for each result layout.
+    image: [...new Set([productJpeg(product.slug), product.image, ...("gallery" in product ? product.gallery : [])])].slice(0, 6).map(abs),
     url,
     category: isOil
       ? "Home Fragrance Oil"

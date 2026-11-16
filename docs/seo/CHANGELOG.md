@@ -20,6 +20,35 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-11-17 — Product images for AI search: JPEG main images everywhere; audit of ChatGPT's complaints
+- **Reported** (a ChatGPT answer the user pasted):
+  - It could not reliably pick Quint Home's real product images, and some didn't render.
+  - It saw conflicting facts: Pebble 161–250 vs 50–80 sq ft, Ember ₹8,799 vs ₹7,999, the Pebble with or without a free oil.
+- **Audit of the live site:**
+  - **Facts are consistent today:**
+    - The Pebble shows 50–80 sq ft and no free oil; the Ember is ₹8,799 on the page and in the JSON-LD offer.
+    - The conflicts come from copies indexed before 3 Nov (free oil) and 16 Nov (coverage).
+  - **Images and markup already in place:**
+    - Every product page has its own og:image / twitter:image and a complete Product JSON-LD (brand, MPN, SKU, offers, shipping, returns, 5 images).
+    - Alt text is per photo, and the image sitemap lists all photos.
+    - OAI-SearchBot, ChatGPT-User, PerplexityBot and bingbot all get images with a 200.
+  - **Gap:** every image was WebP, which some apps and AI chat tools don't display.
+- **What changed:**
+  - **JPEGs:** `public/images/products/<slug>.jpg` (19 files: 17 products plus Monolith gold and black), helper `lib/data/product-images.ts`.
+  - **Where they are used:**
+    - product og:image / twitter:image, with alt "<name> by Quint Home"
+    - first in the Product JSON-LD image list (the WebP gallery follows)
+    - Google Shopping `g:image_link` (each finish gets its own)
+    - an `Image:` line for every product in llms-full.txt
+  - **Also:** the duplicate "(50–80 sq ft)" removed from the Pebble's llms-full coverage line.
+- **Check:**
+  - **Local dev:** all 17 product pages have og = twitter = first JSON-LD image = `/images/products/<slug>.jpg`, served 200 image/jpeg; the feed has 18 image_links, all JPEG; llms-full has 17 Image lines.
+  - **Build:** the production build passes.
+  - **Next:**
+    - Re-submit the product URLs (IndexNow; Bing Webmaster URL submission) so AI indexes refresh.
+    - Apply to ChatGPT's merchant programme with `/feeds/products.xml`.
+    - Guide copy states prices in text (₹8,799 etc.); update it if Shopify prices change (the cards and markup are live).
+
 ## 2026-11-16 — Pebble coverage 50–80 sq ft and "bathrooms"; Ember retitled
 - **What** (from the client: "pebble change to 50–80 sq ft and add bathroom", "next try updating ember"):
   - **Pebble data:**

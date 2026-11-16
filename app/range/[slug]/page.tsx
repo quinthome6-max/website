@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { productJpeg } from "@/lib/data/product-images";
 import { productJsonLd, breadcrumbJsonLd, jsonLdScript } from "@/lib/structured-data";
 import { TrackView } from "@/components/analytics/track-view";
 import { pixelId } from "@/lib/analytics/pixel";
@@ -62,13 +63,13 @@ export async function generateMetadata({
         url: `/range/${slug}`,
         type: "website",
         locale: OG_LOCALE,
-        images: [{ url: candle.image, alt: candle.name }],
+        images: [{ url: productJpeg(candle.slug), alt: `${candle.name}, soy wax candle by Quint Home` }],
       },
       twitter: {
         card: "summary_large_image",
         title: `${candle.name} — Quint Home Candle`,
         description,
-        images: [candle.image],
+        images: [productJpeg(candle.slug)],
       },
     };
   }
@@ -125,13 +126,13 @@ export async function generateMetadata({
       url: `/range/${slug}`,
       type: "website",
       locale: OG_LOCALE,
-      images: [{ url: product.image, alt: product.name }],
+      images: [{ url: productJpeg(product.slug), alt: `${product.name} by Quint Home` }],
     },
     twitter: {
       card: "summary_large_image",
       title: ogTitle,
       description,
-      images: [product.image],
+      images: [productJpeg(product.slug)],
     },
   };
 }

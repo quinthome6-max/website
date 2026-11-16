@@ -9,6 +9,7 @@
 // diffusers carry their manufacturer model number as the MPN instead.
 
 import { diffusers } from "@/lib/data/diffusers";
+import { productJpeg } from "@/lib/data/product-images";
 import { oils } from "@/lib/data/oils";
 import { candles } from "@/lib/data/candles";
 import { getCommerceByName, type ShopifyCommerce } from "@/lib/shopify/commerce";
@@ -97,7 +98,8 @@ async function diffuserItems(d: Diffuser): Promise<FeedItem[]> {
         title: `${base.title} — ${v.title}`,
         // Opens the page on this finish (components/product/diffuser-hero.tsx).
         link: color ? `${base.link}?finish=${encodeURIComponent(color.name.toLowerCase())}` : base.link,
-        image: abs(color?.image ?? d.image),
+        // JPEG main image (accepted everywhere), WebP gallery after it.
+        image: abs(productJpeg(d.slug, color?.name)),
         extraImages: (color?.gallery ?? d.gallery).map(abs),
         available: v.available,
         price: v.price,
@@ -110,7 +112,7 @@ async function diffuserItems(d: Diffuser): Promise<FeedItem[]> {
   return [{
     ...base,
     id: v ? String(numericId(v.id) ?? v.id) : d.slug,
-    image: abs(d.image),
+    image: abs(productJpeg(d.slug)),
     extraImages: d.gallery.map(abs),
     available: c?.available ?? true,
     price: v?.price ?? d.priceINR,
@@ -132,7 +134,7 @@ async function simpleItem(
     title,
     description: firstParagraph(p.description),
     link: abs(`/range/${p.slug}`),
-    image: abs(p.image),
+    image: abs(productJpeg(p.slug)),
     extraImages: gallery.map(abs),
     available: c?.available ?? true,
     price: v?.price ?? p.priceINR,

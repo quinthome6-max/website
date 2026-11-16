@@ -1,4 +1,5 @@
 import { diffusers } from "@/lib/data/diffusers";
+import { productJpeg } from "@/lib/data/product-images";
 import { oils } from "@/lib/data/oils";
 import { candles, CANDLE_CARE, CANDLE_MAKE } from "@/lib/data/candles";
 import { journal } from "@/lib/data/journal";
@@ -27,9 +28,10 @@ export async function GET(): Promise<Response> {
     return `### ${d.name}
 
 URL: ${abs(`/range/${d.slug}`)}
+Image: ${d.colors?.length ? d.colors.map((c) => `${abs(productJpeg(d.slug, c.name))} (${c.name})`).join(", ") : abs(productJpeg(d.slug))}
 Model: ${d.model}
 Price: ${inr(priceOf(d, commerce))}
-Coverage: ${d.coverageLabel}${d.coverageSqFt ? ` (${d.coverageSqFt[0]}–${d.coverageSqFt[1]} sq ft)` : ""}
+Coverage: ${d.coverageLabel}${d.coverageSqFt && !/sq ft/.test(d.coverageLabel) ? ` (${d.coverageSqFt[0]}–${d.coverageSqFt[1]} sq ft)` : ""}
 Control: ${d.bluetooth ? "Companion app over Bluetooth, plus on-device controls" : `On-device controls only${d.specs.find((sp) => sp.label === "Timer") ? `, ${d.specs.find((sp) => sp.label === "Timer")!.value.toLowerCase()} timer` : ""}`}
 Finish: ${d.finish}
 Height: ${d.height}
@@ -53,6 +55,7 @@ ${d.specs.map((s) => `- ${s.label}: ${s.value}`).join("\n")}`;
     return `### ${o.name}
 
 URL: ${abs(`/range/${o.slug}`)}
+Image: ${abs(productJpeg(o.slug))}
 Price: ${inr(priceOf(o, commerce))}
 Volume: ${o.volumeML} ml
 Line: ${o.tier === "hotel-credential" ? "Hotel Credential" : "Signature"}
@@ -71,6 +74,7 @@ ${o.description}`;
     (k) => `### ${k.name}
 
 URL: ${abs(`/range/${k.slug}`)}
+Image: ${abs(productJpeg(k.slug))}
 Price: ${inr(priceOf(k, commerce))}
 Fragrance: ${k.notesLine}
 Size: ${k.volumeML} ml, 100% soy wax, hand-poured
