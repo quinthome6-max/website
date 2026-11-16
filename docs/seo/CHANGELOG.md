@@ -20,6 +20,41 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-11-16 — Keyword research: shortlist of 127, long list of 5,711
+- **Found:**
+  - **Data sources:**
+    - Semrush has no API units, and Google Trends answers 429 to automated requests, so no search volumes were available.
+    - Google autocomplete (India, hl=en-IN gl=in): 42 seeds × 33 suffixes gave 9,848 phrases, 5,711 after de-noising (foreign retailers, perfume and hair terms and the like removed).
+    - Competition: phrases matched against the sitemaps of Azhara, The Aroma Aisle, SOSA, Isak, House of Aroma and Fruik (InstaCuppa's topics from the 2 Nov research; its site and Nyne's refused us).
+  - **Theme sizes** (autocomplete phrases):
+
+    | Theme | Phrases | Theme | Phrases |
+    |---|---|---|---|
+    | Diffusers | 1,487 | Gifting | 872 |
+    | Candles | 772 | Car | 749 |
+    | Fragrance oils | 645 | Hotel | 574 |
+    | First rain | 347 | Office | 294 |
+    | Comparisons | 173 | Home smell | 172 |
+    | Safety | 157 | Use & care | 153 |
+    | Room size | 46 | Bathroom | 39 |
+    | Bedroom & sleep | 21 | | |
+
+  - **Open gaps:**
+    - First rain (fragrance oil, home fragrance, room freshener, car): 0 competitors.
+    - Bedroom and sleep; bathroom (Pebble); "luxury car perfume / premium / long lasting".
+    - Diffuser vs candle, agarbatti vs diffuser; how to make the home smell good (after cooking, with pets, like a temple / mandir).
+    - Diffuser pet and baby safety; corporate gifts.
+    - Commercial: restaurant, showroom and hotel-lobby diffusers (T14 sector pages).
+- **Why:** the user asked for keywords with demand in less crowded spaces.
+- **Where:** `marketing/seo/keywords/`:
+  - `quint-home-keyword-shortlist.csv` (127 rows: intent, fit, autocomplete evidence, competitors, crowding, page, action, P1/P2/P3, blank Keyword Planner columns)
+  - `quint-home-keyword-longlist.csv`
+  - `keyword-planner-upload.txt`
+  - the scripts
+- **Next:**
+  - Pull volumes from Google Keyword Planner using the upload file, or get Semrush units, and merge them.
+  - **Build P1:** bedroom guide, First Rain page and guide, diffuser vs candle, car guide retitle, Pebble / bathroom, candles "luxury" optimisation, corporate gifts, safety guide, home-smell guide.
+
 ## 2026-11-13 — Weeks 1 and 2: branded 404, Hotel Fragrance Oils, four guides, /gifting, photo alts
 - **What:**
   - **Branded 404** (`app/not-found.tsx`, plan T15):
