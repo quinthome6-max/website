@@ -20,6 +20,45 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-11-16 — Six P1 guides and five page retitles from the keyword shortlist
+- **Six guides,** written by parallel agents against a shared brief (facts only from lib/data, no health claims, no brand names) and reviewed before publishing. Each is in `lib/data/guides/`, wired in through `lib/data/guides/index.ts`:
+
+  | Page | Target searches |
+  |---|---|
+  | `/journal/first-rain-smell-at-home` | smell of first rain, first rain home fragrance / room freshener / car (says plainly "fresh florals, not wet earth / geeli mitti") |
+  | `/journal/diffuser-for-bedroom` | diffuser for bedroom, quiet diffuser, diffuser oil for sleep (explicitly no sleep claims), candles for bedroom |
+  | `/journal/diffuser-vs-candle-vs-agarbatti` | aroma diffuser vs candle, agarbatti vs diffuser (no claims about smoke beyond that it exists) |
+  | `/journal/corporate-gifts-india` | corporate gift ideas for employees / clients / Diwali (no logo, wrap or delivery-date promises) |
+  | `/journal/are-diffusers-safe-for-pets-and-babies` | waterless diffuser safe for pets / dogs / cats, baby's room (brand wording + IFRA + placement, ask your vet or paediatrician) |
+  | `/journal/how-to-make-your-home-smell-good` | after cooking, with pets, like a temple / mandir, like a spa, smell expensive (no odour-removal or purifying claims) |
+
+- **Retitles:**
+
+  | Page | New title / change |
+  |---|---|
+  | First Rain | "First Rain Fragrance Oil: Petrichor Florals" (the guide was retitled "Smell of First Rain at Home" so the two don't compete) |
+  | Pebble | "The Pebble Plug-In Diffuser for Bathrooms" |
+  | Monolith | description adds "battery-operated" |
+  | Candles | "Luxury Scented Candles, Hand-Poured Soy Wax" |
+  | Car guide | "Luxury Car Perfume or Car Diffuser? The Long-Lasting Pick", plus sections on which lasts longer and what feels premium |
+
+- **Links in:**
+  - **Category pages:** read-next links on the waterless diffusers, fragrance oils and scented candles pages.
+  - **/gifting:** the corporate gifts occasion.
+  - **Existing guides:**
+    - large-room and how-to → bedroom
+    - office and housewarming → corporate gifts
+    - car → First Rain
+    - pooja article and home-smell temple section → agarbatti comparison
+- **Review fixes:**
+  - Candle cost "about ₹38 an hour at its full burn time" (45 hours is "up to").
+  - Bedroom sizing line reworded.
+  - Facts checked against data: Loom leak-proof, Pillar and Ember USB 5V, candle care wording, the Pebble's 16-day shut-off from the FAQ.
+- **Check:**
+  - **Local dev:** all 11 changed pages have titles of 48–58 characters and descriptions of 139–154; BlogPosting + FAQPage (5–6 questions) on the guides; 159 internal links all 200; no JS errors.
+  - **Build:** the production build passes.
+  - **Next:** IndexNow (done on deploy) and request indexing in Search Console.
+
 ## 2026-11-16 — Keyword research: shortlist of 127, long list of 5,711
 - **Found:**
   - **Data sources:**

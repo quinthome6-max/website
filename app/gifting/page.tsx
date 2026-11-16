@@ -55,7 +55,7 @@ const tiers = [
 const occasions = [
   { href: "/journal/housewarming-and-wedding-gifts-india", label: "Housewarming and wedding gifts", line: "Griha pravesh and wedding gifts by budget" },
   { href: "/journal/diwali-gifting-guide", label: "Festive gifting", line: "Premium, corporate and family gifts for the festive season" },
-  { href: "/journal/diffuser-for-office", label: "For offices and clients", line: "Reception, cabins and gifting at scale" },
+  { href: "/journal/corporate-gifts-india", label: "Corporate gifts", line: "For employees and clients, by budget" },
 ];
 
 const faq = [

@@ -107,6 +107,8 @@ export const categoryPages: CategoryPage[] = [
       { href: "/journal/waterless-diffuser-vs-reed-diffuser", label: "Waterless vs reed diffuser" },
       { href: "/journal/how-to-use-a-waterless-diffuser", label: "How to use a waterless diffuser" },
       { href: "/journal/car-diffuser-vs-car-perfume", label: "Car diffuser vs car perfume" },
+      { href: "/journal/diffuser-for-bedroom", label: "Diffuser for the bedroom" },
+      { href: "/journal/are-diffusers-safe-for-pets-and-babies", label: "Safe with pets and babies?" },
       { href: "/journal/what-is-a-waterless-diffuser", label: "Why we don't use water" },
       { href: "/range/fragrance-oils", label: "The fragrance oils" },
       { href: "/find-your-scent", label: "Find your scent" },
@@ -167,6 +169,7 @@ export const categoryPages: CategoryPage[] = [
     ],
     related: [
       { href: "/range/hotel-fragrance-oils", label: "Hotel fragrance oils" },
+      { href: "/journal/first-rain-smell-at-home", label: "The smell of first rain at home" },
       { href: "/journal/fragrance-oil-vs-essential-oil", label: "Fragrance oil vs essential oil" },
       { href: "/journal/the-architecture-of-scent", label: "How to read a scent profile" },
       { href: "/journal/how-to-make-your-home-smell-like-a-luxury-hotel", label: "Make your home smell like a hotel" },
@@ -179,9 +182,9 @@ export const categoryPages: CategoryPage[] = [
     slug: "scented-candles",
     kind: "candle",
     label: "Scented Candles",
-    title: "Luxury Soy Wax Scented Candles",
+    title: "Luxury Scented Candles, Hand-Poured Soy Wax",
     description:
-      "Hand-poured 300 ml soy wax candles in three scents: bergamot & vetiver, violet & amber, oud & wood. Up to 45 hours of burn. ₹1,699.",
+      "Luxury scented candles hand-poured in India in soy wax: bergamot & vetiver, violet & amber, oud & wood. 300 ml, up to 45 hours each. ₹1,699.",
     h1: "Hand-poured soy wax",
     h1Accent: "scented candles.",
     intro:
@@ -232,6 +235,8 @@ export const categoryPages: CategoryPage[] = [
       { href: "/range/fragrance-oils", label: "The fragrance oils" },
       { href: "/journal/diwali-gifting-guide", label: "Diwali gifting guide" },
       { href: "/journal/best-aroma-diffuser-for-home-india", label: "How to choose a diffuser" },
+      { href: "/journal/diffuser-vs-candle-vs-agarbatti", label: "Diffuser vs candle vs agarbatti" },
+      { href: "/journal/corporate-gifts-india", label: "Corporate gifts" },
     ],
   },
   {

@@ -1,5 +1,6 @@
 import type { JournalPost } from "../types";
 import { guides } from "./journal-guides";
+import { keywordGuides } from "./guides";
 
 export const journal: JournalPost[] = [
   {
@@ -238,7 +239,7 @@ export const journal: JournalPost[] = [
       "## What suits a pooja room or corner?",
       "Every family keeps its pooja room in its own way, and plenty will want nothing there beyond the diya and the agarbatti. If that is your home, leave it as it is. If you would like a fragrance in the room as well, a waterless diffuser has one practical point in its favour: it works with no flame and no heat, so it can sit alongside the diyas and incense without adding another flame to the room.",
       "Pick something that sits beneath the incense rather than competing with it. [Blanc Ritual](/range/blanc-ritual) is the one we would start with. It opens on citrus and tea and settles onto musk and jasmine, with cardamom at the heart, and we describe it as clean and meditative. First Rain is cooler and more floral, with lotus and jasmine at its heart and benzoin in the base. We don't think of either as a pooja oil. They are calm scents, and you will know better than we do what belongs in your own mandir.",
-      "A pooja room is usually small, and the Pebble suits a compact space if there is a socket nearby. Keep it beside the mandir rather than on it, where it won't be in the way when you do the aarti. If your pooja corner is part of the living room, the diffuser you have sized for that room covers it already.",
+      "A pooja room is usually small, and the Pebble suits a compact space if there is a socket nearby. Keep it beside the mandir rather than on it, where it won't be in the way when you do the aarti. If your pooja corner is part of the living room, the diffuser you have sized for that room covers it already. How agarbatti, candles and diffusers compare is in [diffuser vs candle vs agarbatti](/journal/diffuser-vs-candle-vs-agarbatti).",
       "## How much fragrance belongs near the dining table?",
       "Less than anywhere else. A Diwali table has smells of its own, from the ghee in the sweets to whatever is coming out of the kitchen, and the food should win. In many flats the table sits at one end of the living room, so turn the diffuser down from the app when the food comes out, or move to a fresher oil for the meal. Solitude, sharp and green with bergamot and currant leaf, works well here.",
       "At the table itself a candle makes more sense, because you are sitting with it for the length of the meal. [The Palace](/range/the-palace) is violet over amber, powdery and floral at first and warmer as it settles. Both of those notes also run through The Arrival, so an entrance scented with that oil and a table lit with this candle feel like the same house. It burns for up to 45 hours. Trim the wick to 5 mm before you light it, and put it out before everyone moves back to the sofa, since a burning candle should never be left unattended.",
@@ -263,6 +264,8 @@ export const journal: JournalPost[] = [
   },
   // Buying guides and explainers, November 2026 (lib/data/journal-guides.ts).
   ...guides,
+  // Keyword-shortlist guides, 16 Nov 2026 (lib/data/guides/).
+  ...keywordGuides,
 ];
 
 /**

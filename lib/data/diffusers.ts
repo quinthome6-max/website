@@ -104,6 +104,10 @@ const diffusersByDefinition: Diffuser[] = [
     tagline: "Scent Your Space. No Setup Required.",
     description:
       "The Pebble is the effortless way to fill any room with your favourite Quint Home fragrance oil. Simply plug it into any wall socket and let its ultra-quiet, waterless diffusion do the rest. Its compact, rotatable plug fits virtually any outlet orientation – perfect for bathrooms, kitchens, and tight spaces where a larger diffuser just won't fit.\n\nA built-in 24-hour intelligent cyclic timer takes care of the scheduling, so you get consistent fragrance without lifting a finger. No fussing with apps, no mess, no noise.",
+    // Searches: "aroma diffuser for bathroom", "plug in diffuser" (keyword shortlist, 16 Nov).
+    seoTitle: "The Pebble Plug-In Diffuser for Bathrooms",
+    seoDescription:
+      "Plug-in waterless diffuser for bathrooms, passages and small rooms of 161–250 sq ft. No app and no water: it runs 8 hours a day on its own. {price}.",
     priceINR: 3999,
     bluetooth: false,
     coverageSqFt: [161, 250],
@@ -155,7 +159,7 @@ const diffusersByDefinition: Diffuser[] = [
     tagline: "Elevate Every Room. Effortlessly.",
     seoTitle: "The Monolith Cordless Waterless Diffuser",
     seoDescription:
-      "Cordless waterless diffuser in brushed gold or matte black aluminium, for rooms up to 1,075 sq ft. App schedules and a free 50 ml oil. {price}.",
+      "Cordless, battery-operated waterless diffuser in brushed gold or matte black, for rooms up to 1,075 sq ft. App schedules, free 50 ml oil. {price}.",
     description:
       "The Monolith in brushed gold is where function meets design. Standing tall in premium aluminum, this column diffuser brings a refined, hotel-like quality to any space. Its large 120 ml bottle keeps fragrance flowing for hours, and the built-in 2200 mAh rechargeable battery means it goes wherever you do – no outlet required.\n\nConnect via Bluetooth to control diffusion intensity and scheduling directly from your phone. Set a schedule and let the Monolith run your ambience on autopilot. A leak-proof design ensures spill-free placement, always.",
     priceINR: 18999,
