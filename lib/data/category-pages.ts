@@ -67,7 +67,7 @@ export const categoryPages: CategoryPage[] = [
             ["Living room or bedroom, up to 590 sq ft", "The Loom", "Soft fabric exterior, candle-like glow, simple knob control, 120 ml bottle"],
             ["Bedroom, study or office, up to 540 sq ft", "The Pillar", "Two 60 ml bottles you can run apart or together, at 35 dB or less"],
             ["Bedside, desk or bar cart, up to 540 sq ft", "The Ember", "An LED clock that sets itself, with a breathing amber light"],
-            ["Bathroom, kitchen or hallway, 161–250 sq ft", "The Pebble", "Plugs straight into the wall, no app, 24-hour cyclic timer"],
+            ["Bathroom or powder room, 50–80 sq ft", "The Pebble", "Plugs straight into the wall, no app, 24-hour cyclic timer"],
             ["Car, or a basin and small shelf", "The Drift", "Sits in a cup holder and starts and stops with the engine"],
           ],
         },

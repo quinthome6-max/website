@@ -79,7 +79,9 @@ async function diffuserItems(d: Diffuser): Promise<FeedItem[]> {
   const base = {
     title: d.coverageLabel.startsWith("Cars")
       ? `${d.name} Waterless Car & Bathroom Diffuser`
-      : `${d.name} Waterless Aroma Diffuser`,
+      : d.slug === "pebble"
+        ? `${d.name} Plug-In Waterless Diffuser for Bathrooms`
+        : `${d.name} Waterless Aroma Diffuser`,
     description: firstParagraph(d.description),
     link: abs(`/range/${d.slug}`),
     productType: "Home Fragrance > Waterless Diffusers",

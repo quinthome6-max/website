@@ -20,6 +20,24 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-11-16 — Pebble coverage 50–80 sq ft and "bathrooms"; Ember retitled
+- **What** (from the client: "pebble change to 50–80 sq ft and add bathroom", "next try updating ember"):
+  - **Pebble data:**
+    - Coverage 50–80 sq ft (was 161–250); label "Bathrooms, 50–80 sq ft"; highlight "made for bathrooms"; bestFor Bathrooms, Powder Rooms, Compact Spaces.
+    - Description: "made for bathrooms and small spaces of 50–80 sq ft".
+    - New key-features image `key-features/pebble-v2.webp` (new file name because of the 30-day image cache).
+  - **Copy:** every mention of 161–250 sq ft, and every recommendation of the Pebble for passages, kitchens or hallways, rewritten across 3 data files, 3 guides, the category room table and /gifting. It is now bathroom, powder room, pooja corner or a small foyer.
+  - **Google Shopping:** feed title "The Pebble Plug-In Waterless Diffuser for Bathrooms".
+  - **Ember:** "The Ember Bedroom Diffuser with Clock"; description "waterless bedroom diffuser with an LED clock that sets itself and a soft breathing light… up to 540 sq ft, free 50 ml oil".
+  - **Ad creatives** (`PPC Creatives/`, not on the site):
+    - New `Pebble/QuintHome-Pebble-01-v2.png` and `QuintHome-Pebble-KeyFeatures-v2.png`.
+    - The old ad still said "Includes a free 50 ml fragrance oil" and carried a "FREE 50 ML OIL" stamp; the Pebble has had no free oil since 3 Nov. Now "Add a 50 ml oil from ₹899", with a "MADE FOR BATHROOMS · 50–80 SQ FT" stamp.
+    - `Meta-Ad-Copy.md` corrected the same way.
+- **Check:**
+  - **Local dev:** the Pebble page shows 50–80 sq ft and Bathrooms, with no 161 / 250 / "kitchens, hallways" left; the gallery uses pebble-v2; the Ember title and description render; the feed title is updated; no JS errors.
+  - **Build:** the production build passes.
+  - **Client action:** replace the Pebble ad in Meta Ads Manager if the old free-oil version is running.
+
 ## 2026-11-16 — Outreach plan for mentions and links (not sent)
 - **What:** `marketing/seo/outreach/`:
   - `outreach-targets.csv`: 45 targets (15 P1, 22 P2, 8 P3) across Indian lifestyle and interiors publications, gifting sections, Mumbai, Delhi and Bengaluru design studios, home and decor creators, directories and B2B listings, and client-credit categories. Contacts are only those published on each target's own site, or public handles.

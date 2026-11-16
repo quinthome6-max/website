@@ -34,7 +34,7 @@ const tiers = [
   },
   {
     h2: "Under ₹5,000",
-    body: "The Pebble plugs into a wall and scents a bathroom, passage or pooja corner; the Drift sits in a car cup holder and starts and stops with the engine. Both are sold without an oil, so add one: with a ₹899 oil the gift comes to ₹4,898.",
+    body: "The Pebble plugs into a wall and scents a bathroom or pooja corner; the Drift sits in a car cup holder and starts and stops with the engine. Both are sold without an oil, so add one: with a ₹899 oil the gift comes to ₹4,898.",
     slugs: ["pebble", "drift", "first-rain"],
     label: "Plug-in and car diffusers",
   },

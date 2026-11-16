@@ -25,7 +25,7 @@ export const post: JournalPost = {
     "That is all we claim: safe around children and pets when used as directed. We won't put it more strongly, because no one can tell you in advance how a particular child or animal will take to a scent. So the rest of this guide is about habits, not promises.",
     "## Where should a diffuser go if you have pets or toddlers?",
     "Out of reach. Think about where a crawling baby, a tall dog's nose or a curious cat can get to, and go higher.",
-    "[The Pebble](/range/pebble) plugs straight into a wall socket and holds a 15 ml glass bottle, so the socket matters. Choose one at counter height or above, in the bathroom, kitchen or passage it is made for (it covers 161–250 sq ft), rather than one near the floor.",
+    "[The Pebble](/range/pebble) plugs straight into a wall socket and holds a 15 ml glass bottle, so the socket matters. Choose one at counter height or above, in the bathroom or small space it is made for (it covers 50–80 sq ft), rather than one near the floor.",
     "[The Loom](/range/loom) and [the Ember](/range/ember) stand on a surface, so give them a high shelf, a console or a sideboard, not a coffee table, a low bedside table or the floor. Run the cable behind the furniture, where it can't be pulled. The Loom is built leak-proof and the Ember spill-proof, which helps if one is knocked, but neither is a reason to leave it within reach.",
     "Cats reach most surfaces, so choose one yours doesn't use: not the windowsill it sleeps on, nor the top of the bookshelf it patrols. Keep any diffuser away from the cot, pet beds, and food and water bowls.",
     "![The Ember on a stone surface in afternoon light](/images/diffusers/clock-at370/ember-v2-03.webp)",

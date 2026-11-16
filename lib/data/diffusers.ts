@@ -107,20 +107,21 @@ const diffusersByDefinition: Diffuser[] = [
     // Searches: "aroma diffuser for bathroom", "plug in diffuser" (keyword shortlist, 16 Nov).
     seoTitle: "The Pebble Plug-In Diffuser for Bathrooms",
     seoDescription:
-      "Plug-in waterless diffuser for bathrooms, passages and small rooms of 161–250 sq ft. No app and no water: it runs 8 hours a day on its own. {price}.",
+      "Plug-in waterless diffuser made for bathrooms and small spaces of 50–80 sq ft. No app and no water: it runs 8 hours a day on its own. {price}.",
     priceINR: 3999,
     bluetooth: false,
-    coverageSqFt: [161, 250],
-    coverageLabel: "161–250 sq ft",
+    // 50–80 sq ft per the client, 16 Nov 2026 (was 161–250).
+    coverageSqFt: [50, 80],
+    coverageLabel: "Bathrooms, 50–80 sq ft",
     // Sold on its own, like the Drift: no free oil.
     includesOil: false,
-    bestFor: ["Bathrooms", "Kitchens", "Compact Spaces"],
+    bestFor: ["Bathrooms", "Powder Rooms", "Compact Spaces"],
     highlights: [
       "Plug and play – no assembly, no app",
       "Rotatable plug fits any socket orientation",
       "24-hour intelligent cyclic timer",
       "Ultra-quiet, waterless mist",
-      "Covers 161–250 sq ft – bathrooms, kitchens, hallways",
+      "Covers 50–80 sq ft – made for bathrooms",
     ],
     keyFeatures: [
       "Plug & Play – no installation or assembly required",
@@ -130,7 +131,7 @@ const diffusersByDefinition: Diffuser[] = [
       "15 ml glass bottle with PP shell – lightweight and durable",
     ],
     image: "/images/diffusers/plug-in-a815/01.webp",
-    featuresImage: "/images/diffusers/key-features/pebble.webp",
+    featuresImage: "/images/diffusers/key-features/pebble-v2.webp",
     video: "https://res.cloudinary.com/dnv4kq8ml/video/upload/v1780760006/Video_Display_pjm1fk.mp4",
     gallery: [
       "/images/diffusers/plug-in-a815/01.webp",
@@ -146,7 +147,7 @@ const diffusersByDefinition: Diffuser[] = [
       { label: "Voltage / Power", value: "AC 120V ~ 60Hz / 2.5 W" },
       { label: "Material", value: "PP (Shell) + Glass (Bottle)" },
       { label: "Dimensions", value: "160.5 × 44 × 56.5 mm" },
-      { label: "Net Weight", value: "135 g" },      { label: "Coverage Area", value: "161 – 250 sq ft" },
+      { label: "Net Weight", value: "135 g" },      { label: "Coverage Area", value: "50 – 80 sq ft" },
       { label: "Timer", value: "24-Hour Intelligent Cyclic" },
     ],
   },
@@ -363,6 +364,10 @@ const diffusersByDefinition: Diffuser[] = [
     category: "diffuser",
     tier: "premium",
     tagline: "Always Know the Time. Always Set the Mood.",
+    // Searches: "diffuser for bedroom" (keyword shortlist, 16 Nov).
+    seoTitle: "The Ember Bedroom Diffuser with Clock",
+    seoDescription:
+      "Waterless bedroom diffuser with an LED clock that sets itself and a soft breathing light. App control, up to 540 sq ft, free 50 ml oil. {price}.",
     description:
       "The Ember is more than a diffuser – it is a desktop companion. An integrated LED clock with automatic network time synchronisation keeps you grounded in your day, while a soft natural breathing light and steady fragrance mist keep your space feeling calm. The glass-like acrylic finish gives it a premium, almost sculptural quality.\n\nBluetooth connectivity means you can adjust fragrance intensity from your phone without disturbing the calm the Ember creates. Right at home on a work desk, bar cart, or bedside table.",
     priceINR: 8799,
