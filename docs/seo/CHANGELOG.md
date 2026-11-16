@@ -20,6 +20,17 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-11-16 — Outreach plan for mentions and links (not sent)
+- **What:** `marketing/seo/outreach/`:
+  - `outreach-targets.csv`: 45 targets (15 P1, 22 P2, 8 P3) across Indian lifestyle and interiors publications, gifting sections, Mumbai, Delhi and Bengaluru design studios, home and decor creators, directories and B2B listings, and client-credit categories. Contacts are only those published on each target's own site, or public handles.
+  - `pitch-templates.md`: 5 templates (gifting editor, interiors "hotel feel at home", designer collaboration, creator collaboration, client credit).
+  - `outreach-plan.md`: order, one follow-up after 7 days, tracking fields, sample budget, target of 5–10 mentions in 8 weeks.
+- **Why:** few other sites mention or link to quinthome.in, which caps how well the new guides can rank.
+- **Check:**
+  - Researched by an agent with web search. AD India, GoodHomes, Vogue India, GQ India, Mint, CN Traveller India and Mid-day blocked automated reads, so they are only partly covered.
+  - **Needs the client:** approval of the list and sample budget, and the names of hotel, office and boutique clients for the credit rows.
+  - **Status:** nothing sent.
+
 ## 2026-11-16 — Six P1 guides and five page retitles from the keyword shortlist
 - **Six guides,** written by parallel agents against a shared brief (facts only from lib/data, no health claims, no brand names) and reviewed before publishing. Each is in `lib/data/guides/`, wired in through `lib/data/guides/index.ts`:
 
