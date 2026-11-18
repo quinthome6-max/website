@@ -20,6 +20,35 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-11-19 — AI search audit (robots, llms, sitemap) and fixes
+- **Audit of the live site (all passed):**
+  - All 54 sitemap URLs return 200, with a self-canonical, no noindex, one H1, a meta description and a title of 65 characters or fewer.
+  - GPTBot, OAI-SearchBot, ChatGPT-User, PerplexityBot, ClaudeBot, bingbot, Googlebot, meta-externalagent, Amazonbot and Applebot all get the Pebble page, /llms.txt, a product JPEG and a guide with a 200.
+  - Product facts (50–80 sq ft, ₹3,999, bathrooms) are in the server HTML, so they're readable without JavaScript.
+  - JSON-LD includes OnlineStore + WebSite site-wide, Product + Breadcrumb on products, and FAQPage + ItemList on categories. Guides carry BlogPosting + FAQPage.
+- **Gaps found:**
+  - Products, categories and pages had no lastmod, and revised guides showed only their publish date.
+  - llms.txt still told assistants to "order two weeks before Diwali" (Diwali was 8 Nov), and candles were missing from its gift budgets.
+  - There were no buying facts (payment, delivery, exchanges, warranty) and no direct "which one to buy" answers.
+  - llms-full had no FAQ.
+- **What changed:**
+  - **Sitemap:** every URL now has a true lastmod, taken from the git history of the files that render it (`UPDATED` in `app/sitemap.ts`), and guides use updatedAt. Bump the date in the same commit as a content change.
+  - **llms.txt:**
+    - New "Buying, delivery and returns" section: PayU payment methods, dispatch and delivery, exchange within 3 days, 1-year limited warranty, oil life, no Wi-Fi, GST invoice.
+    - New "Which one to buy" section, by room and need.
+    - New "Common questions, answered in full" section, linking 17 guides.
+    - Gifting is year-round, has a candle band under ₹2,000, and links /gifting plus the occasion guides. New file `lib/llms-facts.ts`; `lib/gifting.ts` reworked.
+  - **llms-full.txt:**
+    - same buying facts and chooser
+    - the full /faq and every category page's FAQ
+    - an "Updated:" line on revised guides
+    - article headings demoted below the article title
+  - **FAQ data:** moved to `lib/data/faq.ts`, so the page and llms-full share one copy.
+  - **robots.txt:** named Claude-SearchBot, meta-externalagent, Amazonbot, DuckAssistBot and MistralAI-User, with the same rules as everyone else.
+  - **Organization JSON-LD:** added knowsAbout, areaServed India and taxID (the GSTIN already shown on /contact).
+- **Found, not changed:** the Pebble's spec sheet lists power as "AC 120V ~ 60Hz", a US rating; Indian mains is 230V 50Hz. The client has been asked to confirm the real input rating.
+- **Check:** IndexNow is pinged for every sitemap URL plus the llms files after the deploy. Watch Bing Webmaster (once connected) for recrawls.
+
 ## 2026-11-17 — Product images for AI search: JPEG main images everywhere; audit of ChatGPT's complaints
 - **Reported** (a ChatGPT answer the user pasted):
   - It could not reliably pick Quint Home's real product images, and some didn't render.

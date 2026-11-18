@@ -124,6 +124,23 @@ export default function RootLayout({
                   },
                   description:
                     "Hotel-grade home fragrance from Mumbai: waterless aroma diffusers, IFRA-compliant fragrance oils and hand-poured soy candles.",
+                  // What the brand is an authority on, for the knowledge
+                  // graphs assistants answer from. Each is a product line or
+                  // service the site sells and writes about.
+                  knowsAbout: [
+                    "Waterless aroma diffusers",
+                    "Cold-air nebulising diffusers",
+                    "Fragrance oils for diffusers",
+                    "Home fragrance",
+                    "Hotel lobby scents",
+                    "Plug-in diffusers for bathrooms",
+                    "Car diffusers",
+                    "Soy wax scented candles",
+                    "Scenting offices and retail spaces",
+                  ],
+                  areaServed: { "@type": "Country", name: "India" },
+                  // The GSTIN, as printed on /contact and every tax invoice.
+                  taxID: "27AIAPR7406F1ZB",
                   // Same policy as each product's offer (see /shipping).
                   hasMerchantReturnPolicy: {
                     "@type": "MerchantReturnPolicy",

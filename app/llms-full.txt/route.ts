@@ -5,9 +5,11 @@ import { candles, CANDLE_CARE, CANDLE_MAKE } from "@/lib/data/candles";
 import { journal } from "@/lib/data/journal";
 import { parseShopBlock, shopItem } from "@/lib/data/shop-items";
 import { getCommerceMap } from "@/lib/shopify/commerce";
-import { FREE_SHIPPING_FROM, SHIPPING_FLAT } from "@/lib/checkout-config";
 import { BRAND, SUMMARY, abs, inr, priceOf } from "@/lib/seo";
 import { giftingMarkdown } from "@/lib/gifting";
+import { buyerFacts, chooserMarkdown } from "@/lib/llms-facts";
+import { faqGroups } from "@/lib/data/faq";
+import { categoryPages } from "@/lib/data/category-pages";
 
 /**
  * /llms-full.txt — the expanded companion to /llms.txt. Where that file is an
@@ -90,7 +92,7 @@ ${k.description}`
 
 URL: ${abs(`/journal/${a.slug}`)}
 Category: ${a.eyebrow}
-Published: ${a.publishedAt}
+Published: ${a.publishedAt}${a.updatedAt && a.updatedAt !== a.publishedAt ? `\nUpdated: ${a.updatedAt}` : ""}
 Reading time: ${a.readMinutes} minutes
 
 ${a.body.map(asMarkdown).join("\n\n")}`
@@ -116,12 +118,29 @@ air. Every ${BRAND} diffuser is waterless.
 
 - All prices in Indian rupees (INR, ₹).
 - Ships within India only, from Mumbai.
-- Shipping is free at ${inr(FREE_SHIPPING_FROM)} and above, otherwise a flat ${inr(SHIPPING_FLAT)}.
 - The Monolith, Pillar, Ember and Loom each include one complimentary 50 ml oil, chosen by the buyer on the diffuser's page. The Pebble (plug-in) and the Drift (car and bathroom) are sold on their own.
 - Oils are IFRA-compliant.
 - Contact: hello@quinthome.in · +91 98196 16668 · Instagram @shopquinthome
+${buyerFacts()}
+
+${chooserMarkdown(commerce)}
 
 ${giftingMarkdown(commerce)}
+
+## Frequently asked questions
+
+${faqGroups
+  .flatMap((g) => g.items)
+  .map((it) => `### ${it.q}\n\n${it.a}`)
+  .join("\n\n")}
+
+${categoryPages
+  .map(
+    (c) => `## Questions about ${c.slug.replace(/-/g, " ")} (${abs(`/range/${c.slug}`)})
+
+${c.faq.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n")}`
+  )
+  .join("\n\n")}
 
 ## Diffusers (${diffusers.length})
 
@@ -152,8 +171,13 @@ ${articleBlocks.join("\n\n")}
   });
 }
 
-/** A journal block as plain markdown: product cards become a list of links. */
+/**
+ * A journal block as plain markdown: product cards become a list of links, and
+ * an article's own "## " headings sit below its "### " title rather than at the
+ * level of this file's sections, so the outline reads correctly.
+ */
 function asMarkdown(block: string): string {
+  if (block.startsWith("## ")) return `#### ${block.slice(3)}`;
   const shop = parseShopBlock(block);
   if (!shop) return block;
   const items = shop.slugs.map(shopItem).filter((i) => i !== null);

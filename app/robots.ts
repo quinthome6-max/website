@@ -25,8 +25,13 @@ const ASSISTANTS = [
   "Claude-User", // Anthropic — live fetch on a user's behalf
   "PerplexityBot", // Perplexity — index
   "Perplexity-User", // Perplexity — live fetch
+  "Claude-SearchBot", // Anthropic — Claude's search results
   "Google-Extended", // Google — Gemini grounding and AI Overviews
   "Applebot-Extended", // Apple — Apple Intelligence
+  "meta-externalagent", // Meta — Meta AI in WhatsApp, Instagram and Facebook
+  "Amazonbot", // Amazon — Alexa and Rufus answers
+  "DuckAssistBot", // DuckDuckGo — DuckAssist answers
+  "MistralAI-User", // Mistral — Le Chat live fetch
 ];
 
 export default function robots(): MetadataRoute.Robots {
