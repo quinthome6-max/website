@@ -305,39 +305,9 @@ export function DiffuserHero({
             </details>
           </FadeUp>
 
-          {/* Colour selector – only when the model ships in more than one finish */}
-          {colors && colors.length > 1 && (
-            <FadeUp delay={0.16}>
-              <div className="mt-7">
-                <p className="text-[0.66rem] uppercase tracking-[0.28em] text-[color:var(--color-charcoal-soft)]">
-                  Finish – {color?.name}
-                </p>
-                <div className="mt-3 flex items-center gap-3">
-                  {colors.map((c, i) => (
-                    <button
-                      key={c.name}
-                      type="button"
-                      onClick={() => setActive(i)}
-                      aria-label={c.name}
-                      aria-pressed={i === active}
-                      title={c.name}
-                      className={cn(
-                        "relative h-8 w-8 rounded-full transition-transform duration-300 hover:scale-105",
-                        i === active
-                          ? "ring-1 ring-[color:var(--color-charcoal)] ring-offset-2 ring-offset-[color:var(--color-white)]"
-                          : "ring-1 ring-[color:var(--color-rule)]"
-                      )}
-                      style={{ backgroundColor: c.swatch }}
-                    />
-                  ))}
-                </div>
-              </div>
-            </FadeUp>
-          )}
-
-          {/* Price + Add to bag – directly under the finish, so the price and
-               the button are in view with the product. The included oil is a
-               single bar above the button; its tiles open in a popup. */}
+          {/* Price + Add to bag, with the finish swatches on the price line
+               (left) so the price, the included-oil bar and the button are all
+               in view with the product. The oil's tiles open in a popup. */}
           <FadeUp delay={0.18}>
             <div id="buy" className="mt-8 scroll-mt-24">
               {/* No subscribe & save on diffusers – that offer is for the oils only */}
@@ -354,6 +324,36 @@ export function DiffuserHero({
                 attributes={complimentaryOil}
                 giftVariantId={giftVariantId}
                 warranty
+                // Finish on the price line – only when the model ships in more
+                // than one finish; otherwise the line reads "Price".
+                priceLead={
+                  colors && colors.length > 1 ? (
+                    <div className="shrink-0">
+                      <p className="whitespace-nowrap text-[0.62rem] uppercase tracking-[0.22em] text-[color:var(--color-charcoal-soft)]">
+                        Finish – {color?.name}
+                      </p>
+                      <div className="mt-2.5 flex items-center gap-3">
+                        {colors.map((c, i) => (
+                          <button
+                            key={c.name}
+                            type="button"
+                            onClick={() => setActive(i)}
+                            aria-label={c.name}
+                            aria-pressed={i === active}
+                            title={c.name}
+                            className={cn(
+                              "relative h-8 w-8 rounded-full transition-transform duration-300 hover:scale-105",
+                              i === active
+                                ? "ring-1 ring-[color:var(--color-charcoal)] ring-offset-2 ring-offset-[color:var(--color-white)]"
+                                : "ring-1 ring-[color:var(--color-rule)]"
+                            )}
+                            style={{ backgroundColor: c.swatch }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ) : undefined
+                }
                 // The included oil is chosen in a bar right above the button;
                 // its tiles open in a popup rather than filling the column.
                 beforeButton={

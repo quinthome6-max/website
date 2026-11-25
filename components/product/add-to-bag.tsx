@@ -30,6 +30,12 @@ interface Props {
   perk?: string;
   /** Rendered directly above the button, e.g. the included-oil picker bar. */
   beforeButton?: ReactNode;
+  /**
+   * Shown at the left of the price line in place of the word "Price", e.g. the
+   * finish swatches, so the two share one line and what sits below them (the
+   * included-oil bar, the button) moves up into view.
+   */
+  priceLead?: ReactNode;
 }
 
 export function AddToBag({
@@ -47,6 +53,7 @@ export function AddToBag({
   warranty = false,
   perk,
   beforeButton,
+  priceLead,
 }: Props) {
   const [mode, setMode] = useState<"one-time" | "subscribe">("one-time");
   const subscribePrice = Math.round(priceINR * 0.85);
@@ -61,10 +68,17 @@ export function AddToBag({
       {/* Plain price line – shown when there's no subscribe/one-time chooser
           (e.g. diffusers), otherwise the price lives inside the options below. */}
       {!subscribeOffer && (
-        <div className="flex items-baseline justify-between gap-3 border-b border-[color:var(--color-rule)] pb-5">
-          <span className="text-[0.62rem] uppercase tracking-[0.32em] text-[color:var(--color-charcoal-soft)]">
-            Price
-          </span>
+        <div
+          className={cn(
+            "flex justify-between gap-3 border-b border-[color:var(--color-rule)] pb-5",
+            priceLead ? "items-end" : "items-baseline"
+          )}
+        >
+          {priceLead ?? (
+            <span className="text-[0.62rem] uppercase tracking-[0.32em] text-[color:var(--color-charcoal-soft)]">
+              Price
+            </span>
+          )}
           <PriceTag
             price={priceINR}
             listPrice={listPriceINR}
