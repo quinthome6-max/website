@@ -101,7 +101,9 @@ export function ProductGallery({ images, alt, cards = [], after = [] }: Props) {
       )}
 
       {/* Main stage */}
-      <div className="relative order-1 aspect-[4/5] overflow-hidden bg-[color:var(--color-stardust-soft)] md:order-2">
+      {/* White ground: during the crossfade both slides are part-transparent,
+          and a tinted ground showed through as a beige flash between photos. */}
+      <div className="relative order-1 aspect-[4/5] overflow-hidden bg-[color:var(--color-white)] md:order-2">
         {slides.map((slide, i) => (
           <div
             key={slide.key}

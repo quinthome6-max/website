@@ -35,7 +35,9 @@ interface CartContextValue {
   add: (
     merchandiseId: string,
     quantity?: number,
-    attributes?: { key: string; value: string }[]
+    attributes?: { key: string; value: string }[],
+    /** openDrawer: false adds without sliding the drawer open (the bag page). */
+    options?: { openDrawer?: boolean }
   ) => void;
   /** Adds a diffuser and its complimentary ₹0 oil as one mutation. */
   addWithGift: (
@@ -90,9 +92,10 @@ export function CartProvider({
     (
       merchandiseId: string,
       quantity = 1,
-      attributes?: { key: string; value: string }[]
+      attributes?: { key: string; value: string }[],
+      options?: { openDrawer?: boolean }
     ) => {
-    setOpen(true);
+    if (options?.openDrawer !== false) setOpen(true);
     startTransition(async () => {
       try {
         const next = await addToCartAction(merchandiseId, quantity, attributes);

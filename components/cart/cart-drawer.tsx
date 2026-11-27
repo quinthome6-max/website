@@ -12,8 +12,10 @@ import {
   otherAttributes,
 } from "@/lib/cart-gift";
 import { GiftLine, InTheBox } from "./gift-line";
+import { CandleUpsell } from "./candle-upsell";
+import type { CandleOffer } from "@/lib/candle-offers";
 
-export function CartDrawer() {
+export function CartDrawer({ candles = [] }: { candles?: CandleOffer[] }) {
   const { cart, open, setOpen, update, remove, pending, headlessCheckout } =
     useCart();
   const lines = cart?.lines ?? [];
@@ -181,6 +183,9 @@ export function CartDrawer() {
                   </div>
                 );
               })}
+              {/* The drawer opens on every add, so this is the moment to
+                  offer a candle alongside what was just added. */}
+              <CandleUpsell offers={candles} variant="drawer" />
             </div>
 
             <div className="border-t border-[color:var(--color-rule)] px-6 py-5">

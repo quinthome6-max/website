@@ -15,6 +15,7 @@ import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { WhatsAppButton } from "@/components/layout/whatsapp-button";
 import { CartProvider } from "@/components/cart/cart-provider";
 import { CartDrawer } from "@/components/cart/cart-drawer";
+import { candleOffers } from "@/lib/candle-offers";
 import { payuConfigured } from "@/lib/payu/client";
 import { shopifyAdminConfigured } from "@/lib/shopify/admin";
 import { DEFAULT_OG_IMAGE, OG_LOCALE } from "@/lib/seo";
@@ -63,9 +64,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  // The bag drawer offers the candles. Read through the same 5-minute cached
+  // Shopify lookup the pages use, so this adds no request of its own.
+  const candles = await candleOffers();
   return (
     <html
       lang="en"
@@ -181,7 +185,7 @@ export default function RootLayout({
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
-          <CartDrawer />
+          <CartDrawer candles={candles} />
           <WhatsAppButton />
           <StorefrontOnly>
             <Clarity />

@@ -15,8 +15,16 @@ import {
   otherAttributes,
 } from "@/lib/cart-gift";
 import { GiftLine, InTheBox } from "./gift-line";
+import { CandleUpsell } from "./candle-upsell";
+import type { CandleOffer } from "@/lib/candle-offers";
 
-export function CartView({ notice = null }: { notice?: string | null }) {
+export function CartView({
+  notice = null,
+  candles = [],
+}: {
+  notice?: string | null;
+  candles?: CandleOffer[];
+}) {
   // headlessCheckout comes from the provider (set in the root layout) so the
   // bag and the drawer can never disagree about where checkout goes.
   const { cart, update, remove, pending, headlessCheckout } = useCart();
@@ -284,6 +292,8 @@ export function CartView({ notice = null }: { notice?: string | null }) {
           >
             ← Continue shopping
           </Link>
+
+          <CandleUpsell offers={candles} variant="page" />
         </div>
 
         {/* Order summary */}
