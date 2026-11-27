@@ -207,11 +207,13 @@ export function DiffuserHero({
             {/* key={active} remounts the gallery so it resets to the new colour's first image */}
             <ProductGallery
               key={active}
-              images={gallery}
+              // With guide slides: the first photo, then the guides in order.
+              images={product.guideImages ? [gallery[0], ...product.guideImages] : gallery}
               alt={`${product.name}${color ? ` – ${color.name}` : ""} – Quint Home`}
-              cards={[{ key: "specs", thumbLabel: "Specs", content: specsCard }]}
-              // Specs follow the first photo; the key-features sheet closes the gallery.
-              after={product.featuresImage ? [product.featuresImage] : []}
+              // Otherwise the specs card follows the first photo and the
+              // key-features sheet closes the gallery.
+              cards={product.guideImages ? [] : [{ key: "specs", thumbLabel: "Specs", content: specsCard }]}
+              after={!product.guideImages && product.featuresImage ? [product.featuresImage] : []}
             />
           </FadeUp>
         </div>

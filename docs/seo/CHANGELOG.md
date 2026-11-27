@@ -20,6 +20,20 @@ Plan = `marketing/seo/Quint-Home-SEO-Plan-of-Action.pdf` (tickets T1–T26).
 
 ---
 
+## 2026-11-27 — Ember gallery: five guide slides
+- **What:** the Ember's gallery is now its first photo followed by five guide images from the client:
+  - specifications
+  - design callouts
+  - the control panel
+  - six usage steps
+  - app set-up
+- **How:**
+  - The images were padded to 4:5 on their own white background, so the gallery's crop doesn't cut the edge labels, and saved as WebP (45–105 KB) at `public/images/diffusers/clock-at370/ember-guide-01…05.webp`.
+  - Each has descriptive alt text in `lib/data/image-alts.ts`.
+  - The sitemap lists them under /range/ember, with lastmod 2026-11-27 (new per-product override `PRODUCT_UPDATED`).
+  - New optional `guideImages` on Diffuser replaces the specs card, later photos and key-features sheet on the page only. Product markup and the feed keep the plain photos.
+- **Check:** the app slide names the app "Scent Home", while /faq and llms.txt say "the Quint Home companion app". The client has been asked which name is right.
+
 ## 2026-11-19 — AI search audit (robots, llms, sitemap) and fixes
 - **Audit of the live site (all passed):**
   - All 54 sitemap URLs return 200, with a self-canonical, no noindex, one H1, a meta description and a title of 65 characters or fewer.

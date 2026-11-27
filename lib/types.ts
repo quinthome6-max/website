@@ -97,6 +97,14 @@ export interface Diffuser {
   /** The designed key-features sheet, shown as the last gallery slide,
    *  after the specifications card. */
   featuresImage?: string;
+  /**
+   * Guide slides (specifications, design callouts, controls, set-up). When
+   * present the page gallery is the first photo followed by these, in order,
+   * in place of the designed specs card, the other photos and the key-features
+   * sheet. `gallery` keeps the photos for Product markup and feeds, where a
+   * plain product shot serves better than an infographic.
+   */
+  guideImages?: string[];
   /** Optional product video (vertical, muted autoplay loop) for the PDP. */
   video?: string;
   finish: string;

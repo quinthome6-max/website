@@ -394,6 +394,13 @@ const diffusersByDefinition: Diffuser[] = [
     ],
     image: "/images/diffusers/clock-at370/ember-v2-01.webp",
     featuresImage: "/images/diffusers/key-features/ember.webp",
+    guideImages: [
+      "/images/diffusers/clock-at370/ember-guide-01.webp",
+      "/images/diffusers/clock-at370/ember-guide-02.webp",
+      "/images/diffusers/clock-at370/ember-guide-03.webp",
+      "/images/diffusers/clock-at370/ember-guide-04.webp",
+      "/images/diffusers/clock-at370/ember-guide-05.webp",
+    ],
     video: "https://res.cloudinary.com/dnv4kq8ml/video/upload/Video_Display_gggg5v.mp4",
     gallery: [
       "/images/diffusers/clock-at370/ember-v2-01.webp",

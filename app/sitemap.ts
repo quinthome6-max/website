@@ -51,6 +51,11 @@ const UPDATED = {
   products: "2026-11-17",
 } as const;
 
+/** Product pages changed on their own since UPDATED.products, by slug. */
+const PRODUCT_UPDATED: Record<string, string> = {
+  ember: "2026-11-27", // guide slides in the gallery
+};
+
 /** Written as a plain date: a Date would print as the evening before, in UTC. */
 const day = (iso: string) => iso.slice(0, 10);
 
@@ -84,10 +89,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Product rows carry their photography, which puts the catalogue in front of
   // Google Images — a real channel for objects people shop by appearance.
   const products: MetadataRoute.Sitemap = [...diffusers, ...oils, ...candles].map((p) => {
-    const shots = [p.image, ...("gallery" in p ? p.gallery : [])];
+    const shots = [
+      p.image,
+      ...("gallery" in p ? p.gallery : []),
+      ...("guideImages" in p && p.guideImages ? p.guideImages : []),
+    ];
     return {
       url: `${SITE}/range/${p.slug}`,
-      lastModified: day(UPDATED.products),
+      lastModified: day(PRODUCT_UPDATED[p.slug] ?? UPDATED.products),
       changeFrequency: "weekly" as const,
       priority: p.category === "diffuser" ? 0.8 : 0.7,
       images: [...new Set(shots)].map((s) => `${SITE}${s}`),

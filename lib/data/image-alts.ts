@@ -17,6 +17,11 @@ const PHOTOS: Record<string, string> = {
   "/images/diffusers/a326-black/black-v2-03.webp": "The Monolith in matte black releasing a fine mist among plants against a terracotta wall",
   "/images/diffusers/a326-black/black-v2-04.webp": "The Monolith in matte black on a side table, with a woman standing by the window",
   // The Ember
+  "/images/diffusers/clock-at370/ember-guide-01.webp": "The Ember's specifications: 154 × 88.5 × 132 mm, 60 ml bottle, 4 W, 5 V 1 A input, 580 g, PP and PMMA",
+  "/images/diffusers/clock-at370/ember-guide-02.webp": "The Ember's design: aroma outlet, touch control panel, LED clock display, premium build and ambient light",
+  "/images/diffusers/clock-at370/ember-guide-03.webp": "The Ember's top panel: power, intensity grade, smart mode, 1, 3, 6 and 12-hour timer, ambient light and instant scenting",
+  "/images/diffusers/clock-at370/ember-guide-04.webp": "How to fill the Ember in six steps: remove the bottle, unscrew the cap, fill with oil, reinsert, plug in and switch on",
+  "/images/diffusers/clock-at370/ember-guide-05.webp": "Setting up the Ember in the Scent Home app over Bluetooth",
   "/images/diffusers/clock-at370/ember-v2-01.webp": "The Ember with its clock glowing on a marble coffee table in a living room",
   "/images/diffusers/clock-at370/ember-v2-02.webp": "The Ember showing the time on a wooden console beside a coffee cup",
   "/images/diffusers/clock-at370/ember-v2-03.webp": "The Ember's LED clock and amber glow on a stone surface in afternoon light",
